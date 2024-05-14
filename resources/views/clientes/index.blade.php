@@ -8,9 +8,10 @@ $heads = [
         'Cliente',
         'Email',
         'Contacto',
-        'Direccion',
+        'Dirección',
+        'Mascota(s)',
         'Ubigeo',
-        'opciones',
+        'Opciones',
 
     ];
 $config = [
@@ -36,20 +37,20 @@ $config = [
             <div class="col-md-4">
                 <x-adminlte-alert theme="success" id='success-alert' title="" dismissable>
                 {{session('msg')}}
-                </x-adminlte-alert> 
+                </x-adminlte-alert>
             </div>
         </div>
-        @endif 
-       
+        @endif
+
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group mr-2" role="group" aria-label="Third group">
                 <a href="{{url('cliente/create')}}" class="btn btn-info btn-sm" ">Crear nuevo cliente</a>
             </div>
-            
+
             {{-- <div class="btn-group mr-2" role="group" aria-label="Third group">
                 <button type="button" class="btn btn-danger btn-sm">Auditoria</button>
             </div> --}}
-           
+
         </div>
         <hr>
         <div class="row">
@@ -61,16 +62,41 @@ $config = [
                     <td>{{ $clie->Email}}</td>
                     <td>{{$clie->TelefonoFijo.' '.$clie->TelefonoMovil}}</td>
                     <td>{{$clie->Direccion}}</td>
+
+                    <td>
+
+                        @if ($clie->getMascotas->count() > 0)
+
+                            <ul class="mascotas">
+
+                                @foreach ($clie->getMascotas as $mascota)
+
+                                    <li class="mascotas__mascota">
+                                        {{ $mascota->Mascota }}
+                                    </li>
+
+                                @endforeach
+
+                            </ul>
+
+                        @else
+
+                            -
+
+                        @endif
+
+                    </td>
+
                     <td>{{$clie->departamento->Departamento.' - '.$clie->provincia->Provincia.' - '.$clie->distrito->Distrito}}</td>
                     <td>
                         <a href="{{url('cliente/'.$clie->id.'/edit')}}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
                             <i class="fa fa-lg fa-fw fa-pen"></i>
                         </button>
                     </td>
-                    
+
                 </tr>
                 @endforeach
-            </x-adminlte-datatable>  
+            </x-adminlte-datatable>
         </div>
     </div>
 </div>
@@ -82,7 +108,17 @@ $config = [
         $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
             $("#success-alert").slideUp(500);
         });
-        
+
     });
 </script>
+
+<style>
+    .mascotas {
+        margin: 0;
+        padding: 10px;
+        list-style-type: none;
+        text-align: left;
+    }
+</style>
+
 @endpush

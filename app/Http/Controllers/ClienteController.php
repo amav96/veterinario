@@ -9,7 +9,7 @@ use App\Models\Distrito;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
- 
+
 class ClienteController extends Controller
 {
     /**
@@ -17,7 +17,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::all();
+        $clientes = Cliente::with('getMascotas')->get();
         return view('clientes.index',['clientes'=>$clientes]);
     }
 
@@ -27,11 +27,11 @@ class ClienteController extends Controller
     public function create()
     {
         $departamentos = Departamento::all();
-        $provincias = Provincia::all(); 
-        $distritos = Distrito::all(); 
+        $provincias = Provincia::all();
+        $distritos = Distrito::all();
         return view('clientes.create',[  'departamentos'=>$departamentos,
                                             'provincias'=>$provincias,
-                                            'distritos'=>$distritos                                            
+                                            'distritos'=>$distritos
                                         ]);
     }
 
@@ -89,13 +89,13 @@ class ClienteController extends Controller
     {
         $clientes = Cliente::find($id);
         $departamentos = Departamento::all();
-        $provincias = Provincia::all(); 
-        $distritos = Distrito::all(); 
-        return view('clientes.edit',[ 
-                                            'cliente'=>$clientes, 
+        $provincias = Provincia::all();
+        $distritos = Distrito::all();
+        return view('clientes.edit',[
+                                            'cliente'=>$clientes,
                                             'departamentos'=>$departamentos,
                                             'provincias'=>$provincias,
-                                            'distritos'=>$distritos                                            
+                                            'distritos'=>$distritos
                                         ]);
     }
 
@@ -170,5 +170,5 @@ class ClienteController extends Controller
         return view('clientes.graphics',['result'=>$result]);
 
     }
-   
+
 }
