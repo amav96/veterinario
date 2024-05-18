@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('idUsuario')->references('id')->on('users');;
-            $table->foreign('idAlmacen')->references('id')->on('Almacenes');
+            $table->foreign('idAlmacen')->references('id')->on('almacenes');
             $table->foreign('idTipoOperacion')->references('id')->on('tipoOperaciones');
         });
     }
