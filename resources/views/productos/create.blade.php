@@ -25,7 +25,7 @@
                 </button>
             </div>
         @endif
-        
+
         <div class="row">
             <div class="col-md-6">
                 <div class="input-group mb-3">
@@ -87,8 +87,8 @@
                         <option value="{{$prove->id}}">{{$prove->Proveedor.' '.' | '.$prove->NumeroTributario}}</option>
                         @endforeach
                     </select>
-                </div>                
-                
+                </div>
+
                 <div class="form-group">
                     <select class="form-control form-control-sm" id="UnidadMedida" name="UnidadMedida" required>
                         <option value="">* Unidad de medida...</option>
@@ -126,7 +126,7 @@
                         <span class="input-group-text"><i class="fas fa-arrow-down"></i></span>
                     </div>
                     <input type="text" class="form-control form-control-sm" id="StockMinimo" name="StockMinimo" value="{{old('StockMinimo')}}" placeholder="* Stock Minimo" required>
-                </div>               
+                </div>
                 <div class="form-group">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="ExoneradoCompra" name="ExoneradoCompra">
@@ -146,7 +146,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="d-grid gap-3 d-md-block mb-3">
-                    <button type="submit" class="btn bg-gradient-primary btn-sm"><i class="fas fa-save"></i>  Crear Producto</button>         
+                    <button type="submit" class="btn bg-gradient-primary btn-sm"><i class="fas fa-save"></i>  Crear Producto</button>
                     <button type="reset" class="btn bg-gradient-warning btn-sm"><i class="fas fa-window-close"></i>  Cancelar</button>
                 </div>
             </div>
@@ -158,7 +158,7 @@
         </div>
     </div>
     </form>
-</div>  
+</div>
 
 @stop
 
@@ -167,64 +167,64 @@
 <script>
     function filterFloat(evt,input){
         // Backspace = 8, Enter = 13, ‘0′ = 48, ‘9′ = 57, ‘.’ = 46, ‘-’ = 43
-        var key = window.Event ? evt.which : evt.keyCode;   
+        var key = window.Event ? evt.which : evt.keyCode;
         var chark = String.fromCharCode(key);
         var tempValue = input.value+chark;
         var isNumber = (key >= 48 && key <= 57);
         var isSpecial = (key == 8 || key == 13 || key == 0 ||  key == 46);
         if(isNumber || isSpecial){
             return filter(tempValue);
-        }        
-        return false;    
+        }
+        return false;
     }
 
     function filter(__val__){
-        var preg = /^([0-9]+\.?[0-9]{0,2})$/; 
+        var preg = /^([0-9]+\.?[0-9]{0,2})$/;
         return (preg.test(__val__) === true);
     }
 
 
     $(document).ready(function() {
 
-        $('#StockMinimo, #StockMaximo, #CodigoBarra').on('input', function () { 
+        $('#StockMinimo, #StockMaximo, #CodigoBarra').on('input', function () {
             this.value = this.value.replace(/[^0-9]/g,'');
         });
-        
+
         $('#Proveedor').select2();
 
 
         $("#Linea").change(function(){
             $("#Categoria").empty();
             $("#SubCategoria").empty();
-            $.ajax({  
-                type: "GET",  
-                url: "/getCategorias/"+$(this).val(),    
-                dataType: "json", 
-                success: function (data) { 
+            $.ajax({
+                type: "GET",
+                url: "/getCategorias/"+$(this).val(),
+                dataType: "json",
+                success: function (data) {
                     var option = "<option value=''>* Categoria...</option>";
                     $.each(data, function(i,item){
                         option = option+"<option value='" + item.id + "'>"+ item.Categoria+ "</option>";
                     });
                     $("#Categoria").append(option);
-                }, 
+                },
              });
-            $("#SubCategoria").append("<option value=''>SubCategoria...</option>");         
+            $("#SubCategoria").append("<option value=''>SubCategoria...</option>");
         });
 
         $("#Categoria").change(function(){
             $("#SubCategoria").empty();
-            $.ajax({  
-                type: "GET",  
-                url: "/getSubCategorias/"+$(this).val(),    
-                dataType: "json", 
-                success: function (data) { 
+            $.ajax({
+                type: "GET",
+                url: "/getSubCategorias/"+$(this).val(),
+                dataType: "json",
+                success: function (data) {
                     var option = "<option value=''>SubCategoria...</option>";
                     $.each(data, function(i,item){
                         option = option+"<option value='"+item.id+"'>"+ item.SubCategoria+ "</option>";
                     });
                     $("#SubCategoria").append(option);
-                }, 
-             });         
+                },
+             });
         });
     });
 

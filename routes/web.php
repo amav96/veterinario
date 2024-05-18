@@ -20,7 +20,7 @@ use App\Http\Controllers\TipoEventoController;
 use App\Http\Controllers\EstadoEventoController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\TipoAlmacenController;
-
+use App\Http\Controllers\VentasController;
 
  Route::get('/', function () {
      return view('dashboard');
@@ -59,6 +59,7 @@ Route::resource('/tipoEvento', TipoEventoController::class);
 Route::resource('/estadoEvento', EstadoEventoController::class);
 Route::resource('/notificacion', NotificacionController::class);
 Route::resource('/tipoAlmacen', TipoAlmacenController::class);
+Route::resource('/ventas', VentasController::class);
 
 Route::get('/getProvincias/{Depto}',[ClienteController::class,'getProvincias'])->middleware(['auth', 'verified']);
 Route::get('/getDistritos/{Prov}',[ClienteController::class,'getDistritos'])->middleware(['auth', 'verified']);
@@ -66,7 +67,6 @@ Route::get('/getCategorias/{Linea}',[ServicioController::class,'getCategorias'])
 Route::get('/getSubCategorias/{Categ}',[ServicioController::class,'getSubCategorias'])->middleware(['auth', 'verified']);
 Route::get('/getRazas/{Especie}',[MascotaController::class,'getRazas'])->middleware(['auth', 'verified']);
 Route::get('/getMascotas/{Cliente}',[MascotaController::class,'getMascotas'])->middleware(['auth', 'verified']);
-
 Route::get('/clienteGraf',[ClienteController::class,'getGrafico'])->middleware(['auth', 'verified']);
 Route::get('/mascotaGraf',[MascotaController::class,'getGrafico'])->middleware(['auth', 'verified']);
 

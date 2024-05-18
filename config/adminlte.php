@@ -244,7 +244,7 @@ return [
     */
 
     'right_sidebar' => false,
-    'right_sidebar_icon' => 'fas fa-cogs',
+    'right_sidebar_icon' => 'fas fa-fw fa-cogs',
     'right_sidebar_theme' => 'dark',
     'right_sidebar_slide' => true,
     'right_sidebar_push' => true,
@@ -325,94 +325,110 @@ return [
         [
             'text'        => 'Inicio',
             'url'         => 'dashboard',
-            'icon'        => 'fas fa-home',
+            'icon'        => 'fas fa-fw fa-home',
             'label_color' => 'success',
         ],
         [
             'text'    => 'Clientes',
-            'icon'    => 'fas fa-users',
+            'icon'    => 'fas fa-fw fa-users',
             'submenu' => [
                 [
                     'text' => 'Listado',
-                    'icon' => 'fas fa-list',
+                    'icon' => 'fas fa-fw fa-list',
                     'url'  => 'cliente',
                 ],
                 [
-                    'text' => 'Gestion',
-                    'icon' => 'fas fa-chart-pie',
+                    'text' => 'Gestión',
+                    'icon' => 'fas fa-fw fa-chart-pie',
                     'url'  => 'clienteGraf',
                 ],
             ]
         ],
         [
-            'text'    => 'Mascotas',
-            'icon'    => 'fas fa-dog',
+            'text'    => 'Ventas',
+            'icon'    => 'fas fa-fw fa-dolly-flatbed',
             'submenu' => [
                 [
                     'text' => 'Listado',
-                    'icon' => 'fas fa-list',
+                    'icon' => 'fas fa-fw fa-list',
+                    'url'  => 'ventas',
+                ],
+                [
+                    'text' => 'Crear',
+                    'icon' => 'fas fa-fw fa-plus',
+                    'url'  => 'ventas/create',
+                ],
+            ]
+        ],
+        [
+            'text'    => 'Mascotas',
+            'icon'    => 'fas fa-fw fa-dog',
+            'submenu' => [
+                [
+                    'text' => 'Listado',
+                    'icon' => 'fas fa-fw fa-list',
                     'url'  => 'mascota',
                 ],
                 [
                     'text' => 'Gestion',
-                    'icon' => 'fas fa-chart-pie',
+                    'icon' => 'fas fa-fw fa-chart-pie',
                     'url'  => 'mascotaGraf',
                 ],
             ]
         ],
         [
             'text'    => 'Eventos',
-            'icon'    => 'fas fa-calendar',
+            'icon'    => 'fas fa-fw fa-calendar',
             'submenu' => [
                 [
                     'text' => 'Calendario',
-                    'icon' => 'fas fa-calendar-alt',
+                    'icon' => 'fas fa-fw fa-calendar-alt',
                     'url'  => 'evento',
                 ],
                 [
                     'text' => 'Listado',
-                    'icon' => 'fas fa-list',
+                    'icon' => 'fas fa-fw fa-list',
                     'url'  => 'evento/list',
                 ],
             ]
-        ],     
+        ],
         [
             'text'    => 'Productos',
-            'icon'    => 'fas fa-box-open',
+            'icon'    => 'fas fa-fw fa-box-open',
             'submenu' => [
                 [
                     'text' => 'Catalogo',
-                    'icon' => 'fas fa-clipboard-list',
+                    'icon' => 'fas fa-fw fa-clipboard-list',
                     'url'  => 'producto',
                 ],
                 // [
                 //     'text' => 'Descargar Stock',
-                //     'icon' => 'fas fa-sign-out-alt',
+                //     'icon' => 'fas fa-fw fa-sign-out-alt',
                 //     'url'  => '#',
                 // ],
                 // [
                 //     'text' => 'Cargar Stock',
-                //     'icon' => 'fas fa-sign-in-alt',
+                //     'icon' => 'fas fa-fw fa-sign-in-alt',
                 //     'url'  => '#',
                 // ],
                 // [
                 //     'text' => 'Stock por almacen',
-                //     'icon' => 'fas fa-boxes',
+                //     'icon' => 'fas fa-fw fa-boxes',
                 //     'url'  => '#',
                 // ],
                 // [
                 //     'text' => 'Transferencias',
-                //     'icon' => 'fas fa-exchange-alt',
+                //     'icon' => 'fas fa-fw fa-exchange-alt',
                 //     'url'  => '#',
                 // ],
                 // [
                 //     'text' => 'Almacenes',
-                //     'icon' => 'fas fa-warehouse',
+                //     'icon' => 'fas fa-fw fa-warehouse',
                 //     'url'  => '#',
                 // ],
                 // [
                 //     'text' => 'Lotes',
-                //     'icon' => 'fas fa-box',
+                //     'icon' => 'fas fa-fw fa-box',
                 //     'url'  => '#',
                 // ],
             ]
@@ -420,59 +436,59 @@ return [
         [
             'text'        => 'Servicios',
             'url'         => 'servicio',
-            'icon'        => 'fas fa-briefcase-medical',
+            'icon'        => 'fas fa-fw fa-briefcase-medical',
             'label_color' => 'success',
-        ],   
+        ],
         [
             'text'    => 'Proveedores',
-            'icon'    => 'fas fa-shopping-cart',
+            'icon'    => 'fas fa-fw fa-shopping-cart',
             'submenu' => [
                 [
                     'text' => 'Listado',
-                    'icon' => 'fas fa-list',
+                    'icon' => 'fas fa-fw fa-list',
                     'url'  => 'proveedor',
                 ],
                 // [
                 //     'text' => 'Pedido',
-                //     'icon' => 'fas fa-shopping-bag',
+                //     'icon' => 'fas fa-fw fa-shopping-bag',
                 //     'url'  => 'petgest',
                 // ],
             ]
-        ],   
+        ],
         [
             'text'    => 'Inventario',
-            'icon'    => 'fas fa-boxes',
+            'icon'    => 'fas fa-fw fa-boxes',
             'submenu' => [
                 [
                     'text' => 'Carga de Stock',
-                    'icon' => 'fas fa-sign-in-alt',
+                    'icon' => 'fas fa-fw fa-sign-in-alt',
                     'url'  => 'inventario',
                 ],
                 [
                     'text' => 'Descarga de Stock',
-                    'icon' => 'fas fa-sign-out-alt',
+                    'icon' => 'fas fa-fw fa-sign-out-alt',
                     'url'  => 'inventario',
                 ],
                 [
                     'text' => 'Transferencia',
-                    'icon' => 'fas fa-exchange-alt',
+                    'icon' => 'fas fa-fw fa-exchange-alt',
                     'url'  => 'inventario',
                 ],
                 [
                     'text' => 'Almacenes',
-                    'icon' => 'fas fa-warehouse',
+                    'icon' => 'fas fa-fw fa-warehouse',
                     'url'  => 'inventario',
                 ],
                 // [
                 //     'text' => 'Pedido',
-                //     'icon' => 'fas fa-shopping-bag',
+                //     'icon' => 'fas fa-fw fa-shopping-bag',
                 //     'url'  => 'petgest',
                 // ],
             ]
-        ],       
+        ],
         [
             'text'    => 'Configuracion',
-            'icon'    => 'fas fa-cogs',
+            'icon'    => 'fas fa-fw fa-cogs',
             'submenu' => [
                 [
                     'text' => 'Formas de Pago',
@@ -481,62 +497,62 @@ return [
                 ],
                 [
                     'text' => 'Lineas',
-                    'icon' => 'fas fa-grip-lines',
+                    'icon' => 'fas fa-fw fa-grip-lines',
                     'url'  => 'linea',
                 ],
                 [
                     'text' => 'Categorias',
-                    'icon' => 'fas fa-table',
+                    'icon' => 'fas fa-fw fa-table',
                     'url'  => 'categoria',
                 ],
                 [
                     'text' => 'Sub Categorias',
-                    'icon' => 'fas fa-border-all',
+                    'icon' => 'fas fa-fw fa-border-all',
                     'url'  => 'subCategoria',
                 ],
                 [
                     'text' => 'Presentacion',
-                    'icon' => 'fas fa-book-medical',
+                    'icon' => 'fas fa-fw fa-book-medical',
                     'url'  => 'presentacion',
                 ],
                 [
                     'text' => 'Unidad de Medida',
-                    'icon' => 'fas fa-vial',
+                    'icon' => 'fas fa-fw fa-vial',
                     'url'  => 'unidadMedida',
                 ],
                 [
                     'text' => 'Especies',
-                    'icon' => 'fas fa-dove',
+                    'icon' => 'fas fa-fw fa-dove',
                     'url'  => 'especie',
                 ],
                 [
                     'text' => 'Razas',
-                    'icon' => 'fas fa-paw',
+                    'icon' => 'fas fa-fw fa-paw',
                     'url'  => 'raza',
                 ],
                 [
                     'text' => 'Tipos de Evento',
-                    'icon' => 'fas fa-calendar',
+                    'icon' => 'fas fa-fw fa-calendar',
                     'url'  => 'tipoEvento',
                 ],
                 [
                     'text' => 'Estados de Evento',
-                    'icon' => 'fas fa-calendar-check',
+                    'icon' => 'fas fa-fw fa-calendar-check',
                     'url'  => 'estadoEvento',
                 ],
                 [
                     'text' => 'Notificaciones de Evento',
-                    'icon' => 'fas fa-calendar-week',
+                    'icon' => 'fas fa-fw fa-calendar-week',
                     'url'  => 'notificacion',
                 ],
                 [
                     'text' => 'Tipo de Almacen',
-                    'icon' => 'fas fa-boxes',
+                    'icon' => 'fas fa-fw fa-boxes',
                     'url'  => 'tipoAlmacen',
                 ],
             ]
-        ],                      
-       
+        ],
+
     ],
 
     /*
