@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Venta;
+use App\Models\VentaItem;
 use App\Models\Cliente;
 use App\Models\Mascota;
 use App\Models\Producto;
@@ -19,8 +20,9 @@ class VentasController extends Controller
      */
     public function index()
     {
-        $ventas = Venta::all();
-        return view('ventas.index',['ventas'=>$ventas]);
+        $ventas = Venta::with(['cliente', 'cliente.getMascotas', 'items'])->get();
+
+        return view('ventas.index', ['ventas' => $ventas]);
     }
 
     /**
@@ -45,12 +47,74 @@ class VentasController extends Controller
      */
     public function store(Request $request)
     {
-        $datos = $request->all();
+        // Datos de la venta
+        // Modelo de venta
 
-        dd($datos);
+        $datos = $request->all();
+        $venta = new Venta();
+        $venta_items = new VentaItem();
+
+        // Guardar venta (devolver venta_id)
+
+        $venta->cliente_id      = $datos['cliente_id'];
+        $venta->subtotal        = 0;
+        $venta->impuestos       = 0;
+        $venta->total           = 0;
+        $venta->medio_pago_id   = null;
+        $venta->facturada       = null;
+        $venta->notificada      = null;
+
+        $venta->save();
+
+        $venta_id               = $venta->id;
+
+        // Subtotales, impuestos y totales
+
+        $subtotal               = 0.0;
+        $impuestos              = 0.0;
+        $total                  = 0.0;
+
+        // Calcular subtotales, impuestos y totales
+
+        foreach ($datos['item'] as $tipo => $items) {
+            $datos_item = [];
+
+            foreach ($items as $item) {
+                $item = (object) $item;
+
+                $datos_item['venta_id'] = $venta_id;
+
+                if ($tipo == 'producto') {
+                    $datos_item['producto_id'] = $item->id;
+                }
+
+                if ($tipo == 'servicio') {
+                    $datos_item['servicio_id'] = $item->id;
+                }
+
+                $datos_item['mascota_id'] = $item->mascota_id;
+                $datos_item['subtotal'] = $item->subtotal;
+                $datos_item['impuestos'] = $item->impuestos;
+                $datos_item['cantidad'] = $item->cantidad;
+                $datos_item['total'] = $item->total;
+
+                $subtotal += $datos_item['subtotal'];
+                $impuestos += $datos_item['impuestos'];
+                $total += $datos_item['total'];
+
+                $venta_items->insert($datos_item);
+            }
+        }
+
+        // Actualizar subtotal, impuestos y total de la venta
+
+        $venta->subtotal = $subtotal;
+        $venta->impuestos = $impuestos;
+        $venta->total = $total;
+
+        $venta->save();
 
         return redirect()->route('ventas.index')->with('msg', 'Venta creada correctamente.');
-
     }
 
     /**
@@ -66,16 +130,7 @@ class VentasController extends Controller
      */
     public function edit($id)
     {
-        $clientes = Cliente::find($id);
-        $departamentos = Departamento::all();
-        $provincias = Provincia::all();
-        $distritos = Distrito::all();
-        return view('clientes.edit',[
-                                            'cliente'=>$clientes,
-                                            'departamentos'=>$departamentos,
-                                            'provincias'=>$provincias,
-                                            'distritos'=>$distritos
-                                        ]);
+
     }
 
     /**
@@ -83,71 +138,16 @@ class VentasController extends Controller
      */
     public function update(Request $request,$id)
     {
-        /*$request->validate([
-            'NombrePrveedor'=>'required|max:3',
-            'email'=>'nullable|email'
-        ]);*/
-        $ClienteReferido = false;
-        if(null !== $request->input('ClienteReferido')){
-            if($request->input('ClienteReferido')== "on"){
-                $ClienteReferido = true;
-            }
-        }
-        $cliente = Cliente::find($id);
-        $cliente->idDepartamento = $request->input('Departamento');
-        $cliente->idProvincia = $request->input('Provincia');
-        $cliente->idDistrito = $request->input('Distrito');
-        $cliente->Nombre = $request->input('Nombre');
-        $cliente->Apellido = $request->input('Apellido');
-        $cliente->DocumentoIdentidad = $request->input('DocumentoIdentidad');
-        $cliente->FechaNacimiento = Carbon::createFromFormat('d/m/Y', $request->input('FechaNacimiento'));
-        $cliente->Email = $request->input('Email');
-        $cliente->TelefonoFijo = $request->input('TelefonoFijo');
-        $cliente->TelefonoMovil = $request->input('TelefonoMovil');
-        $cliente->TelefonoTrabajo = $request->input('TelefonoTrabajo');
-        $cliente->Direccion = $request->input('Direccion');
-        $cliente->ClienteReferido = $ClienteReferido;
-        $cliente->Observaciones = $request->input('Observaciones');
-        $cliente->NombreEmpresa = $request->input('NombreEmpresa');
-        $cliente->RegistroTributario = $request->input('RegistroTributario');
-        $cliente->DireccionEmpresa = $request->input('DireccionEmpresa');
-        $cliente->Facebook = $request->input('Facebook');
-        $cliente->Instagram = $request->input('Instagram');
-        //$cliente->ZonaResidencia = $request->input('ZonaResidencia');
-        $cliente->ReferenciaDireccion = $request->input('ReferenciaDireccion');
 
-        $cliente->save();
-        return redirect()->route('cliente.index')->with('msg','Cliente Modificado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cliente $cliente)
+    public function destroy(Venta $venta)
     {
-        //
+        $venta->delete();
+
+        return redirect()->back()->with('msg', 'Venta eliminada correctamente.');
     }
-
-
-    public function getProvincias($id)
-    {
-        $depto = Departamento::find($id);
-        return  response()->json($depto->getProvincias);
-    }
-
-    public function getDistritos($id)
-    {
-        $prov = Provincia::find($id);
-        return  response()->json($prov->getDistritos);
-    }
-
-    public function  getGrafico(){
-        $result = Cliente::select('created_at', DB::raw('count(*) as Total'), DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as Mes"))
-                        ->groupby('Mes')
-                        ->get();
-
-        return view('clientes.graphics',['result'=>$result]);
-
-    }
-
 }

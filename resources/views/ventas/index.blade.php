@@ -5,13 +5,11 @@
 @php
 $heads = [
         'Select',
-        'Concepto',
-        'Valor Unitario',
-        'Cantidad',
-        'Sub Total',
+        'Referencia',
+        'Subtotal',
         'Impuestos',
         'Total',
-        'Mascota',
+        'Mascota(s)',
         'Opciones'
     ];
 $config = [
@@ -58,45 +56,47 @@ $config = [
         <div class="row">
             <x-adminlte-datatable id="example" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
                 @foreach ($ventas as $venta)
-                <tr>
-                    <td>{{\Carbon\Carbon::parse($clie->created_at)->format('Y-m-d') }}</td>
-                    <td>{{$clie->Nombre.' '.$clie->Apellido }}</td>
-                    <td>{{ $clie->Email}}</td>
-                    <td>{{$clie->TelefonoFijo.' '.$clie->TelefonoMovil}}</td>
-                    <td>{{$clie->Direccion}}</td>
 
-                    <td>
+                    @php
 
-                        @if ($clie->getMascotas->count() > 0)
+                    $venta_referencia = str_pad($venta->id, 8, '0', STR_PAD_LEFT);
 
-                            <ul class="mascotas">
+                    @endphp
 
-                                @foreach ($clie->getMascotas as $mascota)
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="" id="">
+                        </td>
+                        <td>
+                            Venta #{{ $venta_referencia }}
+                        </td>
+                        <td>
+                            $ {{ number_format($venta->subtotal, 2, ',') }}
+                        </td>
+                        <td>
+                            $ {{ number_format($venta->impuestos, 2, ',') }}
+                        </td>
+                        <td>
+                            $ {{ number_format($venta->total, 2, ',') }}
+                        </td>
+                        <td>
+                            @foreach ($venta->cliente->getMascotas as $mascota)
 
-                                    <li class="mascotas__mascota">
-                                        {{ $mascota->Mascota }}
-                                    </li>
+                                <p class="m-0">{{ $mascota->Mascota }}</p>
 
-                                @endforeach
+                            @endforeach
+                        </td>
+                        <td>
+                            <form action="{{ route('ventas.destroy', $venta->id) }}" method="post">
+                                <button type="submit" class="eliminar-venta" title="Eliminar venta {{ $venta_referencia }}" data-referencia="{{ $venta_referencia }}">
+                                    <i class="fas fa-fw fa-trash"></i>
+                                </button>
 
-                            </ul>
-
-                        @else
-
-                            -
-
-                        @endif
-
-                    </td>
-
-                    <td>{{$clie->departamento->Departamento.' - '.$clie->provincia->Provincia.' - '.$clie->distrito->Distrito}}</td>
-                    <td>
-                        <a href="{{url('cliente/'.$clie->id.'/edit')}}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
-                            <i class="fa fa-lg fa-fw fa-pen"></i>
-                        </button>
-                    </td>
-
-                </tr>
+                                @method('DELETE')
+                                @csrf
+                            </form>
+                        </td>
+                    </tr>
                 @endforeach
             </x-adminlte-datatable>
         </div>
@@ -107,10 +107,15 @@ $config = [
 @push('js')
 <script>
     $(document).ready(function() {
-        $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
-            $("#success-alert").slideUp(500);
-        });
+        $('.eliminar-venta').on('click', function() {
+            let referencia = $(this).data('referencia');
 
+            if (confirm('Va a eliminar la venta '+ referencia +', esta acción no se puede deshacer. ¿Continuar?')) {
+                return true;
+            }
+
+            return false;
+        });
     });
 </script>
 
@@ -120,6 +125,10 @@ $config = [
         padding: 10px;
         list-style-type: none;
         text-align: left;
+    }
+
+    .eliminar-venta {
+        border: none;
     }
 </style>
 

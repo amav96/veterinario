@@ -10,7 +10,7 @@ class Cliente extends Model
     public function departamento()
     {
         return $this->belongsTo(Departamento::class, 'idDepartamento', 'id');
-    } 
+    }
 
     public function provincia()
     {
