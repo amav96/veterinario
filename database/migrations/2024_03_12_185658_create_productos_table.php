@@ -34,9 +34,9 @@ return new class extends Migration
             $table->foreign('idProveedor')->references('id')->on('proveedores');
             $table->foreign('idUnidadMedida')->references('id')->on('unidadMedidas');
             $table->foreign('idPresentacion')->references('id')->on('presentaciones');
-            $table->foreign('idLinea')->references('id')->on('Lineas');
+            $table->foreign('idLinea')->references('id')->on('lineas');
             $table->foreign('idCategoria')->references('id')->on('categorias');
-            $table->foreign('idSubCategoria')->references('id')->on('subcategorias');
+            $table->foreign('idSubCategoria')->references('id')->on('subCategorias');
         });
     }
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('Distrito',50);
             $table->timestamps();
 
-            $table->foreign('idProvincia')->references('id')->on('Provincias');
+            $table->foreign('idProvincia')->references('id')->on('provincias');
         });
     }
 
