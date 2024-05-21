@@ -354,9 +354,14 @@ return [
                     'url'  => 'ventas',
                 ],
                 [
-                    'text' => 'Crear',
+                    'text' => 'Crear Venta',
                     'icon' => 'fas fa-fw fa-plus',
                     'url'  => 'ventas/create',
+                ],
+                [
+                    'text' => 'Entradas / Salidas',
+                    'icon' => 'fas fa-fw fa-cash-register',
+                    'url'  => 'cajas',
                 ],
             ]
         ],
