@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('medio_pago_id')->nullable();
             $table->decimal('importe_entrada', 10, 2)->nullable();
             $table->decimal('importe_salida', 10, 2)->nullable();
+            $table->dateTime('fecha')->nullable();
             $table->timestamps();
 
             $table->foreign('comprobante_id')->references('id')->on('comprobantes')->nullOnDelete();

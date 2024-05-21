@@ -21,6 +21,7 @@ use App\Http\Controllers\EstadoEventoController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\TipoAlmacenController;
 use App\Http\Controllers\VentasController;
+use App\Http\Controllers\CajasController;
 
  Route::get('/', function () {
      return view('dashboard');
@@ -60,6 +61,7 @@ Route::resource('/estadoEvento', EstadoEventoController::class);
 Route::resource('/notificacion', NotificacionController::class);
 Route::resource('/tipoAlmacen', TipoAlmacenController::class);
 Route::resource('/ventas', VentasController::class);
+Route::resource('/cajas', CajasController::class);
 
 Route::get('/getProvincias/{Depto}',[ClienteController::class,'getProvincias'])->middleware(['auth', 'verified']);
 Route::get('/getDistritos/{Prov}',[ClienteController::class,'getDistritos'])->middleware(['auth', 'verified']);

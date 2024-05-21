@@ -1,15 +1,18 @@
 @extends('adminlte::page')
 
-@section('title', 'VetSys|Ventas')
+@section('title', 'VetSys|Cajas')
 
 @php
 $heads = [
         'Select',
-        'Referencia',
-        'Subtotal',
-        'Impuestos',
-        'Total',
-        'Mascota(s)',
+        'ID de transacción',
+        'Descripción',
+        'Tipo',
+        'Comprobante',
+        'Movimiento',
+        'Medio de Pago',
+        'Importe de entrada',
+        'Importe de salida',
         'Opciones'
     ];
 $config = [
@@ -20,13 +23,13 @@ $config = [
 @endphp
 
 @section('content_header')
-    <h1 class="m-0 text-dark"><i class="fas fa-fw fa-dolly-flatbed"></i> Ventas</h1>
+    <h1 class="m-0 text-dark"><i class="fas fa-fw fa-dolly-flatbed"></i> Cajas</h1>
 @stop
 
 @section('content')
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Listado de Ventas</h3>
+        <h3 class="card-title">Cajas | Entradas / Salidas</h3>
     </div>
     <div class="card-body">
         @if (session('msg'))
@@ -42,7 +45,8 @@ $config = [
 
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group mr-2" role="group" aria-label="Third group">
-                <a href="{{url('ventas/create')}}" class="btn btn-info btn-sm">Crear venta</a>
+                <a href="{{url('cajas/create')}}?tipo=entrada" class="btn btn-info btn-sm btn-success"><i class="fas fa-fw fa-plus"></i> Crear Entrada</a>&nbsp;&nbsp;
+                <a href="{{url('cajas/create')}}?tipo=salida" class="btn btn-info btn-sm btn-danger"><i class="fas fa-fw fa-plus"></i> Crear Salida</a>
             </div>
 
             {{-- <div class="btn-group mr-2" role="group" aria-label="Third group">
@@ -55,40 +59,38 @@ $config = [
 
         <div class="row">
             <x-adminlte-datatable id="example" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
-                @foreach ($ventas as $venta)
-
-                    @php
-
-                    $venta_referencia = str_pad($venta->id, 8, '0', STR_PAD_LEFT);
-
-                    @endphp
-
+                @foreach ($cajas as $caja)
                     <tr>
                         <td>
                             <input type="checkbox" name="" id="">
                         </td>
                         <td>
-                            Venta #{{ $venta_referencia }}
+                            {{ $caja->transaccion }}
                         </td>
                         <td>
-                            $ {{ number_format($venta->subtotal, 2, ',') }}
+                            {{ $caja->descripcion }}
                         </td>
                         <td>
-                            $ {{ number_format($venta->impuestos, 2, ',') }}
+                            {{ $caja->tipo->nombre }}
                         </td>
                         <td>
-                            $ {{ number_format($venta->total, 2, ',') }}
+                            {{ $caja->comprobante ?? '—' }}
                         </td>
                         <td>
-                            @foreach ($venta->cliente->getMascotas as $mascota)
-
-                                <p class="m-0">{{ $mascota->Mascota }}</p>
-
-                            @endforeach
+                            {{ ucwords($caja->movimiento) }}
                         </td>
                         <td>
-                            <form action="{{ route('ventas.destroy', $venta->id) }}" method="post">
-                                <button type="submit" class="eliminar-venta" title="Eliminar venta {{ $venta_referencia }}" data-referencia="{{ $venta_referencia }}">
+                            {{ $caja->medio_pago->FormaDePago }}
+                        </td>
+                        <td>
+                            {!! !is_null($caja->importe_entrada) ? ('<span class="text-success">$ '. number_format($caja->importe_entrada, 2, ',') .'</span>') : '—' !!}
+                        </td>
+                        <td>
+                            {!! !is_null($caja->importe_salida) ? ('<span class="text-danger">$ '. number_format($caja->importe_salida, 2, ',') .'</span>') : '—' !!}
+                        </td>
+                        <td>
+                            <form action="{{ route('cajas.destroy', $caja->id) }}" method="post">
+                                <button type="submit" class="eliminar-caja" title="Eliminar {{ $caja->transaccion }}" data-transaccion="{{ $caja->transaccion }}">
                                     <i class="fas fa-fw fa-trash"></i>
                                 </button>
 
@@ -107,10 +109,10 @@ $config = [
 @push('js')
 <script>
     $(document).ready(function() {
-        $('.eliminar-venta').on('click', function() {
-            let referencia = $(this).data('referencia');
+        $('.eliminar-caja').on('click', function() {
+            let transaccion = $(this).data('transaccion');
 
-            if (confirm('Va a eliminar la venta '+ referencia +', esta acción no se puede deshacer. ¿Continuar?')) {
+            if (confirm('Va a eliminar el movimiento de caja '+ transaccion +', esta acción no se puede deshacer. ¿Continuar?')) {
                 return true;
             }
 
@@ -120,14 +122,7 @@ $config = [
 </script>
 
 <style>
-    .mascotas {
-        margin: 0;
-        padding: 10px;
-        list-style-type: none;
-        text-align: left;
-    }
-
-    .eliminar-venta {
+    .eliminar-caja {
         border: none;
     }
 </style>
