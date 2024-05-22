@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'VetSys|Clientes')
+@section('title', 'VetSys|Ventas')
 
 @section('content_header')
     <h1 class="m-0 text-dark"><i class="fas fa-fw fa-dolly-flatbed"></i> Ventas</h1>
@@ -8,6 +8,7 @@
 @php
 $heads = [
         'Item',
+        'Tipo',
         'Valor Unitario',
         'Cantidad',
         'Subtotal',
@@ -262,6 +263,9 @@ $config = [
                         fila += '<td width="20%">';
                             fila += item_nombre;
                         fila += '</td>';
+                        fila += '<td style="text-transform: capitalize;">';
+                            fila += item_tipo;
+                        fila += '</td>';
                         fila += '<td>';
                             fila += '$ <span class="precio-item precio-unitario">'+ precio_unitario.toFixed(2).replace('.', ',') +'</span>';
                         fila += '</td>';
@@ -385,7 +389,7 @@ $config = [
                 parent.find('.inputs input[name="item['+ item_tipo +']['+ item_id +'][mascota_id]"]').val(mascota_id);
             });
 
-            // Creaer mascota / cliente
+            // Crear mascota / cliente
 
             $(document).on('click', el_btn_crear, function() {
                 if (confirm('Va a abandonar esta página y toda la información cargada se perderá. ¿Continuar?')) {
