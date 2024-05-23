@@ -22,6 +22,7 @@ use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\TipoAlmacenController;
 use App\Http\Controllers\VentasController;
 use App\Http\Controllers\CajasController;
+use App\Http\Controllers\ComprobantesController;
 
  Route::get('/', function () {
      return view('dashboard');
@@ -62,6 +63,9 @@ Route::resource('/notificacion', NotificacionController::class);
 Route::resource('/tipoAlmacen', TipoAlmacenController::class);
 Route::resource('/ventas', VentasController::class);
 Route::resource('/cajas', CajasController::class);
+Route::resource('/comprobantes', ComprobantesController::class);
+
+Route::post('/comprobantes/agregar-pago', [ComprobantesController::class, 'ajax'])->name('comprobantes.ajax')->middleware('auth', 'verified');
 
 Route::get('/getProvincias/{Depto}',[ClienteController::class,'getProvincias'])->middleware(['auth', 'verified']);
 Route::get('/getDistritos/{Prov}',[ClienteController::class,'getDistritos'])->middleware(['auth', 'verified']);

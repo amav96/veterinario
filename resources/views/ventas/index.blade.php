@@ -10,6 +10,7 @@ $heads = [
         'Impuestos',
         'Total',
         'Mascota(s)',
+        'Estado',
         'Opciones'
     ];
 $config = [
@@ -85,6 +86,32 @@ $config = [
                                 <p class="m-0">{{ $mascota->Mascota }}</p>
 
                             @endforeach
+                        </td>
+                        <td>
+
+                            @if ($venta->estado->slug == 'pagada')
+
+                                <span class="badge badge-success">{{ $venta->estado->nombre }}</span>
+
+                            @endif
+
+                            @if ($venta->estado->slug == 'pendiente')
+
+                                <span class="badge badge-warning">{{ $venta->estado->nombre }}</span>
+
+                            @endif
+
+                            @if ($venta->estado->slug == 'anulada')
+
+                                <span class="badge badge-danger">{{ $venta->estado->nombre }}</span>
+
+                            @endif
+
+                            <br>
+
+                            <a href="{{ route('comprobantes.edit', $venta->comprobante->id) }}">
+                                <span class="mt-3 badge badge-primary">Comprobante N° {{ str_pad($venta->comprobante->serie, 3, '0', STR_PAD_LEFT) }}-{{ str_pad($venta->comprobante->comprobante, 8, '0', STR_PAD_LEFT) }}</span>
+                            </a>
                         </td>
                         <td>
                             <form action="{{ route('ventas.destroy', $venta->id) }}" method="post">

@@ -8,6 +8,8 @@ use App\Models\Cliente;
 use App\Models\Mascota;
 use App\Models\Producto;
 use App\Models\Servicio;
+use App\Models\Comprobante;
+use App\Models\EstadoVenta;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -20,7 +22,7 @@ class VentasController extends Controller
      */
     public function index()
     {
-        $ventas = Venta::with(['cliente', 'cliente.getMascotas', 'items'])->get();
+        $ventas = Venta::with(['cliente', 'cliente.getMascotas', 'items', 'comprobante', 'estado'])->get();
 
         return view('ventas.index', ['ventas' => $ventas]);
     }
@@ -60,6 +62,7 @@ class VentasController extends Controller
         $venta->subtotal        = 0;
         $venta->impuestos       = 0;
         $venta->total           = 0;
+        $venta->estado_id       = EstadoVenta::PENDIENTE;
         $venta->medio_pago_id   = null;
         $venta->facturada       = null;
         $venta->notificada      = null;
@@ -113,6 +116,25 @@ class VentasController extends Controller
         $venta->total = $total;
 
         $venta->save();
+
+        // Crear comprobante de la venta
+
+        $comprobante = new Comprobante();
+
+        $comprobante->serie = 1;
+        $comprobante->comprobante = Comprobante::max('id') + 1;
+        $comprobante->tipo = 'boleta';
+        $comprobante->venta_id = $venta_id;
+        $comprobante->cliente_id = $datos['cliente_id'];
+        $comprobante->amortizacion = 0;
+        $comprobante->dinero_recibido = 0;
+        $comprobante->saldo_pendiente = $total;
+        $comprobante->vuelto = 0;
+        $comprobante->anulado = 0;
+
+        $comprobante->save();
+
+        // Fin
 
         return redirect()->route('ventas.index')->with('msg', 'Venta creada correctamente.');
     }

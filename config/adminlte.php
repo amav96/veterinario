@@ -359,6 +359,11 @@ return [
                     'url'  => 'ventas/create',
                 ],
                 [
+                    'text' => 'Comprobantes',
+                    'icon' => 'fas fa-fw fa-receipt',
+                    'url'  => 'comprobantes',
+                ],
+                [
                     'text' => 'Entradas / Salidas',
                     'icon' => 'fas fa-fw fa-cash-register',
                     'url'  => 'cajas',

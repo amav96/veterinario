@@ -18,4 +18,14 @@ class Venta extends Model
     {
         return $this->hasMany(VentaItem::class, 'venta_id', 'id');
     }
+
+    public function estado()
+    {
+        return $this->hasOne(EstadoVenta::class, 'id', 'estado_id');
+    }
+
+    public function comprobante()
+    {
+        return $this->hasOne(Comprobante::class, 'venta_id', 'id');
+    }
 }
