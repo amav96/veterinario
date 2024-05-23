@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class UnidadMedida extends Model
 {
-    protected $table ='unidadMedidas';
+    protected $table ='unidades_medidas';
 }

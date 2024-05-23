@@ -32,7 +32,7 @@ return new class extends Migration
             $table->foreign('idEspecie')->references('id')->on('especies');
             $table->foreign('idRaza')->references('id')->on('razas');
             $table->foreign('idFrecuencia')->references('id')->on('frecuencias');
-            $table->foreign('idDiaPreferido')->references('id')->on('diaPreferidos');
+            $table->foreign('idDiaPreferido')->references('id')->on('dias_preferidos');
         });
     }
 

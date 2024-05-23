@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('Observacion',60)->nullable();
             $table->timestamps();
 
-            $table->foreign('idFormaDePago')->references('id')->on('formaDePagos');
+            $table->foreign('idFormaDePago')->references('id')->on('formas_pagos');
         });
     }
 

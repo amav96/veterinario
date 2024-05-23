@@ -16,7 +16,7 @@ class FormaDePagoSeeder extends Seeder
         $formaDePago = ['CONTADO','CREDITO','CHEQUE','LETRA DE CAMBIO'];
 
         foreach( $formaDePago as $forma){
-            DB::table('formadepagos')->insert(['FormaDePago'=>$forma]);
+            DB::table('formas_pagos')->insert(['nombre'=>$forma]);
         }
     }
 }

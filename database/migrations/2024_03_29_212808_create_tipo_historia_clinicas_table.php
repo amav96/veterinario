@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipoHistoriaClinicas', function (Blueprint $table) {
+        Schema::create('tipos_historias_clinicas', function (Blueprint $table) {
             $table->id();
-            $table->string('TipoHistoriaClinica',60);
+            $table->string('nombre',60);
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipoHistoriaClinicas');
+        Schema::dropIfExists('tipos_historias_clinicas');
     }
 };

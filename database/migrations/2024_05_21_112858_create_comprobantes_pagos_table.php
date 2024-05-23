@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('comprobante_id')->references('id')->on('comprobantes')->nullOnDelete();
-            $table->foreign('medio_pago_id')->references('id')->on('formadepagos')->nullOnDelete();
+            $table->foreign('medio_pago_id')->references('id')->on('formas_pagos')->nullOnDelete();
             $table->foreign('tipo_movimiento_id')->references('id')->on('tipos_movimientos')->nullOnDelete();
         });
     }

@@ -29,8 +29,8 @@ return new class extends Migration
 
             $table->foreign('idCliente')->references('id')->on('clientes');
             $table->foreign('idMascota')->references('id')->on('mascotas');
-            $table->foreign('idTipoEvento')->references('id')->on('tipoEventos');
-            $table->foreign('idEstadoEvento')->references('id')->on('estadoEventos');
+            $table->foreign('idTipoEvento')->references('id')->on('tipos_eventos');
+            $table->foreign('idEstadoEvento')->references('id')->on('estados_eventos');
             $table->foreign('idUsuario')->references('id')->on('users');
             $table->foreign('idNotificacion')->references('id')->on('notificaciones');
         });

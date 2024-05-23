@@ -45,7 +45,7 @@ class TipoEventoSeeder extends Seeder
         'Vacuna'];
 
         foreach( $TipoEvento as $tipEve){
-            DB::table('tipoEventos')->insert(['TipoEvento'=>$tipEve]);
+            DB::table('tipo_eventos')->insert(['TipoEvento'=>$tipEve]);
 
         }
     }

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('formaDePagos', function (Blueprint $table) {
+        Schema::create('formas_pagos', function (Blueprint $table) {
             $table->id();
             $table->string('FormaDePago',50);
             $table->timestamps();

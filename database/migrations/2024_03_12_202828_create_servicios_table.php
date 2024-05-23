@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->foreign('idLinea')->references('id')->on('lineas');
             $table->foreign('idCategoria')->references('id')->on('categorias');
-            $table->foreign('idSubCategoria')->references('id')->on('subCategorias');
+            $table->foreign('idSubCategoria')->references('id')->on('sub_categorias');
 
         }); 
     }
