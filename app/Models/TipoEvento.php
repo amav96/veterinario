@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class TipoEvento extends Model
 {
-    protected $table ='tipoEventos';
+    protected $table ='tipos_eventos';
 }

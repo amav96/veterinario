@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('serie');
             $table->integer('comprobante');
-            $table->text('tipo')->default('boleta');
+            $table->string('tipo')->default('boleta');
             $table->unsignedBigInteger('venta_id')->nullable();
             $table->unsignedBigInteger('cliente_id')->nullable();
             $table->decimal('amortizacion', 10, 2)->nullable();

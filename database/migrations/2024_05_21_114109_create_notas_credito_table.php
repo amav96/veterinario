@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('cliente_id')->nullable();
             $table->integer('serie')->nullable();
             $table->integer('comprobante')->nullable();
-            $table->text('tipo')->default('nota-de-credito');
-            $table->text('motivo')->nullable();
+            $table->string('tipo')->default('nota-de-credito');
+            $table->string('motivo')->nullable();
             $table->decimal('importe', 10, 2)->nullable();
             $table->timestamps();
 

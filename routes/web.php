@@ -23,6 +23,9 @@ use App\Http\Controllers\TipoAlmacenController;
 use App\Http\Controllers\VentasController;
 use App\Http\Controllers\CajasController;
 use App\Http\Controllers\ComprobantesController;
+use App\Http\Controllers\DiagnosticoMascotaController;
+use App\Http\Controllers\HistoriaClinaController;
+use App\Models\ExamenAuxiliarMascota;
 
  Route::get('/', function () {
      return view('dashboard');
@@ -66,6 +69,9 @@ Route::resource('/cajas', CajasController::class);
 Route::resource('/comprobantes', ComprobantesController::class);
 
 Route::post('/comprobantes/agregar-pago', [ComprobantesController::class, 'ajax'])->name('comprobantes.ajax')->middleware('auth', 'verified');
+Route::resource('/historiaClinica', HistoriaClinaController::class);
+Route::resource('/diagnosticoMascota', DiagnosticoMascotaController::class);
+Route::resource('/examenAuxiliarMascota', ExamenAuxiliarMascota::class);
 
 Route::get('/getProvincias/{Depto}',[ClienteController::class,'getProvincias'])->middleware(['auth', 'verified']);
 Route::get('/getDistritos/{Prov}',[ClienteController::class,'getDistritos'])->middleware(['auth', 'verified']);

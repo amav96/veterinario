@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubCategoria extends Model
 {
-    protected $table = 'subCategorias';
+    protected $table = 'sub_categorias';
    
     public function categoria()
     {

@@ -25,7 +25,7 @@ class TipoHistoriaClinicaSeeder extends Seeder
         'Defunción'];
 
         foreach( $tipoHistoriaClinicas as $tipHisCli){
-            DB::table('tipoHistoriaClinicas')->insert(['TipoHistoriaClinica'=>$tipHisCli]);
+            DB::table('tipos_historias_clinicas')->insert(['nombre'=>$tipHisCli]);
 
         }
     }
