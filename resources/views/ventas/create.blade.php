@@ -400,18 +400,6 @@ $config = [
             });
         })();
 
-        // No permitir sorting (el sorting default no ve las filas agregadas dinámicamente)
-
-        (function() {
-            let sorting = $('th');
-
-            sorting.on('click', function(e) {
-                e.preventDefault();
-
-                return false;
-            });
-        });
-
         // Calcular totales
 
         function calcularTotales() {
@@ -433,19 +421,26 @@ $config = [
                 let unidades        = $(this).find('td .unidades-item').val();
                 let inputs          = $(this).find('.inputs input');
 
+                let sum_fila_subtotales  = 0.0;
+                let sum_fila_impuestos   = 0.0;
+                let sum_fila_totales     = 0.0;
+
                 valores_texto.each(function(index) {
                     let valor_texto = $(this).text().replace(',', '.');
 
                     if (index === 1) {
                         sum_subtotales += parseFloat(valor_texto);
+                        sum_fila_subtotales += parseFloat(valor_texto);
                     }
 
                     if (index === 2) {
                         sum_impuestos += parseFloat(valor_texto);
+                        sum_fila_impuestos += parseFloat(valor_texto);
                     }
 
                     if (index === 3) {
                         sum_totales += parseFloat(valor_texto);
+                        sum_fila_totales += parseFloat(valor_texto);
                     }
                 });
 
@@ -453,7 +448,7 @@ $config = [
                     let name = $(this).prop('name');
 
                     if (index === 3) {
-                        $(this).val(sum_subtotales);
+                        $(this).val(sum_fila_subtotales);
                     }
 
                     if (index === 4) {
@@ -461,11 +456,11 @@ $config = [
                     }
 
                     if (index === 5) {
-                        $(this).val(sum_impuestos);
+                        $(this).val(sum_fila_impuestos);
                     }
 
                     if (index === 6) {
-                        $(this).val(sum_totales);
+                        $(this).val(sum_fila_totales);
                     }
                 });
             });

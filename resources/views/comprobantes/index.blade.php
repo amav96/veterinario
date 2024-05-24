@@ -5,12 +5,15 @@
 @php
 $heads = [
         'Select',
-        'Referencia',
-        'Subtotal',
-        'Impuestos',
-        'Total',
-        'Mascota(s)',
-        'Estado',
+        'Comprobante',
+        'Tipo',
+        'Venta',
+        'Cliente',
+        'Total de venta',
+        'Dinero recibido',
+        'Saldo pendinete',
+        'Cambio / Vuelto',
+        'Pagos',
         'Opciones'
     ];
 $config = [
@@ -21,7 +24,7 @@ $config = [
 @endphp
 
 @section('content_header')
-    <h1 class="m-0 text-dark"><i class="fas fa-fw fa-dolly-flatbed"></i> Ventas</h1>
+    <h1 class="m-0 text-dark"><i class="fas fa-fw fa-receipt"></i> Comprobantes</h1>
 @stop
 
 @section('content')
@@ -43,12 +46,67 @@ $config = [
 
         <div class="row">
             <x-adminlte-datatable id="example" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
-                @foreach ($comprobantes as $comprobante)
 
-                    <tr>
+                @if (isset($comprobantes))
 
-                    </tr>
-                @endforeach
+                    @foreach ($comprobantes as $comprobante)
+                        <tr>
+                            <td><input type="checkbox" name="" id=""></td>
+                            <td>
+                                {{ str_pad($comprobante->serie, 3, 0, STR_PAD_LEFT) }}-{{ str_pad($comprobante->comprobante, 8, 0, STR_PAD_LEFT) }}
+                            </td>
+                            <td>
+                                {{ strtoupper($comprobante->tipo) }}
+                            </td>
+                            <td>
+                                {{ str_pad($comprobante->venta->id, 8, 0, STR_PAD_LEFT) }}
+                            </td>
+                            <td>
+                                {{ $comprobante->cliente->Nombre }} {{ $comprobante->cliente->Apellido }}
+                            </td>
+                            <td>
+                                $ {{ number_format($comprobante->venta->total, 2, ',', '.') }}
+                            </td>
+                            <td>
+                                $ {{ number_format($comprobante->dinero_recibido, 2, ',', '.') }}
+                            </td>
+                            <td>
+                                $ {{ number_format($comprobante->saldo_pendiente, 2, ',', '.') }}
+                            </td>
+                            <td>
+                                $ {{ number_format($comprobante->vuelto, 2, ',', '.') }}
+                            </td>
+                            <td>
+
+                                @php
+
+                                    $aprobados = 0;
+                                    $anulados = 0;
+
+                                    foreach ($comprobante->pagos as $pago) {
+                                        if ($pago->anulado === 1) {
+                                            $anulados += 1;
+                                        }
+
+                                        if ($pago->anulado === 0) {
+                                            $aprobados += 1;
+                                        }
+                                    }
+
+                                @endphp
+
+                                <span class="text-success" title="Aprobados">{{ $aprobados }}</span> / <span class="text-danger" title="Anulados">{{ $anulados }}</span>
+                            </td>
+                            <td>
+                                <a href="{{ route('comprobantes.edit', $comprobante->id) }}">
+                                    <i class="fa fa-lg fa-fw fa-pen"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                @endif
+
             </x-adminlte-datatable>
         </div>
     </div>

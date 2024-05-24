@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Comprobante;
 use App\Models\ComprobantePago;
+use App\Models\Caja;
 use App\Models\Venta;
 use App\Models\Cliente;
 use App\Models\FormaPago;
 use App\Models\TipoMovimiento;
 use App\Models\EstadoVenta;
-use App\Models\Caja;
 use Illuminate\Http\Request;
 
 class ComprobantesController extends Controller
@@ -19,8 +19,13 @@ class ComprobantesController extends Controller
      */
     public function index()
     {
-        $comprobantes = Comprobante::with(['cliente', 'venta', 'pagos'])->get();
-        #dd($comprobante);
+        $comprobantes = Comprobante::with([
+            'cliente',
+            'venta',
+            'pagos'
+        ])->get();
+
+        #dd($comprobantes);
 
         return view('comprobantes.index', ['comprobantes' => $comprobantes]);
     }
@@ -68,11 +73,10 @@ class ComprobantesController extends Controller
             'pagos.medio_pago',
             'pagos.tipo_movimiento'
         ])->find($id);
-        #dd($comprobante);
 
         $medios_pago = FormaPago::all();
 
-        if (!$comprobante) {
+        if (is_null($comprobante)) {
             return view('comprobantes.index');
         }
 
@@ -132,7 +136,7 @@ class ComprobantesController extends Controller
             // Calcular
             // Si $dinero_recibido es igual o supera el total de la venta, la venta pasará a Pagada, caso contrario seguirá en Pendiente
             // En el caso de $saldo_pendiente, es el cálculo del saldo pendiente de pago respecto al total de la venta
-            // En el caso de $vuelto, tiene que empezar a sumar si el dinero recibido supero al total de la venta
+            // En el caso de $vuelto, tiene que empezar a sumar si el dinero recibido supera al total de la venta
             // Devolver tipo de movimiento
 
             $dinero_recibido = (float) ComprobantePago::selectRaw('SUM(importe) as total')->where('anulado', 0)->first()->total;
@@ -157,13 +161,26 @@ class ComprobantesController extends Controller
 
             $comprobante = $comprobante->refresh();
 
+            // Generar un movimiento de caja de entrada
+
+            Caja::insert([
+                'transaccion' => Token::create(8, true),
+                'descripcion' => 'Movimiento de caja de entrada para la venta #'. str_pad($venta->id, 8, 0, STR_PAD_LEFT),
+                'movimiento' => 'entrada',
+                'comprobante_id' => $comprobante_id,
+                'tipo_movimiento_id' => TipoMovimiento::VENTA,
+                'medio_pago_id' => $medio_pago_id,
+                'importe_entrada' => $monto,
+                'fecha' => $fecha_hora
+            ]);
+
             // Opciones (botón eliminar pago)
 
             $opciones = '<a href="" class="eliminar-item" data-pago_id="'. $pago_id .'" title="Anular este pago"><i class="fas fa-fw fa-trash"></i></a>';
         }
 
         if ($accion == 'eliminar') {
-            // Eliminar el pago de comprobantes_pagos
+            // Anular el pago de comprobantes_pagos
 
             $pago = ComprobantePago::where('id', $pago_id)->where('comprobante_id', $comprobante_id);
 
@@ -211,6 +228,19 @@ class ComprobantesController extends Controller
                     'saldo_pendiente' => $saldo_pendiente,
                     'vuelto' => $vuelto,
                 ]);
+
+                // Generar un movimiento de caja de salida
+
+                Caja::insert([
+                    'transaccion' => Token::create(8, true),
+                    'descripcion' => 'Movimiento de caja de salida para la venta #'. str_pad($venta->id, 8, 0, STR_PAD_LEFT),
+                    'movimiento' => 'salida',
+                    'comprobante_id' => $comprobante_id,
+                    'tipo_movimiento_id' => TipoMovimiento::VENTA,
+                    'medio_pago_id' => $medio_pago_id,
+                    'importe_salida' => $monto,
+                    'fecha' => $fecha_hora
+                ]);
             }
 
             // Variables para el front
@@ -224,10 +254,10 @@ class ComprobantesController extends Controller
 
         $fecha_hora         = date('d-m-Y H:i:s');
         $medio_pago_nombre  = FormaPago::where('id', $medio_pago_id)->pluck('FormaDePago')->first();
-        $monto              = number_format($monto, 2, ',');
-        $dinero_recibido    = number_format($dinero_recibido, 2, ',');
-        $saldo_pendiente    = number_format($saldo_pendiente, 2, ',');
-        $vuelto             = number_format($vuelto, 2, ',');
+        $monto              = number_format($monto, 2, ',', '');
+        $dinero_recibido    = number_format($dinero_recibido, 2, ',', '');
+        $saldo_pendiente    = number_format($saldo_pendiente, 2, ',', '');
+        $vuelto             = number_format($vuelto, 2, ',', '');
 
         // Retornar datos
 
