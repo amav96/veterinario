@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,6 +17,13 @@ return new class extends Migration
             $table->string('Especie',50);
             $table->timestamps();
         });
+
+        DB::table("especies")->insert([
+            ["Especie" => "Perro"],
+            ["Especie" => "Gato"],
+            ["Especie" => "Aves"]
+        ]);
+
     }
 
     /**

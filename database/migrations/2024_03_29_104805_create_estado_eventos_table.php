@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,6 +17,13 @@ return new class extends Migration
             $table->string('EstadoEvento',50);
             $table->timestamps();
         });
+
+        DB::table("estados_eventos")->insert([
+            ["EstadoEvento" => "Pendiente"],
+            ["EstadoEvento" => "En Proceso"],
+            ["EstadoEvento" => "Finalizado"],
+            ["EstadoEvento" => "Cancelado"]
+        ]);
     }
 
     /**

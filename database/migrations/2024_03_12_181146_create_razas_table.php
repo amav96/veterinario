@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -19,6 +20,12 @@ return new class extends Migration
             
             $table->foreign('idEspecie')->references('id')->on('especies');
         });
+
+        DB::table("razas")->insert([
+            ["idEspecie" => 1, "Raza" => "Pekines"],
+            ["idEspecie" => 2, "Raza" => "Criollo"],
+            ["idEspecie" => 3, "Raza" => "Loro"]
+        ]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -19,6 +20,15 @@ return new class extends Migration
 
             $table->foreign('idLinea')->references('id')->on('lineas');
         });
+        
+        DB::table("categorias")->insert([
+            ["IdLinea" => 1, "Categoria" => "Pastillas"],
+            ["IdLinea" => 2, "Categoria" => "Chequeos"],
+            ["IdLinea" => 2, "Categoria" => "Cirugia"],
+            ["IdLinea" => 3, "Categoria" => "Baño"],
+            ["IdLinea" => 4, "Categoria" => "Vitaminas y Suplementos"]
+        ]);
+
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -28,6 +29,20 @@ return new class extends Migration
 
             $table->foreign('idFormaDePago')->references('id')->on('formas_pagos');
         });
+
+        DB::table("proveedores")->insert([
+            [
+                "idFormaDePago" => 1,
+                "Proveedor" => "CANSHOP SAC",
+                "NumeroTributario" => "1010101010",
+                "TelefonoFijo" => "672354",
+                "Email" => "admin@admin.com",
+                "Direccion" => "av siempre viva 123", 
+                "created_at" => "2024-04-20 07:47:02",
+                "updated_at" => "2024-04-20 07:47:02"
+            ]
+        ]);
+
     }
 
     /**
