@@ -10,7 +10,6 @@ use App\Models\Cliente;
 use App\Models\FormaPago;
 use App\Models\TipoMovimiento;
 use App\Models\EstadoVenta;
-use App\Models\Caja;
 use Illuminate\Http\Request;
 
 class ComprobantesController extends Controller
