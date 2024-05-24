@@ -5,20 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Comprobante;
 use App\Models\ComprobantePago;
 use App\Models\Venta;
-use App\Models\VentaItem;
 use App\Models\Cliente;
-use App\Models\Mascota;
-use App\Models\Producto;
-use App\Models\Servicio;
 use App\Models\FormaPago;
 use App\Models\TipoMovimiento;
 use App\Models\EstadoVenta;
-
-use App\Http\Helpers\Token;
-
+use App\Models\Caja;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class ComprobantesController extends Controller
 {
