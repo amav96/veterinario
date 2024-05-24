@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TipoHistoriaClinica extends Model
+class MascotaGaleria extends Model
 {
     use HasFactory;
 
-    const ADJUNTO = 8;
-
+    protected $table = "mascota_galeria";
 }

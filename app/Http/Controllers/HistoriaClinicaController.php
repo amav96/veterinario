@@ -8,15 +8,15 @@ use App\Models\DiagnosticoMascota;
 use App\Models\ExamenAuxiliar;
 use App\Models\ExamenAuxiliarMascota;
 use App\Models\HistoriaClinica;
+use App\Models\HistoriaClinicaAdjunto;
 use App\Models\Producto;
 use App\Models\TratamientoMascota;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class HistoriaClinaController extends Controller
+class HistoriaClinicaController extends Controller
 {
     public function index(Request $request) {
-
+        
         $parametros = $request->all();
         $historiasClinicas =  HistoriaClinica::
                 when(isset($parametros["idMascota"]), function($q) use($parametros){
@@ -33,21 +33,21 @@ class HistoriaClinaController extends Controller
             'Vacuna', 
             'Antiparasitario',
             'Antipulgas'
-        ];        
+        ];     
+       
     }
 
     public function create(){
         $diagnosticos = Diagnostico::all();
         $examenesAuxiliares = ExamenAuxiliar::all();
         $tratamientos = Producto::all(); // sirve para vacuna, antiparasitario y antipulgas
-       
-
     }
   
     public function store(SaveHistoriaClinicaRequest $request){
         
         $historiaClinica = new HistoriaClinica();
         $historiaClinica->idMascota = $request->idMascota;
+        $historiaClinica->tipo_historia_clinica_id = $request->tipo_historia_clinica_id;
         $historiaClinica->descripcion = $request->descripcion;
         $historiaClinica->temperatura = $request->temperatura;
         $historiaClinica->peso = $request->peso;
@@ -144,10 +144,29 @@ class HistoriaClinaController extends Controller
                 ]);
             }
         }
+
+        if($request->adjuntos){
+
+            foreach($request->adjuntos as $adjunto){
+                $historiaClinicaAdjunto = new HistoriaClinicaAdjunto();
+                $historiaClinicaAdjunto->historia_clinica_id = $historiaClinica->id;
+                $path = $this->guardarArchivoAdjunto($adjunto, $historiaClinica->id);
+                $historiaClinicaAdjunto->path = $path;
+                $historiaClinicaAdjunto->save();
+            }
+        }
+
+        return response()->json($historiaClinica, 201);
    
         // todo
         // si viene sala de espera guardar en sala de espera
         // si viene evento guardar en eventos
+    }
+
+    public function guardarArchivoAdjunto($archivo, $historiaCliniaId){
+        $nombreArchivo = $archivo->getClientOriginalName().'_'.$historiaCliniaId.'.'.$archivo->getClientOriginalExtension();
+        $path = $archivo->storeAs('historias_clinicas', $nombreArchivo, 'public');
+        return $path;
     }
 
     public function update(Request $request, $id) {
@@ -158,6 +177,7 @@ class HistoriaClinaController extends Controller
         }
 
         $historiaClinica->idMascota = $request->idMascota ?? $historiaClinica->idMascota;
+        $historiaClinica->tipo_historia_clinica_id = $request->tipo_historia_clinica_id ?? $historiaClinica->tipo_historia_clinica_id;
         $historiaClinica->descripcion = $request->descripcion ?? $historiaClinica->descripcion;
         $historiaClinica->temperatura = $request->temperatura ?? $historiaClinica->temperatura;
         $historiaClinica->peso = $request->peso ?? $historiaClinica->peso;
@@ -179,4 +199,6 @@ class HistoriaClinaController extends Controller
         
         $historiaClinica->save();
     }
+
+
 }

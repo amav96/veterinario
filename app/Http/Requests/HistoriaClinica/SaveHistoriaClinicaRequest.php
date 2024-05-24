@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\HistoriaClinica;
 
+use App\Models\TipoHistoriaClinica;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SaveHistoriaClinicaRequest extends FormRequest
@@ -21,8 +22,9 @@ class SaveHistoriaClinicaRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            "idMascota" => "required",
+        $rules =  [
+            "idMascota" => "required|integer|exists:mascotas,id",
+            "tipo_historia_clinica_id"  => "required|integer|exists:tipos_historias_clinicas,id",
             "descripcion" => "nullable|string",
             "temperatura" => "nullable|string",
             "peso" => "nullable|string",
@@ -81,6 +83,19 @@ class SaveHistoriaClinicaRequest extends FormRequest
 
         ];
 
-       
+        $rules = array_merge($rules, $this->agregarRequeridoCuandoTipoHistoriaClinicaEsAdjunto($this));
+
+        return $rules;
+
+        
+    }
+
+    public function agregarRequeridoCuandoTipoHistoriaClinicaEsAdjunto($request){
+        if($request->tipo_historia_clinica_id && $request->tipo_historia_clinica_id == TipoHistoriaClinica::ADJUNTO){
+            return [
+                "adjuntos" => "required|array",
+                "adjuntos.*" => "required|mimes:jpeg,png,jpg,gif,svg,pdf|max:2048",
+            ];
+        }
     }
 }

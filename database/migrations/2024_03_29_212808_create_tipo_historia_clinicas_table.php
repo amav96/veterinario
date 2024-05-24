@@ -40,6 +40,9 @@ return new class extends Migration
             [
                 "nombre" => "Internamiento"
             ],
+            [
+                "nombre" => "Adjunto"
+            ],
         ]);
     }
 
