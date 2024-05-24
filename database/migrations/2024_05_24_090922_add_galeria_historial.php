@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('historia_clinica_adjuntos', function (Blueprint $table) {
             $table->id();
         });
+        
 
         Schema::create("mascota_galeria", function (Blueprint $table) {
             $table->id();
