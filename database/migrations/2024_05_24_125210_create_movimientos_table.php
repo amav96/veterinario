@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger("tipo_movimiento_id");
             $table->foreign("tipo_movimiento_id")->references("id")->on("tipos_movimientos");
 
-            $table->longText("valor_anterior");
+            $table->longText("valor_anterior")->nullable();
             $table->longText("valor_nuevo");
 
             $table->unsignedBigInteger("usuario_id");

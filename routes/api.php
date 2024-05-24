@@ -7,6 +7,7 @@ use App\Http\Controllers\HistoriaClinicaController;
 use App\Http\Controllers\HistoriaClinicaAdjuntoController;
 use App\Http\Controllers\HistorialComprasController;
 use App\Http\Controllers\MascotaGaleriaController;
+use App\Http\Controllers\MovimientoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -47,6 +48,11 @@ Route::prefix('examenAuxiliarMascota')->group(function () {
 Route::prefix('evento')->group(function () {
     Route::post('/', [EventoController::class, 'store']);
     Route::put('/{id}', [EventoController::class, 'update']);
+});
+
+Route::prefix('movimientos')->group(function () {
+    Route::get('/{modulo}', [MovimientoController::class, 'findAll']);
+
 });
 
 

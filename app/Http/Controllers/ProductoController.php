@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\MovimientoService;
 use App\Models\Producto;
 use App\Models\Linea;
 use App\Models\Categoria;
@@ -9,6 +10,7 @@ use App\Models\SubCategoria;
 use App\Models\UnidadMedida;
 use App\Models\Presentacion;
 use App\Models\Proveedor;
+use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -80,6 +82,17 @@ class ProductoController extends Controller
         $producto->ExoneradoVenta = $ExoneradoVenta;
 
         $producto->save();
+
+        $movimiento = new MovimientoService();
+        $valorNuevo = json_encode($producto);
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::PRODUCTO_EDICION,
+            'valor_anterior' => null,
+            'valor_nuevo' => $valorNuevo,
+            'modulo' => TipoMovimiento::PRODUCTO,
+            'usuario_id' => $request->user()->id
+        ]);
+
         return redirect()->route('producto.index')->with('msg','Producto Guardado correctamente.');
     }
 
@@ -133,6 +146,8 @@ class ProductoController extends Controller
         }
 
         $producto = Producto::find($id);
+        $valorAnterior = json_encode($producto);
+
         $producto->idProveedor = $request->input('Proveedor');
         $producto->idUnidadMedida =$request->input('UnidadMedida');
         $producto->idPresentacion = $request->input('Presentacion');
@@ -149,8 +164,19 @@ class ProductoController extends Controller
         $producto->PrecioVenta = $request->input('PrecioVenta');
         $producto->ExoneradoCompra = $ExoneradoCompra;
         $producto->ExoneradoVenta = $ExoneradoVenta;
-
         $producto->save();
+
+        $movimiento = new MovimientoService();
+        $valorNuevo = json_encode($producto);
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::PRODUCTO_EDICION,
+            'valor_anterior' => $valorAnterior,
+            'valor_nuevo' => $valorNuevo,
+            'modulo' => TipoMovimiento::PRODUCTO,
+            'usuario_id' => $request->user()->id
+        ]);
+
+        
         return redirect()->route('producto.index')->with('msg','Producto Modificado correctamente.');
     }
 

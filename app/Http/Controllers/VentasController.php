@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\MovimientoService;
 use App\Models\Venta;
 use App\Models\VentaItem;
 use App\Models\Cliente;
@@ -10,7 +11,7 @@ use App\Models\Producto;
 use App\Models\Servicio;
 use App\Models\Comprobante;
 use App\Models\EstadoVenta;
-
+use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -136,6 +137,8 @@ class VentasController extends Controller
         $comprobante->save();
 
         // Fin
+
+       
 
         return redirect()->route('ventas.index')->with('msg', 'Venta creada correctamente.');
     }

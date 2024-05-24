@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\MovimientoService;
 use App\Models\Mascota;
 use App\Models\Especie;
 use App\Models\Raza;
 use App\Models\Cliente;
+use App\Models\TipoMovimiento;
 use Illuminate\Http\Request; 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -75,6 +77,16 @@ class MascotaController extends Controller
         $mascota->Grooming = $request->input('Grooming');
         
         $mascota->save();
+
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::MASCOTA_CREACION,
+            'valor_anterior' => null,
+            'valor_nuevo' => json_encode($mascota),
+            'modulo' => TipoMovimiento::MASCOTA,
+            'usuario_id' => $request->user()->id
+        ]);
+
         return redirect()->route('mascota.index')->with('msg','Mascota Guardada correctamente.');
     }
 
@@ -124,6 +136,8 @@ class MascotaController extends Controller
         // }
 
         $mascota = Mascota::find($id);
+        $valorAnterior = json_encode($mascota);
+
         $mascota->idCliente = $request->input('Propietario') ;
         $mascota->idEspecie = $request->input('Especie');
         $mascota->idRaza = $request->input('Raza');
@@ -140,6 +154,16 @@ class MascotaController extends Controller
         $mascota->Grooming = $request->input('Grooming');
         
         $mascota->save();
+
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::MASCOTA_EDICION,
+            'valor_anterior' => $valorAnterior,
+            'valor_nuevo' => json_encode($mascota),
+            'modulo' => TipoMovimiento::MASCOTA,
+            'usuario_id' => $request->user()->id
+        ]);
+
         return redirect()->route('mascota.index')->with('msg','Mascota Modificada correctamente');
 
 

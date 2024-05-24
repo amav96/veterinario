@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\MovimientoService;
 use App\Models\Cliente;
 use App\Models\Departamento;
 use App\Models\Provincia;
 use App\Models\Distrito;
+use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -70,6 +72,16 @@ class ClienteController extends Controller
         $cliente->ReferenciaDireccion = $request->input('ReferenciaDireccion');
 
         $cliente->save();
+
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::CLIENTE_CREACION,
+            'valor_anterior' => null,
+            'valor_nuevo' => json_encode($cliente),
+            'modulo' => TipoMovimiento::CLIENTE,
+            'usuario_id' => $request->user()->id
+        ]);
+
         return redirect()->route('cliente.index')->with('msg','Registro Guardado correctamente.');
 
     }
@@ -115,6 +127,8 @@ class ClienteController extends Controller
             }
         }
         $cliente = Cliente::find($id);
+        $valorAnterior = json_encode($cliente);
+
         $cliente->idDepartamento = $request->input('Departamento');
         $cliente->idProvincia = $request->input('Provincia');
         $cliente->idDistrito = $request->input('Distrito');
@@ -138,6 +152,16 @@ class ClienteController extends Controller
         $cliente->ReferenciaDireccion = $request->input('ReferenciaDireccion');
 
         $cliente->save();
+
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::CLIENTE_EDICION,
+            'valor_anterior' => $valorAnterior,
+            'valor_nuevo' => json_encode($cliente),
+            'modulo' => TipoMovimiento::CLIENTE,
+            'usuario_id' => $request->user()->id
+        ]);
+
         return redirect()->route('cliente.index')->with('msg','Cliente Modificado correctamente.');
     }
 

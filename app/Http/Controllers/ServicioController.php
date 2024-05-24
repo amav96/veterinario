@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\MovimientoService;
 use App\Models\Servicio;
 use App\Models\Linea;
 use App\Models\Categoria;
 use App\Models\SubCategoria;
+use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
 
 class ServicioController extends Controller
@@ -60,6 +62,16 @@ class ServicioController extends Controller
         $servicio->ExoneradoImpuestos = $ExoneradoImpuestos;
 
         $servicio->save();
+
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::SERVICIO_CREACION,
+            'valor_anterior' => null,
+            'valor_nuevo' => json_encode($servicio),
+            'modulo' => TipoMovimiento::SERVICIO,
+            'usuario_id' => $request->user()->id
+        ]);
+
         return redirect()->route('servicio.index')->with('msg','Servicio Guardado correctamente.');
     }
 
@@ -106,6 +118,8 @@ class ServicioController extends Controller
             }
         }
         $servicio = Servicio::find($id);
+        $valorAnterior = json_encode($servicio);
+       
      
         $servicio->idLinea = $request->input('Linea');
         $servicio->idCategoria = $request->input('Categoria');
@@ -115,6 +129,17 @@ class ServicioController extends Controller
         $servicio->PrecioServicio = $request->input('PrecioServicio');
         $servicio->ExoneradoImpuestos = $ExoneradoImpuestos;
         $servicio->save();
+
+        $valorNuevo = json_encode($servicio);
+
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::SERVICIO_EDICION,
+            'valor_anterior' => $valorAnterior,
+            'valor_nuevo' => $valorNuevo,
+            'modulo' => TipoMovimiento::SERVICIO,
+            'usuario_id' => $request->user()->id
+        ]);
 
         return redirect()->route('servicio.index')->with('msg','Servicio Modificado correctamente');
     }
