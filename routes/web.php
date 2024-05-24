@@ -48,7 +48,6 @@ Route::resource('/cliente', ClienteController::class);
 Route::resource('/mascota', MascotaController::class);
 //Route::resource('/evento', EventoController::class);
 Route::get('/evento', [EventoController::class, 'index'])->middleware(['auth', 'verified']);
-Route::post('/evento/action', [EventoController::class, 'action'])->middleware(['auth', 'verified']);
 Route::get('/evento/list', [EventoController::class, 'list'])->middleware(['auth', 'verified']);
 
 

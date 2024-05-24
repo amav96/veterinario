@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Evento\SaveEventoRequest;
 use App\Models\Evento;
 use App\Models\Cliente;
 use App\Models\Mascota;
@@ -58,17 +59,32 @@ class EventoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-   
+       
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaveEventoRequest $request)
     {
-        
+
+        $evento = new Evento;
+        $evento->idCliente = $request->input('idCliente');
+        $evento->idUsuario = $request->input('idUsuario');
+        $evento->idNotificacion = $request->input('idNotificacion');
+        $evento->Evento = $request->input('Evento');
+        $evento->idTipoEvento = $request->input('TipoEvento');
+        $evento->idEstadoEvento = $request->input('EstadoEvento');
+        $evento->FechaInicio = $request->input('FechaInicio');
+        $evento->FechaFin = $request->input('FechaFin');
+        $evento->Observacion = $request->input('Observacion');
+        $evento->idMascota = $request->input('Mascota');
+        $evento->save();
+
+        return response()->json($evento, 200);
+       
     }
 
     /**
@@ -90,9 +106,28 @@ class EventoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Evento $evento)
+    public function update(SaveEventoRequest $request, int $id)
     {
-        //
+       
+        $evento = Evento::find($id);
+        if(!$evento){
+            return response()->json(['message' => 'Evento no encontrado'], 404);
+        }
+
+        $evento->idCliente = $request->input('idCliente') ?? $evento->idCliente;
+        $evento->idUsuario = $request->input('idUsuario') ?? $evento->idUsuario;
+        $evento->idNotificacion = $request->input('idNotificacion') ?? $evento->idNotificacion;
+        $evento->Evento = $request->input('Evento') ?? $evento->Evento;
+        $evento->idTipoEvento = $request->input('TipoEvento') ?? $evento->idTipoEvento;
+        $evento->idEstadoEvento = $request->input('EstadoEvento') ?? $evento->idEstadoEvento;
+        $evento->FechaInicio = $request->input('FechaInicio') ?? $evento->FechaInicio;
+        $evento->FechaFin = $request->input('FechaFin') ??  $evento->FechaFin;
+        $evento->Observacion = $request->input('Observacion') ?? $evento->Observacion;
+        $evento->idMascota = $request->input('Mascota') ?? $evento->idMascota;
+        $evento->save();
+       
+
+        return response()->json($evento, 200);
     }
 
     /**
@@ -102,36 +137,6 @@ class EventoController extends Controller
     {
         //
     }
-    public function action(Request $request)
-    {
-       if($request->input('Tipo') == '1')
-       {     
-            $event = new Evento;
-            $event->idCliente = $request->input('Propietario');
-            $event->idMascota = $request->input('Mascota');
-            $event->idTipoEvento = $request->input('TipoEvento');
-            $event->idEstadoEvento = $request->input('EstadoEvento');
-            $event->idUsuario = $request->input('Responsable');
-            $event->idNotificacion = $request->input('Notificacion');
-            $event->Evento = $request->input('Evento');
-            $event->FechaInicio = $request->input('FechaInicio');
-            $event->FechaFin = $request->input('FechaFin');
-            $event->Observacion = $request->input('Observacion');
-            $event->save();
-            return response()->json($event);
-        }elseif ($request->input('Tipo') == '2'){
-            $event = Evento::find($request->input('IdDb'));
-            $event->idTipoEvento = $request->input('TipoEvento');
-            $event->idEstadoEvento = $request->input('EstadoEvento');
-            $event->idUsuario = $request->input('Responsable');
-            $event->idNotificacion = $request->input('Notificacion');
-            $event->Evento = $request->input('Evento');
-            $event->FechaInicio = $request->input('FechaInicio');
-            $event->FechaFin = $request->input('FechaFin');
-            $event->Observacion = $request->input('Observacion');
-            $event->save();
-            return response()->json($event);
-        }
-    }
+  
     
 }

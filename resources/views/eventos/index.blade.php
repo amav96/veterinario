@@ -303,7 +303,7 @@ $config = [
         function addReg(reg) {
             $.ajax({
                 type: 'POST',
-                url: '/evento/action',
+                url: '/api/evento',
                 data: reg,
                 success: function(msg) {
                     window.location.replace('/evento');               
@@ -318,7 +318,7 @@ $config = [
             console.log(registro);
         $.ajax({
             type: 'POST',
-            url: '/evento/action',
+            url: '/api/evento',
             data: registro,
             success: function(msg) {
                 calendar.refetchEvents();

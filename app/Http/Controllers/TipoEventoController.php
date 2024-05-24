@@ -13,7 +13,7 @@ class TipoEventoController extends Controller
     public function index()
     {
         $tipoEvento = TipoEvento::all(); 
-        return view('configuracion.tipoevento',['tipoEvento'=>$tipoEvento]);
+        return view('configuracion.tipoEvento',['tipoEvento'=>$tipoEvento]);
     }
 
     /**

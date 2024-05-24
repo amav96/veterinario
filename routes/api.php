@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DiagnosticoMascotaController;
+use App\Http\Controllers\EventoController;
 use App\Http\Controllers\ExamenAuxiliarMascotaController;
 use App\Http\Controllers\HistoriaClinicaController;
 use App\Http\Controllers\HistoriaClinicaAdjuntoController;
@@ -42,4 +43,12 @@ Route::prefix('examenAuxiliarMascota')->group(function () {
     Route::put('/{id}', [ExamenAuxiliarMascotaController::class, 'update']);
     Route::delete('/{id}', [ExamenAuxiliarMascotaController::class, 'destroy']);
 });
+
+Route::prefix('evento')->group(function () {
+    Route::post('/', [EventoController::class, 'store']);
+    Route::put('/{id}', [EventoController::class, 'update']);
+});
+
+
+
 
