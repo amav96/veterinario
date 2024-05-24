@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('slug');
             $table->timestamps();
         });
+        
     }
 
     /**

@@ -64,6 +64,7 @@ class MascotaController extends Controller
         $mascota->idRaza = $request->input('Raza');
         $mascota->idFrecuencia = $request->input('Frecuencia') ;
         $mascota->idDiaPreferido = $request->input('DiaPreferido');
+        $mascota->NumeroHistoria = $request->input('NumeroHistoria');
         $mascota->Mascota = $request->input('NombreMascota');
         $mascota->FechaNacimiento = Carbon::createFromFormat('d/m/Y', $request->input('FechaNacimiento'));
         $mascota->Microchip = $request->input('NumeroMicrochip');
@@ -128,6 +129,7 @@ class MascotaController extends Controller
         $mascota->idRaza = $request->input('Raza');
         $mascota->idFrecuencia = $request->input('Frecuencia') ;
         $mascota->idDiaPreferido = $request->input('DiaPreferido');
+        $mascota->NumeroHistoria = $request->input('NumeroHistoria');
         $mascota->Mascota = $request->input('NombreMascota');
         $mascota->FechaNacimiento = Carbon::createFromFormat('d/m/Y', $request->input('FechaNacimiento'));;
         $mascota->Microchip = $request->input('NumeroMicrochip');

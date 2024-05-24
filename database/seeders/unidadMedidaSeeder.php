@@ -16,7 +16,7 @@ class unidadMedidaSeeder extends Seeder
         $unidadMedida = ['ML','LT','GR','MG','KG','UL','PLG','CM','YD','MT','N.A.','CL','CPMD','UND','OZ','LB'];
 
         foreach( $unidadMedida  as $unidad){
-            DB::table('unidadmedidas')->insert(['UnidadMedida'=>$unidad]);
+            DB::table('unidades_medidas')->insert(['nombre'=>$unidad]);
         }
     }
 }

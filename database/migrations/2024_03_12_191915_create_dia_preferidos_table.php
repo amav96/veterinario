@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diaPreferidos', function (Blueprint $table) {
+        Schema::create('dias_preferidos', function (Blueprint $table) {
             $table->id();
-            $table->string('DiaPreferido',40);
+            $table->string('nombre',40);
             $table->timestamps();
         });
     }

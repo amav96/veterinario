@@ -30,8 +30,8 @@ return new class extends Migration
 
             $table->timestamps();
 
-            $table->foreign('idHistoriaClinica')->references('id')->on('historiaClinicas');;
-            $table->foreign('idTipoHistoriaClinica')->references('id')->on('tipoHistoriaClinicas');
+            $table->foreign('idHistoriaClinica')->references('id')->on('historias_clinicas');;
+            $table->foreign('idTipoHistoriaClinica')->references('id')->on('tipos_historias_clinicas');
         });
     }
 

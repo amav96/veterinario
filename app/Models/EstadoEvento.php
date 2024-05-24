@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class EstadoEvento extends Model
 {
-    protected $table ='estadoEventos';
+    protected $table ='estados_eventos';
 }

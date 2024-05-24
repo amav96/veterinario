@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TipoHistoriaClinica extends Model
 {
     use HasFactory;
+
+    const ADJUNTO = 8;
+
 }

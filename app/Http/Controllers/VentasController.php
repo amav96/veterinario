@@ -100,6 +100,7 @@ class VentasController extends Controller
                 $datos_item['impuestos'] = $item->impuestos;
                 $datos_item['cantidad'] = $item->cantidad;
                 $datos_item['total'] = $item->total;
+                $datos_item['created_at'] = now();
 
                 $subtotal += $datos_item['subtotal'];
                 $impuestos += $datos_item['impuestos'];

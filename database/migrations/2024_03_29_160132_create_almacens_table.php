@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('Ventas', 1);
             $table->timestamps();
 
-            $table->foreign('idTipoAlmacen')->references('id')->on('tipoAlmacenes');
+            $table->foreign('idTipoAlmacen')->references('id')->on('tipos_almacenes');
         });
     }
 
