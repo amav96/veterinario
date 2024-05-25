@@ -24,9 +24,10 @@
 <div id="app">
     <historial-clinico
     :tipos-historias-clinicas='@json($tiposHistoriasClinicas)'
-    :historias-clinicas='@json($historiasClinicas)'
-    :diagnoticos='@json($diagnosticos)'
+    :diagnosticos='@json($diagnosticos)'
     :examenes-auxiliares='@json($examenesAuxiliares)'
+    :productos='@json($productos)'
+    :mascota-id='@json($mascota->id)'
     />
 </div>
 

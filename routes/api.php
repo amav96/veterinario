@@ -18,6 +18,7 @@ Route::prefix('historia-clinica-adjunto')->group(function () {
 });
 
 Route::prefix('historiaClinica')->group(function () {
+    Route::get('', [HistoriaClinicaController::class, 'findAll']);
     Route::post('/', [HistoriaClinicaController::class, 'store']);
     Route::put('/{id}', [HistoriaClinicaController::class, 'update']);
 });

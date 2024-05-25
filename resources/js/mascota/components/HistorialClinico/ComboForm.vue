@@ -14,15 +14,15 @@
             <div class="input-group mb-3">
                 <input 
                 type="text" 
-                class="form-control" 
+                class="form-control mr-1" 
                 placeholder="Nombre" 
                 v-model="combos[index].nombre"
                 >
                 <input 
                 type="text" 
-                class="form-control" 
-                placeholder="Descripcion" 
-                v-model="combos[index].descripcion"
+                class="form-control mr-1" 
+                placeholder="Descripcion | Indicacion" 
+                v-model="combos[index].observacion"
                 >
                 <!-- agregar botton eliminar bootstrap -->
                 <button 
@@ -41,11 +41,20 @@
 import { ref, toRefs, onMounted } from 'vue';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 
-const props =  defineProps({
-    defaultValue: Array,
-    titulo: String,
-    options: Array
-})
+const props = defineProps({
+  defaultValue: {
+    type: Array,
+    required: false,
+  },
+  titulo: {
+    type: String,
+    required: false,
+  },
+  options: {
+    type: Array,
+    required: false,
+  },
+});
 
 const emit = defineEmits(['submit', 'remover'])
 
@@ -61,8 +70,9 @@ const search = (value) => {
 
 const onSubmit = (value) => {
     let nuevoValor = {
+        id: value.id,
         nombre: value.nombre,
-        descripcion: ''
+        observacion: ''
     }
     combos.value.push(nuevoValor)
     refAutocomplete.value.value = ''
@@ -76,6 +86,10 @@ const removerCombo = (index) => {
     combos.value.splice(index, 1)
     emit('remover', combo)
 }
+
+defineExpose({
+    combos
+})
 
 </script>
 

@@ -12,11 +12,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipos_historias_clinicas', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre',60);
-            $table->timestamps();
-        });
+        DB::statement("SET foreign_key_checks=0");
+        DB::table("tipos_historias_clinicas")->truncate();
 
         DB::table("tipos_historias_clinicas")->insert([
             [
@@ -37,7 +34,11 @@ return new class extends Migration
             [
                 "nombre" => "Antipulgas"
             ],
+            [
+                "nombre" => "Tratamiento"
+            ],
         ]);
+        DB::statement("SET foreign_key_checks=1");
     }
 
     /**
@@ -45,6 +46,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipos_historias_clinicas');
+        //
     }
 };

@@ -2,12 +2,13 @@
    <div>
         <div class="flex flex-row justify-end " >
             <div class="dropdown items-end">
+              
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Nuevo registro
+                    {{ tipoHistorialClinico ? tipoHistorialClinico : 'Nuevo registro'  }} 
                 </button>
                 <ul class="dropdown-menu cursor-pointer">
                     <li
-                    v-for="(item, index) in tiposHistoriasClinicas"
+                    v-for="(item, index) in tiposHistoriasClinicasFiltradas"
                     :key="index"
                     @click="tipoHistorialClinico = item.nombre"
                     >
@@ -20,11 +21,17 @@
             </div>
         </div>
 
-        <template v-if="tipoHistorialClinico">
+        <template v-if="tipoHistorialClinico && tipoHistorialClinico">
             <form-historial
             :diagnosticos="diagnosticos"
             :examenes-auxiliares="examenesAuxiliares"
+            :productos="productos"
+            :tipoHistorialClinico="tipoHistorialClinico"
+            :tiposHistoriasClinicas="tiposHistoriasClinicas"
+            :mascota-id="mascotaId"
+            @actualizarHistorial="getHistorialClinico"
             />
+            
         </template>
 
         <div v-else class="flex flex-col">
@@ -48,21 +55,34 @@
 import { ref, watch, toRefs, onMounted } from 'vue';
 import FormHistorial from './HistorialClinico/FormHistorial.vue';
 import CardHistorialClinico from './HistorialClinico/CardHistorialClinico.vue';
+import axios from 'axios';
+import baseUrl from '../../baseUrl';
 
 const props =  defineProps({
   tiposHistoriasClinicas: Array,
-  historiasClinicas: Array,
   diagnosticos: Array,
   examenesAuxiliares: Array,
+  productos: Array,
+  mascotaId: Number
 })
 
-const { tiposHistoriasClinicas, historiasClinicas, diagnosticos ,examenesAuxiliares  } = toRefs(props);
+const { tiposHistoriasClinicas,  diagnosticos ,examenesAuxiliares, mascotaId  } = toRefs(props);
+
+const historiasClinicas = ref([])
 
 const tipoHistorialClinico = ref(null);
+const tiposHistoriasClinicasFiltradas = ref(tiposHistoriasClinicas.value.filter(
+    (t) => t.nombre !== 'Tratamiento')
+)
 
 onMounted(() => {
-    console.log(historiasClinicas.value)
+    getHistorialClinico()
 })
+const getHistorialClinico = async () => {
+    tipoHistorialClinico.value = null
+    const response = await axios.get(`${baseUrl}/api/historiaClinica?mascota_id=${mascotaId.value}`)
+    historiasClinicas.value = response.data
+}
 
 </script>
 

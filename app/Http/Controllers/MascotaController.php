@@ -10,6 +10,7 @@ use App\Models\Cliente;
 use App\Models\Diagnostico;
 use App\Models\ExamenAuxiliar;
 use App\Models\HistoriaClinica;
+use App\Models\Producto;
 use App\Models\TipoHistoriaClinica;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request; 
@@ -123,22 +124,17 @@ class MascotaController extends Controller
     public function historialClinico($id)
     {
         $mascota = Mascota::find($id);
-        $tiposHistoriasClinicas = TipoHistoriaClinica::all();
         $historiasClinicas =  HistoriaClinica::where("idMascota", $id)
                                 ->with([
                                     'tipoHistoriaClinica'
                                 ])
                                 ->get();
-        $diagnosticos = Diagnostico::all();
-        $examenesAuxiliares = ExamenAuxiliar::all();
-       
-       
         return view('mascotas.historialClinico',[
-            'mascota'=> $mascota,
-            'tiposHistoriasClinicas' => $tiposHistoriasClinicas,
-            'historiasClinicas' => $historiasClinicas,
-            'diagnosticos' => $diagnosticos,
-            'examenesAuxiliares' => $examenesAuxiliares
+            'mascota'                   => $mascota,
+            'tiposHistoriasClinicas'    => TipoHistoriaClinica::all(),
+            'diagnosticos'              => Diagnostico::all(),
+            'examenesAuxiliares'        => ExamenAuxiliar::all(),
+            'productos'                 => Producto::all()
         ]);
     }
 
