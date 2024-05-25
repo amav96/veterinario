@@ -45,7 +45,11 @@ Route::resource('/proveedor', ProveedorController::class);
 Route::resource('/producto', ProductoController::class);
 Route::resource('/servicio', ServicioController::class);
 Route::resource('/cliente', ClienteController::class);
+
 Route::resource('/mascota', MascotaController::class);
+Route::get('/mascota/{id}/historial-clinico', [MascotaController::class, 'historialClinico'])->name('mascota.historial-clinico');
+
+
 //Route::resource('/evento', EventoController::class);
 Route::get('/evento', [EventoController::class, 'index'])->middleware(['auth', 'verified']);
 Route::get('/evento/list', [EventoController::class, 'list'])->middleware(['auth', 'verified']);

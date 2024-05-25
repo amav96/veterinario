@@ -10,4 +10,8 @@ class HistoriaClinica extends Model
     use HasFactory;
     
     protected $table = "historias_clinicas";
+
+    public function tipoHistoriaClinica(){
+        return $this->belongsTo(TipoHistoriaClinica::class, 'tipo_historia_clinica_id');
+    }
 }

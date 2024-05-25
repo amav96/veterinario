@@ -82,7 +82,7 @@
 @stop
 @section('footer')
     <div class="float-right">
-        Version: {{ config('app.version', '1.0.0') }}
+        Version: {{ config('app.version', '4.0.0') }}
     </div>
 
     <strong>

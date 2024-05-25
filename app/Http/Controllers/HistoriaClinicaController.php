@@ -15,27 +15,7 @@ use Illuminate\Http\Request;
 
 class HistoriaClinicaController extends Controller
 {
-    public function index(Request $request) {
-        
-        $parametros = $request->all();
-        $historiasClinicas =  HistoriaClinica::
-                when(isset($parametros["idMascota"]), function($q) use($parametros){
-                    return $q->where("idMascota", $parametros["idMascota"]);
-                })
-                ->when(isset($parametros["id"]), function($q) use($parametros){
-                    return $q->where("id", $parametros["id"]);
-                });
-
-        $tiposHistoriaClinica = [
-            'Consulta', 
-            'Control', 
-            'Cirugia', 
-            'Vacuna', 
-            'Antiparasitario',
-            'Antipulgas'
-        ];     
-       
-    }
+    
 
     public function create(){
         $diagnosticos = Diagnostico::all();

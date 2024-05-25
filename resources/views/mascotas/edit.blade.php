@@ -8,8 +8,18 @@
 
 @section('content')
 <div class="card card-success">
-    <div class="card-header">
-        <h3 class="card-title">Modificar Mascota</h3>
+    <div class="card-header flex flex-row items-center gap-4">
+        <div>
+            <h3 class="card-title">Modificar Mascota</h3>
+        </div>
+        {{-- Route::get('/mascota/{id}/historial-clinico', [MascotaController::class, 'historialClinico'])->name('mascota.historial-clinico'); --}}
+        <a  href="{{url('mascota/'.$mascota->id.'/historial-clinico')}}" class="bg-yellow-400 p-2 rounded">
+            Historial Clinico
+        </a>
+        <div class="bg-yellow-400 p-2 rounded">
+            Galeria
+        </div>
+        <div class="bg-yellow-400 p-2 rounded"> Historial de compra</div>
     </div>
     <form action="{{ url('mascota/'.$mascota->id) }}" method="post">
         @method("PUT")
@@ -161,6 +171,11 @@
 
 @stop
 
+@push('css')
+{{-- mix('resources/css/app.css') --}}
+    <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
+@endpush
+
 @push('js')
 <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script>
 <script>
@@ -186,4 +201,6 @@
 
     });
 </script>
+
+
 @endpush

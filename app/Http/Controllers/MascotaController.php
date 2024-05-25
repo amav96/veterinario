@@ -7,6 +7,10 @@ use App\Models\Mascota;
 use App\Models\Especie;
 use App\Models\Raza;
 use App\Models\Cliente;
+use App\Models\Diagnostico;
+use App\Models\ExamenAuxiliar;
+use App\Models\HistoriaClinica;
+use App\Models\TipoHistoriaClinica;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request; 
 use Carbon\Carbon;
@@ -114,6 +118,28 @@ class MascotaController extends Controller
                                         'razas '=>$razas,
                                         'clientes'=>$clientes
                                     ]);
+    }
+
+    public function historialClinico($id)
+    {
+        $mascota = Mascota::find($id);
+        $tiposHistoriasClinicas = TipoHistoriaClinica::all();
+        $historiasClinicas =  HistoriaClinica::where("idMascota", $id)
+                                ->with([
+                                    'tipoHistoriaClinica'
+                                ])
+                                ->get();
+        $diagnosticos = Diagnostico::all();
+        $examenesAuxiliares = ExamenAuxiliar::all();
+       
+       
+        return view('mascotas.historialClinico',[
+            'mascota'=> $mascota,
+            'tiposHistoriasClinicas' => $tiposHistoriasClinicas,
+            'historiasClinicas' => $historiasClinicas,
+            'diagnosticos' => $diagnosticos,
+            'examenesAuxiliares' => $examenesAuxiliares
+        ]);
     }
 
     /**
