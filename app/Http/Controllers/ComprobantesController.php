@@ -14,6 +14,7 @@ use App\Models\EstadoVenta;
 use Illuminate\Http\Request;
 
 use App\Http\Helpers\Prices;
+use App\Http\Helpers\Token;
 
 class ComprobantesController extends Controller
 {
