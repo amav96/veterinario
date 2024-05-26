@@ -38,12 +38,13 @@
 </template>
 
 <script setup>
-import { ref, toRefs, onMounted } from 'vue';
+import { ref, toRefs, onMounted, watch } from 'vue';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 
 const props = defineProps({
   defaultValue: {
     type: Array,
+    default: null,
     required: false,
   },
   titulo: {
@@ -59,6 +60,20 @@ const props = defineProps({
 const emit = defineEmits(['submit', 'remover'])
 
 const { defaultValue, options } = toRefs(props);
+
+onMounted(() => {
+    if(defaultValue.value){
+        combos.value = [...defaultValue.value]
+    }
+
+})
+
+watch(defaultValue, (value) => {
+    console.log("watch", value)
+    if (value) {
+        combos.value = [...value]
+    }
+})
 
 const refAutocomplete = ref(null);
 

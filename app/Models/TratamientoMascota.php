@@ -10,4 +10,8 @@ class TratamientoMascota extends Model
     use HasFactory;
 
     protected $table = 'tratamientos_mascotas';
+
+    public function producto(){
+        return $this->belongsTo(Producto::class, 'producto_id');
+    }
 }

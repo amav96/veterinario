@@ -41,6 +41,8 @@ class SaveHistoriaClinicaRequest extends FormRequest
             "miccion" => "nullable|bool",
             "deposicion" => "nullable|bool",
             "ayuno_previo" => "nullable|bool",
+            "motivo_atencion" => "nullable|string",
+
         ];
         if($this->method() == "POST"){
             $rules = array_merge($rules, $this->agregarReglas());
@@ -53,31 +55,31 @@ class SaveHistoriaClinicaRequest extends FormRequest
         return [
             "diagnosticos_mascotas" => "nullable|array",
             "diagnosticos_mascotas.*.diagnostico_id" => "required_with:diagnosticos_mascotas|exists:diagnosticos,id",
-            "diagnosticos_mascotas.*.observacion" => "required_with:diagnosticos_mascotas|string",
+            "diagnosticos_mascotas.*.observacion" => "nullable|string",
             
             "examenes_auxiliares_mascotas" => "nullable|array",
             "examenes_auxiliares_mascotas.*.mascota_id" => "required_with:examenes_auxiliares_mascotas|exists:mascotas,id",
             "examenes_auxiliares_mascotas.*.examen_auxiliar_id" => "required_with:examenes_auxiliares_mascotas|exists:examenes_auxiliares,id",
-            "examenes_auxiliares_mascotas.*.observacion" => "required_with:examenes_auxiliares_mascotas|string",
+            "examenes_auxiliares_mascotas.*.observacion" => "nullable|string",
 
             "tratamientos" => "nullable|array",
             "tratamientos.*.producto_id" => "required_with:tratamientos|exists:productos,id",
-            "tratamientos.*.observacion" => "required_with:tratamientos|string",
+            "tratamientos.*.observacion" => "nullable|string",
             "tratamientos.*.cantidad" => "numeric",
 
             "vacunas" => "nullable|array",
             "vacunas.*.producto_id" => "required_with:vacunas|exists:productos,id",
-            "vacunas.*.observacion" => "required_with:vacunas|string",
+            "vacunas.*.observacion" => "nullable|string",
             "vacunas.*.cantidad" => "numeric",
             
             "anti_parasitarios" => "nullable|array",
             "anti_parasitarios.*.producto_id" => "required_with:anti_parasitarios|exists:productos,id",
-            "anti_parasitarios.*.observacion" => "required_with:anti_parasitarios|string",
+            "anti_parasitarios.*.observacion" => "nullable|string",
             "anti_parasitarios.*.cantidad" => "numeric",
 
             "anti_pulgas" => "nullable|array",
             "anti_pulgas.*.producto_id" => "required_with:anti_pulgas|exists:productos,id",
-            "anti_pulgas.*.observacion" => "required_with:anti_pulgas|string",
+            "anti_pulgas.*.observacion" => "nullable|string",
             "anti_pulgas.*.cantidad" => "numeric",
         ];
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Tratamiento\SaveTratamientoMascotaRequest;
 use App\Models\TratamientoMascota;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TratamientoMascotaController extends Controller
 {
@@ -27,33 +28,65 @@ class TratamientoMascotaController extends Controller
         return isset($parametros["page"]) ? $query->paginate() : $query->get();
     }
 
-    public function store(SaveTratamientoMascotaRequest $request){
-        $tratamiento = new TratamientoMascota();
-        $tratamiento->mascota_id = $request->mascota_id;
-        $tratamiento->producto_id = $request->producto_id;
-        $tratamiento->cantidad = $request->cantidad;
-        $tratamiento->categoria_id = $request->categoria_id;
-        $tratamiento->historia_clinica_id = $request->historia_clinica_id;
-        $tratamiento->indicaciones = $request->indicaciones;
-        $tratamiento->save();
-    }
+    public function save(SaveTratamientoMascotaRequest $request){
 
-    public function update(SaveTratamientoMascotaRequest $request, $id){
-        $tratamiento = TratamientoMascota::find($id);
+        DB::beginTransaction();
+        try {
+            
 
-        if(!$tratamiento){
-            return response()->json(["message" => "Tratamiento no encontrado"], 404);
+
+        $actualizar = [];
+        $crear = [];
+
+        $tipo_historia_clinica_id = $request->tipo_historia_clinica_id;
+        $historia_clinica_id = $request->historia_clinica_id;
+ 
+        foreach($request->tratamientos as $tratamiento) {
+            if(isset($tratamiento["tratamiento_id"])){
+                $actualizar[] = $tratamiento;
+            }else {
+                $crear[] = $tratamiento;
+            }
         }
 
-        $tratamiento->mascota_id = $request->mascota_id ?? $tratamiento->mascota_id;
-        $tratamiento->producto_id = $request->producto_id ?? $tratamiento->producto_id;
-        $tratamiento->cantidad = $request->cantidad ?? $tratamiento->cantidad;
-        $tratamiento->categoria_id = $request->categoria_id ?? $tratamiento->categoria_id;
-        $tratamiento->historia_clinica_id = $request->historia_clinica_id ?? $tratamiento->historia_clinica_id;
-        $tratamiento->indicaciones = $request->indicaciones ?? $tratamiento->indicaciones;
-        $tratamiento->save();
-    }    
+        foreach($actualizar as $tratamiento){
+            $tratamientoMascota = TratamientoMascota::find($tratamiento["tratamiento_id"]);
+            if($tratamientoMascota){
+                $tratamientoMascota->producto_id = $tratamiento["producto_id"];
+                $tratamientoMascota->observacion = $tratamiento["observacion"];
+                $tratamientoMascota->save();
+            }
+        }
 
+        foreach($crear as $tratamiento){
+            $nuevoTratamiento = new TratamientoMascota();
+            $nuevoTratamiento->producto_id = $tratamiento["producto_id"];
+            $nuevoTratamiento->observacion = $tratamiento["observacion"];
+            $nuevoTratamiento->mascota_id = $tratamiento["mascota_id"];
+            $nuevoTratamiento->historia_clinica_id = $historia_clinica_id;
+            $nuevoTratamiento->tipo_historia_clinica_id = $tipo_historia_clinica_id;
+            $nuevoTratamiento->save();
+        }
+
+        $tratamientos = TratamientoMascota::with([
+                                            'producto',
+                                            
+                                                ])
+                                            ->where("historia_clinica_id", $historia_clinica_id)
+                                            ->where("tipo_historia_clinica_id" , $tipo_historia_clinica_id)
+                                            ->get();
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return response()->json(["message" => "Error al guardar"], 500);
+        }
+
+        DB::commit();
+        
+        return response()->json($tratamientos, 201);
+    }
+
+    
     public function destroy($id){
         $tratamiento = TratamientoMascota::find($id);
 

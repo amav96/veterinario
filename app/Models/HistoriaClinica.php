@@ -27,9 +27,21 @@ class HistoriaClinica extends Model
         return $this->hasMany(DiagnosticoMascota::class, 'historia_clinica_id');
     }
 
-    public function vacuna()
+    public function vacunas()
     {
         return $this->hasMany(TratamientoMascota::class)
                     ->where('tipo_historia_clinica_id', TipoHistoriaClinica::VACUNA);
+    }
+
+    public function antiparasitarios()
+    {
+        return $this->hasMany(TratamientoMascota::class)
+                    ->where('tipo_historia_clinica_id', TipoHistoriaClinica::ANTIPARASITARIO);
+    }
+
+    public function antipulgas()
+    {
+        return $this->hasMany(TratamientoMascota::class)
+                    ->where('tipo_historia_clinica_id', TipoHistoriaClinica::ANTIPULGAS);
     }
 }

@@ -19,10 +19,12 @@ class HistoriaClinicaController extends Controller
 {
     const RELACIONES_MASCOTA = [
         'tipoHistoriaClinica',
-        'tratamientoMascota',
-        'vacuna',
-        'examenAuxiliarMascota',
-        'diagnosticoMascota'
+        'tratamientoMascota.producto',
+        'vacunas.producto',
+        'antiparasitarios.producto',
+        'antipulgas.producto',
+        'examenAuxiliarMascota.examenAuxiliar',
+        'diagnosticoMascota.diagnostico'
     ];
 
     public function findAll(Request $request){
@@ -33,14 +35,9 @@ class HistoriaClinicaController extends Controller
         ->when(isset($request->mascota_id), function($query) use ($request){
             $query->where('idMascota', $request->mascota_id);
         })
+        ->orderBy("created_at", 'desc')
         ->get();
         return response()->json($historiasClinicas, 200);
-    }
-
-    public function create(){
-        $diagnosticos = Diagnostico::all();
-        $examenesAuxiliares = ExamenAuxiliar::all();
-        $tratamientos = Producto::all(); // sirve para vacuna, antiparasitario y antipulgas
     }
   
     public function store(SaveHistoriaClinicaRequest $request){
@@ -68,6 +65,8 @@ class HistoriaClinicaController extends Controller
             $historiaClinica->miccion = $request->miccion;
             $historiaClinica->deposicion = $request->deposicion;
             $historiaClinica->ayuno_previo = $request->ayuno_previo;
+            
+            $historiaClinica->motivo_atencion = $request->motivo_atencion;
             $historiaClinica->fecha_atencion = $request->fecha_atencion;
             $historiaClinica->nombre_cirugia = $request->nombre_cirugia;
             
@@ -80,7 +79,7 @@ class HistoriaClinicaController extends Controller
                         "mascota_id" => $request->idMascota,
                         "diagnostico_id" => $diagnostico["diagnostico_id"],
                         "historia_clinica_id" => $historiaClinica->id,
-                        "observacion" => $diagnostico["observacion"]
+                        "observacion" => isset($diagnostico["observacion"]) ? $diagnostico["observacion"] : null    
                     ]);
 
                 }
@@ -93,7 +92,7 @@ class HistoriaClinicaController extends Controller
                     "mascota_id" => $request->idMascota,
                     "examen_auxiliar_id" => $examen["examen_auxiliar_id"],
                     "historia_clinica_id" => $historiaClinica->id,
-                    "observacion" => $examen["observacion"]
+                    "observacion" => isset($examen["observacion"]) ? $examen["observacion"] : null
                 ]); 
                 }
             }
@@ -103,7 +102,7 @@ class HistoriaClinicaController extends Controller
                     TratamientoMascota::insert([
                         "mascota_id" => $request->idMascota,
                         "producto_id" => $tratamiento["producto_id"],
-                        "observacion" => $tratamiento["observacion"],
+                        "observacion" => isset($tratamiento["observacion"]) ? $tratamiento["observacion"] : null,
                         "historia_clinica_id" => $historiaClinica->id,
                         "tipo_historia_clinica_id" => TipoHistoriaClinica::TRATAMIENTO
                     ]);
@@ -115,7 +114,7 @@ class HistoriaClinicaController extends Controller
                     TratamientoMascota::insert([
                         "mascota_id" => $request->idMascota,
                         "producto_id" => $vacuna["producto_id"],
-                        "observacion" => $vacuna["observacion"],
+                        "observacion" => isset($vacuna["observacion"]) ? $vacuna["observacion"] : null,
                         "historia_clinica_id" => $historiaClinica->id,
                         "tipo_historia_clinica_id" => TipoHistoriaClinica::VACUNA
 
@@ -128,7 +127,7 @@ class HistoriaClinicaController extends Controller
                     TratamientoMascota::insert([
                         "mascota_id" => $request->idMascota,
                         "producto_id" => $anti["producto_id"],
-                        "observacion" => $anti["observacion"],
+                        "observacion" => isset($anti["observacion"]) ? $anti["observacion"] : null,
                         "historia_clinica_id" => $historiaClinica->id,
                         "tipo_historia_clinica_id" => TipoHistoriaClinica::ANTIPARASITARIO
                     ]);
@@ -140,7 +139,7 @@ class HistoriaClinicaController extends Controller
                     TratamientoMascota::insert([
                         "mascota_id" => $request->idMascota,
                         "producto_id" => $anti["producto_id"],
-                        "observacion" => $anti["observacion"],
+                        "observacion" => isset($anti["observacion"]) ? $anti["observacion"] : null,
                         "tipo_historia_clinica_id" => TipoHistoriaClinica::ANTIPULGAS,
                         "historia_clinica_id" => $historiaClinica->id,
                     ]);
@@ -177,7 +176,7 @@ class HistoriaClinicaController extends Controller
         return $path;
     }
 
-    public function update(Request $request, $id) {
+    public function update(SaveHistoriaClinicaRequest $request, $id) {
 
         $historiaClinica = HistoriaClinica::find($id);
         if(!$historiaClinica){
@@ -205,6 +204,7 @@ class HistoriaClinicaController extends Controller
             $historiaClinica->miccion = $request->miccion ?? $historiaClinica->miccion;
             $historiaClinica->deposicion = $request->deposicion ?? $historiaClinica->deposicion;
             $historiaClinica->ayuno_previo = $request->ayuno_previo ?? $historiaClinica->ayuno_previo;
+            $historiaClinica->motivo_atencion = $request->motivo_atencion ?? $historiaClinica->motivo_atencion;
             $historiaClinica->fecha_atencion = $request->fecha_atencion ?? $historiaClinica->fecha_atencion;
             $historiaClinica->nombre_cirugia = $request->nombre_cirugia ?? $historiaClinica->nombre_cirugia;
             
@@ -219,5 +219,29 @@ class HistoriaClinicaController extends Controller
         return response()->json($historiaClinica->load(self::RELACIONES_MASCOTA), 201);
     }
 
+    public function delete($id){
+        $historiaClinica = HistoriaClinica::find($id);
+        if(!$historiaClinica){
+            return response()->json(["message" => "Historia Clinica no encontrada"], 404);
+        }
+        $this->eliminarDiagnosticosMascotasPorHistorialClinicaId($historiaClinica->id);
+        $this->eliminarExamenesAuxiliaresMascotasPorHistorialClinicaId($historiaClinica->id);
+        $this->eliminarTratamientosMascotasPorHistorialClinicaId($historiaClinica->id);
+        $historiaClinica->delete();
+        return response()->json(["message" => "Historia Clinica eliminada"], 200);
+    }
+
+    private function eliminarDiagnosticosMascotasPorHistorialClinicaId($historiaClinicaId){
+        DiagnosticoMascota::where('historia_clinica_id', $historiaClinicaId)->delete();
+    }
+
+    private function eliminarExamenesAuxiliaresMascotasPorHistorialClinicaId($historiaClinicaId){
+        ExamenAuxiliarMascota::where('historia_clinica_id', $historiaClinicaId)->delete();
+    }
+
+    private function eliminarTratamientosMascotasPorHistorialClinicaId($historiaClinicaId){
+        TratamientoMascota::where('historia_clinica_id', $historiaClinicaId)->delete();
+    }
+    
 
 }

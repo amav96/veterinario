@@ -10,7 +10,7 @@
                     <li
                     v-for="(item, index) in tiposHistoriasClinicasFiltradas"
                     :key="index"
-                    @click="tipoHistorialClinico = item.nombre"
+                    @click="mostrarTipoDeHistorial(item)"
                     >
                         <div class="dropdown-item" >
                             {{ item.nombre }}
@@ -30,6 +30,7 @@
             :tiposHistoriasClinicas="tiposHistoriasClinicas"
             :mascota-id="mascotaId"
             @actualizarHistorial="getHistorialClinico"
+            @salir="tipoHistorialClinico = null"
             />
             
         </template>
@@ -42,8 +43,46 @@
             >
                 <card-historial-clinico
                 :historialClinico="item"
+                @eliminarHistorial="eliminarHistorial"
+                @editarHistorial="mostrarModalEditar($event)"
                 />
                
+            </div>
+        </div>
+
+        <div 
+        v-if="abrirModalEditar"
+        class="modal fade show dialog-historial block modal-dialog-scrollable"  
+        tabindex="-1" 
+        id="exampleModalLong" 
+        role="dialog" 
+        aria-labelledby="exampleModalLongTitle" 
+        aria-hidden="true"
+        >
+            <div class="modal-dialog overflow-auto" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><span class="font-semibold mr-2" >Guardar</span> {{ historialActual.tipo_historia_clinica.nombre }}</h5>
+                    <button @click="cerrarModalEditar()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form-historial
+                :diagnosticos="diagnosticos"
+                :examenes-auxiliares="examenesAuxiliares"
+                :productos="productos"
+                :tipoHistorialClinico="historialActual.tipo_historia_clinica.nombre"
+                :tiposHistoriasClinicas="tiposHistoriasClinicas"
+                :mascota-id="mascotaId"
+                :default-value="historialActual"
+                @actualizarHistorial="getHistorialClinico"
+                />
+                </div>
+                <div class="modal-footer mb-4">
+                    <button @click="cerrarModalEditar()" type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
             </div>
         </div>
 
@@ -57,6 +96,7 @@ import FormHistorial from './HistorialClinico/FormHistorial.vue';
 import CardHistorialClinico from './HistorialClinico/CardHistorialClinico.vue';
 import axios from 'axios';
 import baseUrl from '../../baseUrl';
+import Swal from 'sweetalert2'
 
 const props =  defineProps({
   tiposHistoriasClinicas: Array,
@@ -84,8 +124,41 @@ const getHistorialClinico = async () => {
     historiasClinicas.value = response.data
 }
 
+const eliminarHistorial = (historial) => {
+    historiasClinicas.value = historiasClinicas.value.filter((h) => h.id !== historial.id)
+    Swal.fire({
+        title: 'Realizado correctamente',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500
+    })
+
+}
+
+
+const historialActual = ref(null)
+const abrirModalEditar = ref(false)
+const mostrarModalEditar = (historial) => {
+    historialActual.value = historial
+    abrirModalEditar.value = true
+}
+
+const cerrarModalEditar = () => {
+    abrirModalEditar.value = false
+}
+
+const mostrarTipoDeHistorial = (item) => {
+    tipoHistorialClinico.value = item.nombre
+}
+
+
 </script>
 
 <style scoped>
+
+.dialog-historial .modal-dialog {
+   max-width: 100%;
+    max-height: 100%;
+}
 
 </style>
