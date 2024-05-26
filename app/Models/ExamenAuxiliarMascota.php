@@ -17,4 +17,8 @@ class ExamenAuxiliarMascota extends Model
         "historial_clinica_id",
         "indicaciones"
     ];
+
+    public function examenAuxiliar(){
+        return $this->belongsTo(ExamenAuxiliar::class, 'examen_auxiliar_id');
+    }
 }

@@ -17,4 +17,8 @@ class DiagnosticoMascota extends Model
         "historial_clinica_id",
         "estado"
     ];
+
+    public function diagnostico(){
+        return $this->belongsTo(Diagnostico::class, 'diagnostico_id');
+    }
 }

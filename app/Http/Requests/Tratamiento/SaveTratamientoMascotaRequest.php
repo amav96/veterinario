@@ -22,12 +22,12 @@ class SaveTratamientoMascotaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "mascota_id"                => "required|integer|exists:mascotas,id",
-            "producto_id"               => "required|integer|exists:productos,id",
-            "cantidad"                  => "required|integer",
-            "categoria_id"              => "required|integer|exists:categorias,id",
-            "historia_clinica_id"       => "required|integer|exists:historia_clinicas,id",
-            "indicaciones"              => "nullable|string"
+            "tratamientos"                              => "required|array",
+            "tratamientos.*.mascota_id"                 => "required|integer|exists:mascotas,id",
+            "tratamientos.*.producto_id"                => "required|integer|exists:productos,id",
+            "tratamientos.*.observacion"                => "nullable|string",
+            "tipo_historia_clinica_id"   => "required|integer|exists:tipos_historias_clinicas,id",
+            "historia_clinica_id"        => "required|integer|exists:historias_clinicas,id"
         ];
     }
 }

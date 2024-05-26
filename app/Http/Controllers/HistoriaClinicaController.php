@@ -19,10 +19,12 @@ class HistoriaClinicaController extends Controller
 {
     const RELACIONES_MASCOTA = [
         'tipoHistoriaClinica',
-        'tratamientoMascota',
-        'vacuna',
-        'examenAuxiliarMascota',
-        'diagnosticoMascota'
+        'tratamientoMascota.producto',
+        'vacunas.producto',
+        'antiparasitarios.producto',
+        'antipulgas.producto',
+        'examenAuxiliarMascota.examenAuxiliar',
+        'diagnosticoMascota.diagnostico'
     ];
 
     public function findAll(Request $request){
@@ -33,14 +35,9 @@ class HistoriaClinicaController extends Controller
         ->when(isset($request->mascota_id), function($query) use ($request){
             $query->where('idMascota', $request->mascota_id);
         })
+        ->orderBy("created_at", 'desc')
         ->get();
         return response()->json($historiasClinicas, 200);
-    }
-
-    public function create(){
-        $diagnosticos = Diagnostico::all();
-        $examenesAuxiliares = ExamenAuxiliar::all();
-        $tratamientos = Producto::all(); // sirve para vacuna, antiparasitario y antipulgas
     }
   
     public function store(SaveHistoriaClinicaRequest $request){
@@ -68,6 +65,8 @@ class HistoriaClinicaController extends Controller
             $historiaClinica->miccion = $request->miccion;
             $historiaClinica->deposicion = $request->deposicion;
             $historiaClinica->ayuno_previo = $request->ayuno_previo;
+            
+            $historiaClinica->motivo_atencion = $request->motivo_atencion;
             $historiaClinica->fecha_atencion = $request->fecha_atencion;
             $historiaClinica->nombre_cirugia = $request->nombre_cirugia;
             
@@ -177,7 +176,7 @@ class HistoriaClinicaController extends Controller
         return $path;
     }
 
-    public function update(Request $request, $id) {
+    public function update(SaveHistoriaClinicaRequest $request, $id) {
 
         $historiaClinica = HistoriaClinica::find($id);
         if(!$historiaClinica){
@@ -205,6 +204,7 @@ class HistoriaClinicaController extends Controller
             $historiaClinica->miccion = $request->miccion ?? $historiaClinica->miccion;
             $historiaClinica->deposicion = $request->deposicion ?? $historiaClinica->deposicion;
             $historiaClinica->ayuno_previo = $request->ayuno_previo ?? $historiaClinica->ayuno_previo;
+            $historiaClinica->motivo_atencion = $request->motivo_atencion ?? $historiaClinica->motivo_atencion;
             $historiaClinica->fecha_atencion = $request->fecha_atencion ?? $historiaClinica->fecha_atencion;
             $historiaClinica->nombre_cirugia = $request->nombre_cirugia ?? $historiaClinica->nombre_cirugia;
             
@@ -219,5 +219,29 @@ class HistoriaClinicaController extends Controller
         return response()->json($historiaClinica->load(self::RELACIONES_MASCOTA), 201);
     }
 
+    public function delete($id){
+        $historiaClinica = HistoriaClinica::find($id);
+        if(!$historiaClinica){
+            return response()->json(["message" => "Historia Clinica no encontrada"], 404);
+        }
+        $this->eliminarDiagnosticosMascotasPorHistorialClinicaId($historiaClinica->id);
+        $this->eliminarExamenesAuxiliaresMascotasPorHistorialClinicaId($historiaClinica->id);
+        $this->eliminarTratamientosMascotasPorHistorialClinicaId($historiaClinica->id);
+        $historiaClinica->delete();
+        return response()->json(["message" => "Historia Clinica eliminada"], 200);
+    }
+
+    private function eliminarDiagnosticosMascotasPorHistorialClinicaId($historiaClinicaId){
+        DiagnosticoMascota::where('historia_clinica_id', $historiaClinicaId)->delete();
+    }
+
+    private function eliminarExamenesAuxiliaresMascotasPorHistorialClinicaId($historiaClinicaId){
+        ExamenAuxiliarMascota::where('historia_clinica_id', $historiaClinicaId)->delete();
+    }
+
+    private function eliminarTratamientosMascotasPorHistorialClinicaId($historiaClinicaId){
+        TratamientoMascota::where('historia_clinica_id', $historiaClinicaId)->delete();
+    }
+    
 
 }

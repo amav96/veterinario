@@ -41,6 +41,8 @@ class SaveHistoriaClinicaRequest extends FormRequest
             "miccion" => "nullable|bool",
             "deposicion" => "nullable|bool",
             "ayuno_previo" => "nullable|bool",
+            "motivo_atencion" => "nullable|string",
+
         ];
         if($this->method() == "POST"){
             $rules = array_merge($rules, $this->agregarReglas());
