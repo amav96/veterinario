@@ -27,6 +27,7 @@ Route::prefix('historiaClinica')->group(function () {
 
 Route::prefix('tratamiento')->group(function () {
     Route::post('', [TratamientoMascotaController::class, 'save']);
+    Route::delete('{id}', [TratamientoMascotaController::class, 'delete']);
 });
 
 Route::prefix('mascota-galeria')->group(function () {

@@ -87,7 +87,7 @@ class TratamientoMascotaController extends Controller
     }
 
     
-    public function destroy($id){
+    public function delete($id){
         $tratamiento = TratamientoMascota::find($id);
 
         if(!$tratamiento){

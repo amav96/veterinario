@@ -301,6 +301,8 @@
             ...p,
             nombre: p.Producto
         }))"
+        :confirmar-antes-de-eliminar="isEditMode"
+        @remover="eliminarTratamiento($event)"
         ref="refAntiparasitarios"
         />
         <div class="flex justify-end" v-if="isEditMode">
@@ -714,19 +716,16 @@ const guardarAntiparasitario = async (data) => {
                 tipo_historia_clinica_id: tiposHistoriasClinicas.value.find((t) => t.nombre === tipoHistorialClinico.value).id
                 })
                 Swal.fire({
-                    position: "top-end",
                     icon: "success",
                     title: "Guardado correctamente",
                     showConfirmButton: false,
                     timer: 1500
                 });
-                console.log(response.data)
                 defaultValueAntiparasitarios.value = completarAntiparasitarios(response.data)
                 emit('actualizarHistorial')
             } catch (error) {
                 console.log(error)
                 Swal.fire({
-                    position: "top-end",
                     icon: "error",
                     title: "No se guardo correctamente",
                     showConfirmButton: false,
@@ -736,6 +735,18 @@ const guardarAntiparasitario = async (data) => {
         }
     }
 }
+
+const eliminarTratamiento = async (tratamiento) => {
+   
+    try {
+        const response = await axios.delete(`${baseUrl}/api/tratamiento/${tratamiento.tratamiento_id}`)
+        emit('actualizarHistorial')
+    } catch (error) {
+        console.log(error)
+    }
+       
+}
+    
 
 </script>
 
