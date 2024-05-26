@@ -215,7 +215,6 @@
         </div>
 
         <!-- antipulgas -->
-
         <div
         v-if="mostrarAntipulgas && historialClinico.antipulgas"
         class="flex flex-col"
@@ -280,7 +279,6 @@ const eliminarHistorial = (historial) => {
 
     confirmButtonText: "Si"
     }).then( async (result) => {
-        console.log(result)
         if (result.isConfirmed) {
             try {
                 const response = await axios.delete(`${baseUrl}/api/historiaClinica/${historial.id}`)

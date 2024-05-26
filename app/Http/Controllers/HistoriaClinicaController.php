@@ -79,7 +79,7 @@ class HistoriaClinicaController extends Controller
                         "mascota_id" => $request->idMascota,
                         "diagnostico_id" => $diagnostico["diagnostico_id"],
                         "historia_clinica_id" => $historiaClinica->id,
-                        "observacion" => $diagnostico["observacion"]
+                        "observacion" => isset($diagnostico["observacion"]) ? $diagnostico["observacion"] : null    
                     ]);
 
                 }
@@ -92,7 +92,7 @@ class HistoriaClinicaController extends Controller
                     "mascota_id" => $request->idMascota,
                     "examen_auxiliar_id" => $examen["examen_auxiliar_id"],
                     "historia_clinica_id" => $historiaClinica->id,
-                    "observacion" => $examen["observacion"]
+                    "observacion" => isset($examen["observacion"]) ? $examen["observacion"] : null
                 ]); 
                 }
             }
@@ -102,7 +102,7 @@ class HistoriaClinicaController extends Controller
                     TratamientoMascota::insert([
                         "mascota_id" => $request->idMascota,
                         "producto_id" => $tratamiento["producto_id"],
-                        "observacion" => $tratamiento["observacion"],
+                        "observacion" => isset($tratamiento["observacion"]) ? $tratamiento["observacion"] : null,
                         "historia_clinica_id" => $historiaClinica->id,
                         "tipo_historia_clinica_id" => TipoHistoriaClinica::TRATAMIENTO
                     ]);
@@ -114,7 +114,7 @@ class HistoriaClinicaController extends Controller
                     TratamientoMascota::insert([
                         "mascota_id" => $request->idMascota,
                         "producto_id" => $vacuna["producto_id"],
-                        "observacion" => $vacuna["observacion"],
+                        "observacion" => isset($vacuna["observacion"]) ? $vacuna["observacion"] : null,
                         "historia_clinica_id" => $historiaClinica->id,
                         "tipo_historia_clinica_id" => TipoHistoriaClinica::VACUNA
 
@@ -127,7 +127,7 @@ class HistoriaClinicaController extends Controller
                     TratamientoMascota::insert([
                         "mascota_id" => $request->idMascota,
                         "producto_id" => $anti["producto_id"],
-                        "observacion" => $anti["observacion"],
+                        "observacion" => isset($anti["observacion"]) ? $anti["observacion"] : null,
                         "historia_clinica_id" => $historiaClinica->id,
                         "tipo_historia_clinica_id" => TipoHistoriaClinica::ANTIPARASITARIO
                     ]);
@@ -139,7 +139,7 @@ class HistoriaClinicaController extends Controller
                     TratamientoMascota::insert([
                         "mascota_id" => $request->idMascota,
                         "producto_id" => $anti["producto_id"],
-                        "observacion" => $anti["observacion"],
+                        "observacion" => isset($anti["observacion"]) ? $anti["observacion"] : null,
                         "tipo_historia_clinica_id" => TipoHistoriaClinica::ANTIPULGAS,
                         "historia_clinica_id" => $historiaClinica->id,
                     ]);
