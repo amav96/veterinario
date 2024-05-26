@@ -470,11 +470,11 @@ return [
             'icon'    => 'fas fa-fw fa-boxes',
             'submenu' => [
                 [
-                    'text' => 'Carga de Stock',
+                    'text' => 'Stocks',
                     'icon' => 'fas fa-fw fa-sign-in-alt',
-                    'url'  => 'inventario',
+                    'url'  => 'stocks',
                 ],
-                [
+                /* [
                     'text' => 'Descarga de Stock',
                     'icon' => 'fas fa-fw fa-sign-out-alt',
                     'url'  => 'inventario',
@@ -483,11 +483,11 @@ return [
                     'text' => 'Transferencia',
                     'icon' => 'fas fa-fw fa-exchange-alt',
                     'url'  => 'inventario',
-                ],
+                ], */
                 [
                     'text' => 'Almacenes',
                     'icon' => 'fas fa-fw fa-warehouse',
-                    'url'  => 'inventario',
+                    'url'  => 'almacenes',
                 ],
                 // [
                 //     'text' => 'Pedido',
