@@ -120,11 +120,11 @@ $config = [
                             <tr>
                                 <td>{{ !is_null($item->servicio_id) ? $item->servicio->Servicio : $item->producto->Producto }}</td>
                                 <td>{{ !is_null($item->servicio_id) ? 'Servicio' : 'Producto' }}</td>
-                                <td>$ <span class="precio-item precio-unitario">{{ number_format(($item->subtotal / $item->cantidad), 2, ',', '') }}</span></td>
+                                <td>{{ Prices::symbol() }} <span class="precio-item precio-unitario">{{ number_format(($item->subtotal / $item->cantidad), 2, ',', '') }}</span></td>
                                 <td>x <span class="unidades-item">{{ intval($item->cantidad) }}</span> u.</td>
-                                <td>$ <span class="precio-item precio-subtotal">{{ number_format($item->subtotal, 2, ',', '') }}</span></td>
-                                <td>$ <span class="precio-item precio-impuestos">{{ number_format($item->impuestos, 2, ',', '') }}</span></td>
-                                <td>$ <span class="precio-item precio-total">{{ number_format($item->total, 2, ',', '') }}</span></td>
+                                <td>{{ Prices::symbol() }} <span class="precio-item precio-subtotal">{{ number_format($item->subtotal, 2, ',', '') }}</span></td>
+                                <td>{{ Prices::symbol() }} <span class="precio-item precio-impuestos">{{ number_format($item->impuestos, 2, ',', '') }}</span></td>
+                                <td>{{ Prices::symbol() }} <span class="precio-item precio-total">{{ number_format($item->total, 2, ',', '') }}</span></td>
                                 <td>{{ $item->mascota->Mascota }}</td>
                             </tr>
                         @endforeach
@@ -132,11 +132,11 @@ $config = [
 
                     <div id="totales">
                         <ul>
-                            <li><div>Valor de venta bruto (sin descuentos)</div><div>$ <span class="valor-venta-sin-descuentos">0.00</span></div></li>
-                            <li><div>Total descuentos</div><div>$ <span class="valor-total-descuentos">0,00</span></div></li>
-                            <li><div>Valor de venta (con descuentos)</div><div>$ <span class="valor-venta-con-descuentos">0,00</span></div></li>
-                            <li><div>Impuestos</div><div>$ <span class="valor-impuestos">0,00</span></div></li>
-                            <li><div>TOTAL FINAL</div><div>$ <span class="valor-total">0,00</span></div></li>
+                            <li><div>Valor de venta bruto (sin descuentos)</div><div>{{ Prices::symbol() }} <span class="valor-venta-sin-descuentos">0.00</span></div></li>
+                            <li><div>Total descuentos</div><div>{{ Prices::symbol() }} <span class="valor-total-descuentos">0,00</span></div></li>
+                            <li><div>Valor de venta (con descuentos)</div><div>{{ Prices::symbol() }} <span class="valor-venta-con-descuentos">0,00</span></div></li>
+                            <li><div>Impuestos</div><div>{{ Prices::symbol() }} <span class="valor-impuestos">0,00</span></div></li>
+                            <li><div>TOTAL FINAL</div><div>{{ Prices::symbol() }} <span class="valor-total">0,00</span></div></li>
                         </ul>
                     </div>
                 </div>
@@ -198,7 +198,7 @@ $config = [
                                         <tr>
                                             <td>{{ $pago->created_at }}</td>
                                             <td>{{ $pago->medio_pago->FormaDePago }}</td>
-                                            <td class="{{ $pago->tipo_movimiento_id == 3 ? 'text-danger' : 'text-success' }}">$ {{ number_format($pago->importe, 2, ',', '') }}</td>
+                                            <td class="{{ $pago->tipo_movimiento_id == 3 ? 'text-danger' : 'text-success' }}">{{ Prices::symbol() }} {{ number_format($pago->importe, 2, ',', '') }}</td>
                                             <td>{{ $pago->motivo ?? '—' }}</td>
                                             <td>{{ $pago->tipo_movimiento->nombre }}</td>
                                             <td>
@@ -221,9 +221,9 @@ $config = [
 
                             <div id="pagos">
                                 <ul>
-                                    <li><div>Dinero recibido</div><div>$ <span class="valor-dinero-recibido">{{ number_format($comprobante->dinero_recibido, 2, ',', '') }}</span></div></li>
-                                    <li><div>Saldo pendiente</div><div>$ <span class="valor-saldo-pendiente">{{ number_format($comprobante->saldo_pendiente, 2, ',', '') }}</span></div></li>
-                                    <li><div>Cambio / vuelto</div><div>$ <span class="valor-vuelto">{{ number_format($comprobante->vuelto, 2, ',', '') }}</span></div></li>
+                                    <li><div>Dinero recibido</div><div>{{ Prices::symbol() }} <span class="valor-dinero-recibido">{{ number_format($comprobante->dinero_recibido, 2, ',', '') }}</span></div></li>
+                                    <li><div>Saldo pendiente</div><div>{{ Prices::symbol() }} <span class="valor-saldo-pendiente">{{ number_format($comprobante->saldo_pendiente, 2, ',', '') }}</span></div></li>
+                                    <li><div>Cambio / vuelto</div><div>{{ Prices::symbol() }} <span class="valor-vuelto">{{ number_format($comprobante->vuelto, 2, ',', '') }}</span></div></li>
                                 </ul>
                             </div>
                         </div>

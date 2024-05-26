@@ -72,13 +72,13 @@ $config = [
                             Venta #{{ $venta_referencia }}
                         </td>
                         <td>
-                            $ {{ number_format($venta->subtotal, 2, ',', '') }}
+                            {{ Prices::symbol() }} {{ number_format($venta->subtotal, 2, ',', '') }}
                         </td>
                         <td>
-                            $ {{ number_format($venta->impuestos, 2, ',', '') }}
+                            {{ Prices::symbol() }} {{ number_format($venta->impuestos, 2, ',', '') }}
                         </td>
                         <td>
-                            $ {{ number_format($venta->total, 2, ',', '') }}
+                            {{ Prices::symbol() }} {{ number_format($venta->total, 2, ',', '') }}
                         </td>
                         <td>
                             @foreach ($venta->cliente->getMascotas as $mascota)

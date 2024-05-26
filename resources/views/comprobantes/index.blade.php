@@ -65,16 +65,16 @@ $config = [
                                 {{ $comprobante->cliente->Nombre }} {{ $comprobante->cliente->Apellido }}
                             </td>
                             <td>
-                                $ {{ number_format($comprobante->venta->total, 2, ',', '.') }}
+                                {{ Prices::symbol() }} {{ number_format($comprobante->venta->total, 2, ',', '.') }}
                             </td>
                             <td>
-                                $ {{ number_format($comprobante->dinero_recibido, 2, ',', '.') }}
+                                {{ Prices::symbol() }} {{ number_format($comprobante->dinero_recibido, 2, ',', '.') }}
                             </td>
                             <td>
-                                $ {{ number_format($comprobante->saldo_pendiente, 2, ',', '.') }}
+                                {{ Prices::symbol() }} {{ number_format($comprobante->saldo_pendiente, 2, ',', '.') }}
                             </td>
                             <td>
-                                $ {{ number_format($comprobante->vuelto, 2, ',', '.') }}
+                                {{ Prices::symbol() }} {{ number_format($comprobante->vuelto, 2, ',', '.') }}
                             </td>
                             <td>
 

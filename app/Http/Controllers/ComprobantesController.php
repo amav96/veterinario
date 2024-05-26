@@ -10,7 +10,10 @@ use App\Models\Cliente;
 use App\Models\FormaPago;
 use App\Models\TipoMovimiento;
 use App\Models\EstadoVenta;
+
 use Illuminate\Http\Request;
+
+use App\Http\Helpers\Prices;
 
 class ComprobantesController extends Controller
 {
@@ -264,7 +267,7 @@ class ComprobantesController extends Controller
         $data = [
             'fecha_hora' => $fecha_hora,
             'medio_pago' => $medio_pago_nombre,
-            'monto' => '<span class="'. ($accion == 'crear' ? 'text-success' : 'text-danger') .'">$ '. $monto .'</span>',
+            'monto' => '<span class="'. ($accion == 'crear' ? 'text-success' : 'text-danger') .'">'. Prices::symbol() .' '. $monto .'</span>',
             'motivo' => $motivo,
             'dinero_recibido' => $dinero_recibido,
             'saldo_pendiente' => $saldo_pendiente,

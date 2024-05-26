@@ -102,11 +102,11 @@ $config = [
 
                         <div id="totales">
                             <ul>
-                                <li><div>Valor de venta bruto (sin descuentos)</div><div>$ <span class="valor-venta-sin-descuentos">0.00</span></div></li>
-                                <li><div>Total descuentos</div><div>$ <span class="valor-total-descuentos">0,00</span></div></li>
-                                <li><div>Valor de venta (con descuentos)</div><div>$ <span class="valor-venta-con-descuentos">0,00</span></div></li>
-                                <li><div>Impuestos</div><div>$ <span class="valor-impuestos">0,00</span></div></li>
-                                <li><div>TOTAL FINAL</div><div>$ <span class="valor-total">0,00</span></div></li>
+                                <li><div>Valor de venta bruto (sin descuentos)</div><div>{{ Prices::symbol() }} <span class="valor-venta-sin-descuentos">0.00</span></div></li>
+                                <li><div>Total descuentos</div><div>{{ Prices::symbol() }} <span class="valor-total-descuentos">0,00</span></div></li>
+                                <li><div>Valor de venta (con descuentos)</div><div>{{ Prices::symbol() }} <span class="valor-venta-con-descuentos">0,00</span></div></li>
+                                <li><div>Impuestos</div><div>{{ Prices::symbol() }} <span class="valor-impuestos">0,00</span></div></li>
+                                <li><div>TOTAL FINAL</div><div>{{ Prices::symbol() }} <span class="valor-total">0,00</span></div></li>
                             </ul>
                         </div>
                     </div>
@@ -267,19 +267,19 @@ $config = [
                             fila += item_tipo;
                         fila += '</td>';
                         fila += '<td>';
-                            fila += '$ <span class="precio-item precio-unitario">'+ precio_unitario.toFixed(2).replace('.', ',') +'</span>';
+                            fila += '{{ Prices::symbol() }} <span class="precio-item precio-unitario">'+ precio_unitario.toFixed(2).replace('.', ',') +'</span>';
                         fila += '</td>';
                         fila += '<td width="5%">';
                             fila += '<input class="form-control form-control-sm unidades-item" type="number" min="0" value="1">';
                         fila += '</td>';
                         fila += '<td>';
-                            fila += '$ <span class="precio-item precio-subtotal">'+ precio_unitario.toFixed(2).replace('.', ',') +'</span>';
+                            fila += '{{ Prices::symbol() }} <span class="precio-item precio-subtotal">'+ precio_unitario.toFixed(2).replace('.', ',') +'</span>';
                         fila += '</td>';
                         fila += '<td>';
-                            fila += '$ <span class="precio-item precio-impuestos">'+ precio_impuestos.toFixed(2).replace('.', ',') +'</span>';
+                            fila += '{{ Prices::symbol() }} <span class="precio-item precio-impuestos">'+ precio_impuestos.toFixed(2).replace('.', ',') +'</span>';
                         fila += '</td>';
                         fila += '<td>';
-                            fila += '$ <span class="precio-item precio-total">'+ precio_total.toFixed(2).replace('.', ',') +'</span>';
+                            fila += '{{ Prices::symbol() }} <span class="precio-item precio-total">'+ precio_total.toFixed(2).replace('.', ',') +'</span>';
                         fila += '</td>';
                         fila += '<td>';
                             fila += '<select class="form-control form-control-sm mascota-item">';

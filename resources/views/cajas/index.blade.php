@@ -83,10 +83,10 @@ $config = [
                             {{ $caja->medio_pago->FormaDePago }}
                         </td>
                         <td>
-                            {!! !is_null($caja->importe_entrada) ? ('<span class="text-success">$ '. number_format($caja->importe_entrada, 2, ',', '') .'</span>') : '—' !!}
+                            {!! !is_null($caja->importe_entrada) ? ('<span class="text-success">'. Prices::symbol() .' '. number_format($caja->importe_entrada, 2, ',', '') .'</span>') : '—' !!}
                         </td>
                         <td>
-                            {!! !is_null($caja->importe_salida) ? ('<span class="text-danger">$ '. number_format($caja->importe_salida, 2, ',', '') .'</span>') : '—' !!}
+                            {!! !is_null($caja->importe_salida) ? ('<span class="text-danger">'. Prices::symbol() .' '. number_format($caja->importe_salida, 2, ',', '') .'</span>') : '—' !!}
                         </td>
                         <td>
                             <form action="{{ route('cajas.destroy', $caja->id) }}" method="post">
