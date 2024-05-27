@@ -42,15 +42,13 @@ Route::prefix('historial-compras')->group(function () {
 });
 
 Route::prefix('diagnosticoMascota')->group(function () {
-    Route::post('/', [DiagnosticoMascotaController::class, 'store']);
-    Route::put('/{id}', [DiagnosticoMascotaController::class, 'update']);
-    Route::delete('/{id}', [DiagnosticoMascotaController::class, 'destroy']);
+    Route::post('/', [DiagnosticoMascotaController::class, 'save']);
+    Route::delete('/{id}', [DiagnosticoMascotaController::class, 'delete']);
 });
 
 Route::prefix('examenAuxiliarMascota')->group(function () {
-    Route::post('/', [ExamenAuxiliarMascotaController::class, 'store']);
-    Route::put('/{id}', [ExamenAuxiliarMascotaController::class, 'update']);
-    Route::delete('/{id}', [ExamenAuxiliarMascotaController::class, 'destroy']);
+    Route::post('/', [ExamenAuxiliarMascotaController::class, 'save']);
+    Route::delete('/{id}', [ExamenAuxiliarMascotaController::class, 'delete']);
 });
 
 Route::prefix('evento')->group(function () {

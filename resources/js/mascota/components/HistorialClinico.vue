@@ -75,7 +75,7 @@
                 :tipoHistorialClinico="historialActual.tipo_historia_clinica.nombre"
                 :tiposHistoriasClinicas="tiposHistoriasClinicas"
                 :mascota-id="mascotaId"
-                :default-value="historialActual"
+                :historia-clinica="historialActual"
                 @actualizarHistorial="getHistorialClinico"
                 />
                 </div>

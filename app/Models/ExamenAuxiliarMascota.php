@@ -15,7 +15,10 @@ class ExamenAuxiliarMascota extends Model
         "mascota_id",
         "examen_auxiliar_id",
         "historial_clinica_id",
-        "indicaciones"
+        "indicaciones",
+        "updated_at",
+        "created_at"
+      
     ];
 
     public function examenAuxiliar(){

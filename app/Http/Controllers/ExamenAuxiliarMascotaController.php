@@ -6,6 +6,7 @@ use App\Http\Requests\ExamenAuxiliar\SaveExamenAuxiliarMascotaRequest;
 use App\Models\ExamenAuxiliar;
 use App\Models\ExamenAuxiliarMascota;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExamenAuxiliarMascotaController extends Controller
 {
@@ -24,30 +25,63 @@ class ExamenAuxiliarMascotaController extends Controller
         return isset($parametros["page"]) ? $query->paginate() : $query->get();
     } 
 
-    public function store(SaveExamenAuxiliarMascotaRequest $request){
-        $examenAuxiliar = new ExamenAuxiliar();
-        $examenAuxiliar->nombre = $request->nombre;
-        $examenAuxiliar->descripcion = $request->descripcion;
-        $examenAuxiliar->save();
+    public function save(SaveExamenAuxiliarMascotaRequest $request){
+  
+        DB::beginTransaction();
+
+        try {
+            
+            $actualizar = [];
+            $crear = [];
+
+            $historia_clinica_id = $request->historia_clinica_id;
+
+            foreach($request->examen_auxiliar_mascota as $examen_auxiliar) {
+                if(isset($examen_auxiliar["examen_auxiliar_mascota_id"])){
+                    $actualizar[] = $examen_auxiliar;
+                }else {
+                    $crear[] = $examen_auxiliar;
+                }
+            }   
+
+            
+            foreach($actualizar as $examenAuxiliar){
+                $examenAuxiliar = ExamenAuxiliarMascota::find($examenAuxiliar["examen_auxiliar_mascota_id"]);
+                if($examenAuxiliar){
+                    $examenAuxiliar->examen_auxiliar_id = $examenAuxiliar["examen_auxiliar_id"];
+                    $examenAuxiliar->observacion = $examenAuxiliar["observacion"];
+                    $examenAuxiliar->save();
+                }
+            }
+
+            foreach($crear as $tratamiento){
+                $nuevoExamenAuxiliar = new ExamenAuxiliarMascota();
+                $nuevoExamenAuxiliar->examen_auxiliar_id = $tratamiento["examen_auxiliar_id"];
+                $nuevoExamenAuxiliar->observacion = $tratamiento["observacion"];
+                $nuevoExamenAuxiliar->mascota_id = $tratamiento["mascota_id"];
+                $nuevoExamenAuxiliar->historia_clinica_id = $historia_clinica_id;
+                $nuevoExamenAuxiliar->save();
+            }
+
+            $examenesAuxiliaresMascotas = ExamenAuxiliarMascota::with([
+                                                    'examenAuxiliar'
+                                                ])
+                                                ->where("historia_clinica_id", $historia_clinica_id)
+                                                ->get();
+
+            } catch (\Throwable $th) {
+                DB::rollback();
+               
+                return response()->json(["message" => "Error al guardar"], 500);
+            }
+
+            DB::commit();
+            return response()->json($examenesAuxiliaresMascotas, 201);
     }
 
-    public function update(SaveExamenAuxiliarMascotaRequest $request, $id){
-        $examenAuxiliar = ExamenAuxiliar::find($id);
 
-        if(!$examenAuxiliar){
-            return response()->json(["message" => "Examen auxiliar no encontrado"], 404);
-        }
-
-        $examenAuxiliar->mascota_id = $request->mascota_id ?? $examenAuxiliar->mascota_id;
-        $examenAuxiliar->examen_auxiliar_id = $request->examen_auxiliar_id ?? $examenAuxiliar->examen_auxiliar_id;
-        $examenAuxiliar->historia_clinica_id = $request->historia_clinica_id ?? $examenAuxiliar->historia_clinica_id;
-        $examenAuxiliar->indicaciones = $request->indicaciones ?? $examenAuxiliar->indicaciones;
-    
-        $examenAuxiliar->save();
-    }
-
-    public function destroy($id){
-        $examenAuxiliar = ExamenAuxiliar::find($id);
+    public function delete($id){
+        $examenAuxiliar = ExamenAuxiliarMascota::find($id);
 
         if(!$examenAuxiliar){
             return response()->json(["message" => "Examen auxiliar no encontrado"], 404);

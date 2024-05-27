@@ -237,8 +237,20 @@
         :defaultValue="defaultValueDianosticoMascota"
         :options="diagnosticos"
         ref="refDiagnostico"
+        :confirmar-antes-de-eliminar="isEditMode"
+        @remover="eliminarDiagnosticoMascota($event)"
         />
+        <div class="flex justify-end" v-if="isEditMode">
+            <button 
+            type="button" 
+            class="btn btn-success btn-sm"
+            @click="guardarDiagnosticoMascota"
+            >
+                Guardar diagnosticos
+            </button>
+        </div>
     </div>
+    
 
     <!-- examenes auxiliares -->
     <div 
@@ -250,8 +262,19 @@
         <combo-form
         :defaultValue="defaultValueExamenAuxiliarMascota"
         :options="examenesAuxiliares"
+        :confirmar-antes-de-eliminar="isEditMode"
+        @remover="eliminarExamenAuxiliarMascota($event)"
         ref="refExamenAuxiliar"
         />
+        <div class="flex justify-end" v-if="isEditMode">
+            <button 
+            type="button" 
+            class="btn btn-success btn-sm"
+            @click="guardarExamenAuxiliarMascota"
+            >
+                Guardar examenes
+            </button>
+        </div>
     </div>
 
     <!-- tratamientos mascotas -->
@@ -267,8 +290,21 @@
             ...p,
             nombre: p.Producto
         }))"
+        :confirmar-antes-de-eliminar="isEditMode"
+        @remover="eliminarTratamiento($event)"
         ref="refTratamiento"
         />
+
+        <div class="flex justify-end" v-if="isEditMode">
+            <button 
+            type="button" 
+            class="btn btn-success btn-sm"
+            @click="guardarTratamiento(refTratamiento, defaultValueTratamientosMascotas, 'Tratamiento')"
+            >
+                Guardar tratamientos
+            </button>
+        </div>
+        
     </div>
 
     <!-- vacuna -->
@@ -284,8 +320,20 @@
             ...p,
             nombre: p.Producto
         }))"
+        :confirmar-antes-de-eliminar="isEditMode"
+        @remover="eliminarTratamiento($event)"
         ref="refVacuna"
         />
+        <div class="flex justify-end" v-if="isEditMode">
+            <button 
+            type="button" 
+            class="btn btn-success btn-sm"
+            @click="guardarTratamiento(refVacuna, defaultValueVacunas, 'Vacuna')"
+            >
+                Guardar vacunas
+            </button>
+        </div>
+        
     </div>
 
     <!-- antiparasitarios -->
@@ -309,9 +357,9 @@
             <button 
             type="button" 
             class="btn btn-success btn-sm"
-            @click="guardarAntiparasitario"
+            @click="guardarTratamiento(refAntiparasitarios, defaultValueAntiparasitarios, 'Antiparasitario')"
             >
-                Guardar nuevos
+                Guardar antiparasitarios
             </button>
         </div>
     </div>
@@ -329,8 +377,19 @@
             ...p,
             nombre: p.Producto
         }))"
+        :confirmar-antes-de-eliminar="isEditMode"
+        @remover="eliminarTratamiento($event)"
         ref="refAntipulgas"
         />
+        <div class="flex justify-end" v-if="isEditMode">
+            <button 
+            type="button" 
+            class="btn btn-success btn-sm"
+            @click="guardarTratamiento(refAntipulgas, defaultValueAntipulgas, 'Antipulgas')"
+            >
+                Guardar antipulgas
+            </button>
+        </div>
        
     </div>
 
@@ -385,7 +444,7 @@ const props =  defineProps({
     tipoHistorialClinico: String,
     tiposHistoriasClinicas: Array,
     mascotaId: Number,
-    defaultValue: {
+    historiaClinica: {
         type: Object,
         required: false,
     },
@@ -407,7 +466,7 @@ const {
     mostrarExamenClinico
  } = useHistorialClinico()
 
-const { defaultValue, tiposHistoriasClinicas, diagnosticos, examenesAuxiliares, productos, tipoHistorialClinico, mascotaId } = toRefs(props);
+const { historiaClinica, tiposHistoriasClinicas, diagnosticos, examenesAuxiliares, productos, tipoHistorialClinico, mascotaId } = toRefs(props);
 
 watch(tipoHistorialClinico, (value) => {
     tipoHistorialClinicoComposable.value = value
@@ -422,10 +481,9 @@ onMounted(async () => {
         aucomplentadoFormulario.value = false
     }
     tipoHistorialClinicoComposable.value = tipoHistorialClinico.value
-    console.log(tipoHistorialClinico.value)
 })
 
-const isEditMode = computed(() => !!defaultValue.value)
+const isEditMode = computed(() => !!historiaClinica.value)
 
 
 const formulario = reactive({
@@ -550,7 +608,6 @@ const crearHistorial = async (data) => {
 }
 
 const editarHistorial = async (data) => {
-   
     error.value = false;
     exito.value = false;
     if(guardandoHistorialClinico.value) return 
@@ -563,9 +620,8 @@ const editarHistorial = async (data) => {
 
     try {
         guardandoHistorialClinico.value = true;
-        const response = await axios.put(baseUrl + '/api/historiaClinica/' + defaultValue.value.id, data)
+        const response = await axios.put(baseUrl + '/api/historiaClinica/' + historiaClinica.value.id, data)
         exito.value = true;
-        console.log(response)
         setTimeout(() => {
             emit("actualizarHistorial")
             emit("salir")
@@ -594,82 +650,63 @@ const defaultValueAntipulgas = ref(null)
 
 const completarFormulario = () => {
 
-    formulario.fecha_atencion = defaultValue.value.fecha_atencion
-    formulario.motivo_atencion = defaultValue.value.motivo_atencion
-    formulario.descripcion = defaultValue.value.descripcion
-    formulario.temperatura = defaultValue.value.temperatura
-    formulario.frecuencia_cardiaca = defaultValue.value.frecuencia_cardiaca
-    formulario.frecuencia_respiratoria = defaultValue.value.frecuencia_respiratoria
-    formulario.peso = defaultValue.value.peso
-    formulario.porcentaje_deshidratacion = defaultValue.value.porcentaje_deshidratacion
-    formulario.tiempo_llenado_capilar = defaultValue.value.tiempo_llenado_capilar
-    formulario.presion_arterial = defaultValue.value.presion_arterial
-    formulario.examen_tacto_rectal = defaultValue.value.examen_tacto_rectal
-    formulario.examen_clinico = defaultValue.value.examen_clinico
+    formulario.fecha_atencion = historiaClinica.value.fecha_atencion
+    formulario.motivo_atencion = historiaClinica.value.motivo_atencion
+    formulario.descripcion = historiaClinica.value.descripcion
+    formulario.temperatura = historiaClinica.value.temperatura
+    formulario.frecuencia_cardiaca = historiaClinica.value.frecuencia_cardiaca
+    formulario.frecuencia_respiratoria = historiaClinica.value.frecuencia_respiratoria
+    formulario.peso = historiaClinica.value.peso
+    formulario.porcentaje_deshidratacion = historiaClinica.value.porcentaje_deshidratacion
+    formulario.tiempo_llenado_capilar = historiaClinica.value.tiempo_llenado_capilar
+    formulario.presion_arterial = historiaClinica.value.presion_arterial
+    formulario.examen_tacto_rectal = historiaClinica.value.examen_tacto_rectal
+    formulario.examen_clinico = historiaClinica.value.examen_clinico
 
-    formulario.conformidad_pago = !!defaultValue.value.conformidad_pago
-    formulario.documentacion_firmada = !!defaultValue.value.documentacion_firmada
-    formulario.riesgo_quirurgico = !!defaultValue.value.riesgo_quirurgico
-    formulario.miccion = !!defaultValue.value.miccion
-    formulario.ayuno_previo = !!defaultValue.value.ayuno_previo
-
-    if(defaultValue.value.diagnostico_mascota && defaultValue.value.diagnostico_mascota.length > 0){
-        defaultValueDianosticoMascota.value = defaultValue.value.diagnostico_mascota.map((v) => {
+    formulario.conformidad_pago = !!historiaClinica.value.conformidad_pago
+    formulario.documentacion_firmada = !!historiaClinica.value.documentacion_firmada
+    formulario.riesgo_quirurgico = !!historiaClinica.value.riesgo_quirurgico
+    formulario.miccion = !!historiaClinica.value.miccion
+    formulario.ayuno_previo = !!historiaClinica.value.ayuno_previo
+   
+    if(historiaClinica.value.diagnostico_mascota && historiaClinica.value.diagnostico_mascota.length > 0){
+        defaultValueDianosticoMascota.value = historiaClinica.value.diagnostico_mascota.map((v) => {
             return {
                 id: v.diagnostico.id,
                 nombre: v.diagnostico.nombre,
                 observacion: v.observacion,
-                diagnostico_id: v.id,
+                diagnostico_mascota_id: v.id,
             }
         })
     }
 
-    if(defaultValue.value.examen_auxiliar_mascota && defaultValue.value.examen_auxiliar_mascota.length > 0){
-        defaultValueExamenAuxiliarMascota.value = defaultValue.value.examen_auxiliar_mascota.map((v) => {
+    if(historiaClinica.value.examen_auxiliar_mascota && historiaClinica.value.examen_auxiliar_mascota.length > 0){
+        defaultValueExamenAuxiliarMascota.value = historiaClinica.value.examen_auxiliar_mascota.map((v) => {
             return {
                 id: v.examen_auxiliar.id,
                 nombre: v.examen_auxiliar.nombre,
                 observacion: v.observacion,
-                examen_auxiliar_id: v.id,
+                examen_auxiliar_mascota_id: v.id,
             }
         })
     }
 
-    if(defaultValue.value.vacunas && defaultValue.value.vacunas.length > 0){
-        defaultValueVacunas.value = defaultValue.value.vacunas.map((v) => {
-            return {
-                id: v.producto.id,
-                nombre: v.producto.Producto,
-                observacion: v.observacion,
-                tratamiento_id : v.id,
-            }
-        })
+
+    if(historiaClinica.value.tratamiento_mascota && historiaClinica.value.tratamiento_mascota.length > 0){
+        defaultValueTratamientosMascotas.value = getTratamiento(historiaClinica.value.tratamiento_mascota)
     }
 
-    if(defaultValue.value.tratamiento_mascota && defaultValue.value.tratamiento_mascota.length > 0){
-        defaultValueTratamientosMascotas.value = defaultValue.value.tratamiento_mascota.map((v) => {
-            return {
-                id: v.producto.id,
-                nombre: v.producto.Producto,
-                observacion: v.observacion,
-                tratamiento_id : v.id,
-            }
-        })
+    if(historiaClinica.value.vacunas && historiaClinica.value.vacunas.length > 0){
+        defaultValueVacunas.value = getTratamiento(historiaClinica.value.vacunas)
     }
-    if(defaultValue.value.antiparasitarios && defaultValue.value.antiparasitarios.length > 0){
-        defaultValueAntiparasitarios.value = completarAntiparasitarios(defaultValue.value.antiparasitarios)
+
+    if(historiaClinica.value.antiparasitarios && historiaClinica.value.antiparasitarios.length > 0){
+        defaultValueAntiparasitarios.value = getTratamiento(historiaClinica.value.antiparasitarios)
     }
 
 
-    if(defaultValue.value.antipulgas && defaultValue.value.antipulgas.length > 0){
-        defaultValueAntipulgas.value = defaultValue.value.antipulgas.map((v) => {
-            return {
-                id: v.producto.id,
-                nombre: v.producto.Producto,
-                observacion: v.observacion,
-                tratamiento_id : v.id,
-            }
-        })
+    if(historiaClinica.value.antipulgas && historiaClinica.value.antipulgas.length > 0){
+        defaultValueAntipulgas.value = getTratamiento(historiaClinica.value.antipulgas)
     }
 }
 
@@ -683,7 +720,7 @@ watch(formulario, (value) => {
     }
 })
 
-const completarAntiparasitarios = (value) => {
+const getTratamiento = (value) => {
     return value.map((v) => {
             return {
                 id: v.producto.id,
@@ -694,10 +731,10 @@ const completarAntiparasitarios = (value) => {
     })
 }
 
-const guardarAntiparasitario = async (data) => {
+const guardarTratamiento = async (ref, defaultValue, tipoHistorialClinico) => {
     if(isEditMode.value){
-        if(refAntiparasitarios?.value?.combos){
-            let tratamientos = refAntiparasitarios.value.combos.map((d) => {
+        if(ref?.combos){
+            let tratamientos = ref.combos.map((d) => {
                 let objeto = {
                     ...d,
                     producto_id : d.id,
@@ -712,8 +749,8 @@ const guardarAntiparasitario = async (data) => {
             try {
                 const response = await  axios.post(baseUrl + '/api/tratamiento', {
                 tratamientos,
-                historia_clinica_id: defaultValue.value.id,
-                tipo_historia_clinica_id: tiposHistoriasClinicas.value.find((t) => t.nombre === tipoHistorialClinico.value).id
+                historia_clinica_id: historiaClinica.value.id,
+                tipo_historia_clinica_id: tiposHistoriasClinicas.value.find((t) => t.nombre === tipoHistorialClinico).id
                 })
                 Swal.fire({
                     icon: "success",
@@ -721,7 +758,7 @@ const guardarAntiparasitario = async (data) => {
                     showConfirmButton: false,
                     timer: 1500
                 });
-                defaultValueAntiparasitarios.value = completarAntiparasitarios(response.data)
+                defaultValue = getTratamiento(response.data)
                 emit('actualizarHistorial')
             } catch (error) {
                 console.log(error)
@@ -737,7 +774,9 @@ const guardarAntiparasitario = async (data) => {
 }
 
 const eliminarTratamiento = async (tratamiento) => {
-   
+    if(!tratamiento.tratamiento_id){
+        return
+    }
     try {
         const response = await axios.delete(`${baseUrl}/api/tratamiento/${tratamiento.tratamiento_id}`)
         emit('actualizarHistorial')
@@ -745,6 +784,128 @@ const eliminarTratamiento = async (tratamiento) => {
         console.log(error)
     }
        
+}
+
+const guardarExamenAuxiliarMascota = async () => {
+    if(isEditMode.value){
+        if(refExamenAuxiliar?.value?.combos){
+            let examen_auxiliar_mascota = refExamenAuxiliar.value.combos.map((d) => {
+                let objeto = {
+                    ...d,
+                    examen_auxiliar_id: d.id,
+                    observacion: d.observacion,
+                    mascota_id: mascotaId.value,
+                }
+                delete objeto.id
+                delete objeto.nombre
+                return objeto
+            })
+           
+            try {
+                const response = await  axios.post(baseUrl + '/api/examenAuxiliarMascota', {
+                examen_auxiliar_mascota,
+                historia_clinica_id: historiaClinica.value.id,
+                tipo_historia_clinica_id: tiposHistoriasClinicas.value.find((t) => t.nombre === tipoHistorialClinico.value).id
+                })
+                Swal.fire({
+                    icon: "success",
+                    title: "Guardado correctamente",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                defaultValueExamenAuxiliarMascota.value = response.data.map((v) => {
+                    return {
+                        id: v.examen_auxiliar.id,
+                        nombre: v.examen_auxiliar.nombre,
+                        observacion: v.observacion,
+                        examen_auxiliar_mascota_id: v.id,
+                    }
+                    
+                })
+                emit('actualizarHistorial')
+            } catch (error) {
+                console.log(error)
+                Swal.fire({
+                    icon: "error",
+                    title: "No se guardo correctamente",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+    }
+}
+
+const eliminarExamenAuxiliarMascota = async (examen) => {
+    if(!examen.examen_auxiliar_mascota_id){
+        return
+    }
+    try {
+        const response = await axios.delete(`${baseUrl}/api/examenAuxiliarMascota/${examen.examen_auxiliar_mascota_id}`)
+        emit('actualizarHistorial')
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const guardarDiagnosticoMascota = async () => {
+    if(isEditMode.value){
+        if(refDiagnostico?.value?.combos){
+            let diagnostico_mascota = refDiagnostico.value.combos.map((d) => {
+                let objeto = {
+                    ...d,
+                    diagnostico_id: d.id,
+                    observacion: d.observacion,
+                    mascota_id: mascotaId.value,
+                }
+                delete objeto.id
+                delete objeto.nombre
+                return objeto
+            })
+            try {
+                const response = await  axios.post(baseUrl + '/api/diagnosticoMascota', {
+                diagnostico_mascota,
+                historia_clinica_id: historiaClinica.value.id,
+                tipo_historia_clinica_id: tiposHistoriasClinicas.value.find((t) => t.nombre === tipoHistorialClinico.value).id
+                })
+                Swal.fire({
+                    icon: "success",
+                    title: "Guardado correctamente",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                defaultValueDianosticoMascota.value = response.data.map((v) => {
+                    return {
+                        id: v.diagnostico.id,
+                        nombre: v.diagnostico.nombre,
+                        observacion: v.observacion,
+                        diagnostico_id: v.id,
+                    }
+                })
+                emit('actualizarHistorial')
+            } catch (error) {
+                console.log(error)
+                Swal.fire({
+                    icon: "error",
+                    title: "No se guardo correctamente",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+    }
+}
+
+const eliminarDiagnosticoMascota = async (diagnostico) => {
+    if(!diagnostico.diagnostico_mascota_id){
+        return
+    }
+    try {
+        const response = await axios.delete(`${baseUrl}/api/diagnosticoMascota/${diagnostico.diagnostico_mascota_id}`)
+        emit('actualizarHistorial')
+    } catch (error) {
+        console.log(error)
+    }
 }
     
 

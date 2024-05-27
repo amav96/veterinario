@@ -196,7 +196,7 @@
 
         <!-- antiparasitario -->
         <div
-        v-if="mostrarAntiparasitarios && historialClinico.antiparasitarios"
+        v-if="mostrarAntiparasitarios && historialClinico.antiparasitarios && historialClinico.antiparasitarios.length > 0"
         class="flex flex-col"
         >
             <div class="font-semibold">
@@ -247,10 +247,10 @@ import axios from 'axios';
 
 const props =  defineProps({
   historialClinico: Object,
-  tipoHistorialClinico: String,
+
 })
 
-const { historialClinico, tipoHistorialClinico } = toRefs(props);
+const { historialClinico } = toRefs(props);
 
 const emit = defineEmits(['eliminarHistorial', 'editarHistorial'])
 
@@ -270,6 +270,13 @@ const {
 
 onMounted(() => {
     tipoHistorialClinicoComposable.value = historialClinico.value.tipo_historia_clinica.nombre
+})
+
+watch(historialClinico, (value) => {
+    if(value){
+        tipoHistorialClinicoComposable.value = value.tipo_historia_clinica.nombre
+    }
+   
 })
 
 const eliminarHistorial = (historial) => {
