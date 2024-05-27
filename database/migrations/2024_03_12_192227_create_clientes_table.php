@@ -53,38 +53,46 @@ return new class extends Migration
                 "Apellido" => "admin",
                 "DocumentoIdentidad" => "20202020",
                 "FechaNacimiento" => "2000-10-10",
-                "Email" => "dennis@gmail.com"
+                "Email" => "dennis@gmail.com",
+                "created_at" => now(),
+                "updated_at" => now()
            ],
-              [
-                 "idDepartamento" => 15,
-                 "idProvincia" => 135,
-                 "idDistrito" => 1406,
-                 "Nombre" => "pedro",
-                 "Apellido" => "perez",
-                 "DocumentoIdentidad" => "20202020",
-                 "FechaNacimiento" => "2000-10-10",
-                 "Email" => "pedro@gmail.com"
-              ],
-              [
-                 "idDepartamento" => 7,
-                 "idProvincia" => 67,
-                 "idDistrito" => 691,
-                 "Nombre" => "cristiano",
-                 "Apellido" => "ronaldo",
-                 "DocumentoIdentidad" => "10101010",
-                 "FechaNacimiento" => "1990-02-02",
-                 "Email" => "cristiano@gmail.com"
-              ],
-              [
-                 "idDepartamento" => 1,
-                 "idProvincia" => 1,
-                 "idDistrito" => 251,
-                 "Nombre" => "alvaro",
-                 "Apellido" => "petrolino",
-                 "DocumentoIdentidad" => "30303030",
-                 "FechaNacimiento" => "1986-11-04",
-                 "Email" => "petrolino@gmail.com"
-              ]
+            [
+            "idDepartamento" => 15,
+            "idProvincia" => 135,
+            "idDistrito" => 1406,
+            "Nombre" => "pedro",
+            "Apellido" => "perez",
+            "DocumentoIdentidad" => "20202020",
+            "FechaNacimiento" => "2000-10-10",
+            "Email" => "pedro@gmail.com",
+            "created_at" => now(),
+            "updated_at" => now()
+            ],
+            [
+            "idDepartamento" => 7,
+            "idProvincia" => 67,
+            "idDistrito" => 691,
+            "Nombre" => "cristiano",
+            "Apellido" => "ronaldo",
+            "DocumentoIdentidad" => "10101010",
+            "FechaNacimiento" => "1990-02-02",
+            "Email" => "cristiano@gmail.com",
+            "created_at" => now(),
+            "updated_at" => now()
+            ],
+            [
+            "idDepartamento" => 1,
+            "idProvincia" => 1,
+            "idDistrito" => 251,
+            "Nombre" => "alvaro",
+            "Apellido" => "petrolino",
+            "DocumentoIdentidad" => "30303030",
+            "FechaNacimiento" => "1986-11-04",
+            "Email" => "petrolino@gmail.com",
+            "created_at" => now(),
+            "updated_at" => now()
+            ]
         ]);
         DB::statement("SET foreign_key_checks=1");
 

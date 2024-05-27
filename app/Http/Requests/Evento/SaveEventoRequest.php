@@ -23,13 +23,15 @@ class SaveEventoRequest extends FormRequest
     {
         
         return [
-            "idCliente" => "required|exists:clientes,id",
-            "idUsuario" => "required|exists:users,id",
+            "idCliente"         => "required|exists:clientes,id",
+            "idUsuario"         => "required|exists:users,id",
             "idNotificacion"    => "required",
-            "Evento" => "required|string",
-            "FechaInicio" => "required|date",
-            "FechaFin" => "required|date",
-            "Observacion" => "required|string",
+            "idEstadoEvento"    => "required|exists:estado_eventos,id",
+            "Evento"            => "required|string",
+            "FechaInicio"       => "required|date",
+            "FechaFin"          => "required|date",
+            "Observacion"       => "required|string",
+            "idMascota"         => "required|exists:mascotas,id",
         ];
     }
 }
