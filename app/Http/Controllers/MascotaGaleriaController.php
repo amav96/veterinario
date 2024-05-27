@@ -29,7 +29,7 @@ class MascotaGaleriaController extends Controller
     }
 
     public function guardarGaleria($archivo, $idMascota){
-        $nombreArchivo = $archivo->getClientOriginalName().'_'.$idMascota.'.'.$archivo->getClientOriginalExtension();
+        $nombreArchivo = pathinfo($archivo->getClientOriginalName(), PATHINFO_FILENAME).'_'.$idMascota.$archivo->getClientOriginalExtension();
         $path = $archivo->storeAs('mascota_galeria', $nombreArchivo, 'public');
         return $path;
     }

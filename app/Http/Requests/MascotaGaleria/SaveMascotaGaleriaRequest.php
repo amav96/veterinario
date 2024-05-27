@@ -23,8 +23,8 @@ class SaveMascotaGaleriaRequest extends FormRequest
     {
         return [
             "mascota_id"    => "required|integer|exists:mascotas,id",
-            "galeria"   => "required|array",
-            "galeria.*" => "required|mimes:jpeg,png,jpg,gif,svg,pdf|max:2048"
+            "galeria"       => "required|array",
+            "galeria.*"     => "required|mimes:jpeg,png,jpg,gif,svg,pdf|max:2048"
         ];
     }
 }

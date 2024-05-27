@@ -24,7 +24,9 @@
     </div>
 </div>  
 <div id="app">
-    <galeria/>
+    <galeria
+    :mascota='@json($mascota)'
+    />
 </div>
 
 @stop
