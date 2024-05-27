@@ -215,4 +215,21 @@ class ClienteController extends Controller
 
     }
 
+    public function auditoria(Request $request, $modulo){
+        if(!$modulo){
+            return response()->json(["error" => "El modulo es requerido"]);
+        }
+
+        $movimientosService = new MovimientoService();
+
+        $parametros= $request->all();
+        $parametros["modulo"] = $modulo;
+        
+        $movimientos = $movimientosService->findAll($parametros);
+   
+        return view('clientes.auditoria', [
+            'movimientos' => $movimientos,
+        ]);
+    }
+
 }

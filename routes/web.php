@@ -49,6 +49,7 @@ Route::get('/producto/{modulo}/auditoria', [ProductoController::class, 'auditori
 Route::resource('/servicio', ServicioController::class);
 Route::get('/servicio/{modulo}/auditoria', [ServicioController::class, 'auditoria']);
 Route::resource('/cliente', ClienteController::class);
+Route::get('/cliente/{modulo}/auditoria', [ClienteController::class, 'auditoria']);
 
 Route::resource('/mascota', MascotaController::class)->middleware('auth');
 Route::get('/mascota/{id}/historial-clinico', [MascotaController::class, 'historialClinico']);

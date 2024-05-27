@@ -342,6 +342,11 @@ return [
                     'icon' => 'fas fa-fw fa-chart-pie',
                     'url'  => 'clienteGraf',
                 ],
+                [
+                    'text' => 'Auditoria',
+                    'icon' => 'fas fa-fw fa-chart-pie',
+                    'url'  => 'cliente/cliente/auditoria',
+                ],
             ]
         ],
         [
