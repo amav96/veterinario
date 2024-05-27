@@ -139,6 +139,7 @@ return [
     'usermenu_image' => false,
     'usermenu_desc' => false,
     'usermenu_profile_url' => false,
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -311,6 +312,23 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+        
+       
+        [
+            'type'         => 'navbar-notification',
+            'icon'         => 'fa fa-user-plus',
+            'topnav_right' => true,
+            'url'          => 'cliente/create',
+            'id'           => 'idCrearCliente', 
+        ],
+        [
+            'type'         => 'navbar-notification',
+            'icon'         => 'fa fa-paw',
+            'topnav_right' => true,
+            'url'          => 'mascota/create',
+            'id'           => 'idCrearMascota', 
+        ],
+     
 
         // Sidebar items:
         [
@@ -584,6 +602,7 @@ return [
                 ],
             ]
         ],
+        
 
     ],
 
