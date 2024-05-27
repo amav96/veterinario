@@ -6,6 +6,7 @@ use App\Http\Services\MovimientoService;
 use App\Models\Producto;
 use App\Models\Linea;
 use App\Models\Categoria;
+use App\Models\Movimiento;
 use App\Models\SubCategoria;
 use App\Models\UnidadMedida;
 use App\Models\Presentacion;
@@ -186,5 +187,23 @@ class ProductoController extends Controller
     public function destroy(Producto $producto)
     {
         //
+    }
+
+    public function auditoria(Request $request, $modulo){
+        if(!$modulo){
+            return response()->json(["error" => "El modulo es requerido"]);
+        }
+
+        $movimientosService = new MovimientoService();
+
+        $parametros= $request->all();
+        $parametros["modulo"] = $modulo;
+        
+        $movimientos = $movimientosService->findAll($parametros);
+   
+        return view('productos.auditoria', [
+            'movimientos' => $movimientos,
+            'modulo' => $modulo
+        ]);
     }
 }

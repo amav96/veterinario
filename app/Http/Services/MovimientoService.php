@@ -6,6 +6,30 @@ use App\Models\Movimiento;
 
 class MovimientoService {
 
+    public function findAll(array $request){
+        if(!isset($request["modulo"])){
+            return response()->json(["error" => "El modulo es requerido"]);
+        }
+        $modulo = $request["modulo"];
+        $movimientos = Movimiento::where("modulo", $modulo)
+                        ->with([
+                            "tipoMovimiento",
+                            "usuario"
+                        ])
+                        ->when(isset($request["fecha_desde"]), function($query) use ($request){
+                            $query->whereDate("created_at", ">=", $request["fecha_desde"]);
+                        })
+                        ->when(isset($request["fecha_hasta"]), function($query) use ($request){
+                            $query->whereDate("created_at", "<=", $request["fecha_hasta"]);
+                        })
+                        ->when(isset($request["usuario_id"]), function($query) use ($request){
+                            $query->where("usuario_id", $request["usuario_id"]);
+                        })
+                        ->get();
+
+        return $movimientos;
+    }
+
     public function create(array $data){
         $this->validarCamposYDevolverError($data);
         $movimiento = new Movimiento();
@@ -43,7 +67,7 @@ class MovimientoService {
         $valorNuevo = json_decode($valorNuevo, true);
        
         foreach($valorAnterior as $key => $value){
-            if($valorAnterior[$key] != $valorNuevo[$key]){
+            if($valorAnterior[$key] != $valorNuevo[$key] && $key !== "updated_at"){
                 $diferencias[$key] = $valorAnterior[$key];
             }
         }

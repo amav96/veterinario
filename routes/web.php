@@ -43,8 +43,11 @@ Route::middleware('auth')->group(function () {
 });
 //########################
 Route::resource('/proveedor', ProveedorController::class);
+
 Route::resource('/producto', ProductoController::class);
+Route::get('/producto/{modulo}/auditoria', [ProductoController::class, 'auditoria']);
 Route::resource('/servicio', ServicioController::class);
+Route::get('/servicio/{modulo}/auditoria', [ServicioController::class, 'auditoria']);
 Route::resource('/cliente', ClienteController::class);
 
 Route::resource('/mascota', MascotaController::class)->middleware('auth');
