@@ -1,5 +1,8 @@
 <template>
    <div>
+        <div v-if="cargandoHistorial">
+            Cargando Historial...
+        </div>
         <div class="flex flex-row justify-end " >
             <div class="dropdown items-end">
               
@@ -35,7 +38,7 @@
             
         </template>
 
-        <div v-else class="flex flex-col">
+        <div v-else-if="historiasClinicas && historiasClinicas.length > 0 && !cargandoHistorial" class="flex flex-col">
             <div 
             v-for="(item, index) in historiasClinicas"
             :key="index"
@@ -48,6 +51,9 @@
                 />
                
             </div>
+        </div>
+        <div v-else-if="historiasClinicas.length === 0 && !cargandoHistorial">
+            No hay historial clinico
         </div>
 
         <div 
@@ -118,10 +124,13 @@ const tiposHistoriasClinicasFiltradas = ref(tiposHistoriasClinicas.value.filter(
 onMounted(() => {
     getHistorialClinico()
 })
+const cargandoHistorial = ref(false)
 const getHistorialClinico = async () => {
     tipoHistorialClinico.value = null
+    cargandoHistorial.value = true
     const response = await axios.get(`${baseUrl}/api/historiaClinica?mascota_id=${mascotaId.value}`)
     historiasClinicas.value = response.data
+    cargandoHistorial.value = false
 }
 
 const eliminarHistorial = (historial) => {

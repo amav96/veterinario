@@ -24,7 +24,9 @@
     </div>
 </div>  
 <div id="app">
-    <historial-compra/>
+    <historial-compra
+    :mascota='@json($mascota)'
+    />
 </div>
 
 @stop

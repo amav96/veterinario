@@ -5,6 +5,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import '@trevoreyre/autocomplete-vue/dist/style.css'
 
 
+
 const app =  createApp({
     components: {
       HistorialCompra

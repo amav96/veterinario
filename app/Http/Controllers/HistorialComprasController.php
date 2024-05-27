@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Venta;
 use App\Models\VentaItem;
 use Illuminate\Http\Request;
 

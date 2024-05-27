@@ -22,6 +22,8 @@
     "dependencies": {
         "@trevoreyre/autocomplete-vue": "^3.0.2",
         "@vitejs/plugin-vue": "^5.0.4",
+        "datatables.net-bs5": "^2.0.7",
+        "datatables.net-vue3": "^3.0.1",
         "tiny-emitter": "^2.1.0",
         "vue-sweetalert2": "^5.0.10"
     }
