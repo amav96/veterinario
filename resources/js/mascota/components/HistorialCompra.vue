@@ -5,7 +5,7 @@
         v-if="historialCompra && historialCompra.length > 0"
         :data="historialCompra"
         :columns="columns"
-         class="display"
+         class="table"
         />
           
         
@@ -69,11 +69,9 @@ const columns = [
         title: 'Total'
     },
     {
-        data: 'created_at',
+        data: 'created_at_transformado',
         title: 'Fecha',
-        render: function(data, type, row) {
-            return data ? data.substring(0, 10) : '';
-        }
+      
     },
 ]
 
@@ -83,15 +81,6 @@ const columns = [
 <style>
 @import 'bootstrap';
 @import 'datatables.net-bs5';
-
-.dataTable  {
-    border-collapse: separate !important;
-}
-
-.dataTable  th,
-.dataTable  td {
-    border: 1px solid #ddd !important;
-}
 
 
 </style>
