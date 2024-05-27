@@ -129,12 +129,29 @@ class MascotaController extends Controller
                                     'tipoHistoriaClinica'
                                 ])
                                 ->get();
-        return view('mascotas.historialClinico',[
+        return view('mascotas.historialClinico', [
             'mascota'                   => $mascota,
             'tiposHistoriasClinicas'    => TipoHistoriaClinica::all(),
             'diagnosticos'              => Diagnostico::all(),
             'examenesAuxiliares'        => ExamenAuxiliar::all(),
             'productos'                 => Producto::all()
+        ]);
+    }
+
+    public function galeria($id)
+    {
+        $mascota = Mascota::find($id);
+        return view('mascotas.galeria', [
+            'mascota'                   => $mascota,
+            
+        ]);
+    }
+
+    public function historialCompra($id)
+    {
+        $mascota = Mascota::find($id);
+        return view('mascotas.historialCompra', [
+            'mascota'                   => $mascota,
         ]);
     }
 

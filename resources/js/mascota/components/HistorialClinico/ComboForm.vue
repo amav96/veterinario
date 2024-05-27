@@ -76,7 +76,6 @@ onMounted(() => {
 })
 
 watch(defaultValue, (value) => {
-    console.log("watch", value)
     if (value) {
         combos.value = [...value]
     }
@@ -111,7 +110,6 @@ const removerCombo = (index) => {
             confirmButtonText: "Si"
         }).then( async (result) => {
             if (result.isConfirmed) {
-                console.log("eliminado")
                 let combo = {...combos.value[index]}
                 combos.value.splice(index, 1)
                 emit('remover', combo)

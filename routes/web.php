@@ -47,8 +47,10 @@ Route::resource('/producto', ProductoController::class);
 Route::resource('/servicio', ServicioController::class);
 Route::resource('/cliente', ClienteController::class);
 
-Route::resource('/mascota', MascotaController::class);
-Route::get('/mascota/{id}/historial-clinico', [MascotaController::class, 'historialClinico'])->name('mascota.historial-clinico');
+Route::resource('/mascota', MascotaController::class)->middleware('auth');
+Route::get('/mascota/{id}/historial-clinico', [MascotaController::class, 'historialClinico']);
+Route::get('/mascota/{id}/galeria', [MascotaController::class, 'galeria']);
+Route::get('/mascota/{id}/historial-compra', [MascotaController::class, 'historialCompra']);
 
 
 //Route::resource('/evento', EventoController::class);
