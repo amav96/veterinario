@@ -206,4 +206,13 @@ class ProductoController extends Controller
             'modulo' => $modulo
         ]);
     }
+
+    public function galeria($id)
+    {
+        $producto = Producto::find($id);
+
+        return view('productos.galeria', [
+            'producto'=> $producto,
+        ]);
+    }
 }

@@ -8,8 +8,13 @@
 
 @section('content')
 <div class="card card-success">
-    <div class="card-header">
-        <h3 class="card-title">Modificar Producto</h3>
+    <div class="card-header flex flex-row items-center gap-4">
+        <a href="{{url('producto/'.$producto->id.'/edit')}}"  class="bg-yellow-600 p-2 rounded">
+                   Modificar Producto
+        </a>
+        <a  href="{{url('producto/'.$producto->id.'/galeria')}}" class="bg-yellow-400 p-2 rounded">
+            Galeria
+        </a>
     </div>
     <form action="{{ url('producto/'.$producto->id)}}" method="post">
         @method("PUT")
@@ -162,6 +167,10 @@
 </div>  
 
 @stop
+
+@push('css')
+    <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
+@endpush
 
 @push('js')
 <!-- <script type='text/javascript' src="https://rawgit.com/RobinHerbots/jquery.inputmask/3.x/dist/jquery.inputmask.bundle.js"></script> -->

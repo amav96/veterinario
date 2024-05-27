@@ -8,6 +8,7 @@ use App\Http\Controllers\HistoriaClinicaAdjuntoController;
 use App\Http\Controllers\HistorialComprasController;
 use App\Http\Controllers\MascotaGaleriaController;
 use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\ProductoGaleriaController;
 use App\Http\Controllers\TratamientoMascotaController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,12 @@ Route::prefix('mascota-galeria')->group(function () {
     Route::get('/', [MascotaGaleriaController::class, 'findAll']);
     Route::post('/', [MascotaGaleriaController::class, 'store']);
     Route::delete('/{id}', [MascotaGaleriaController::class, 'delete']);
+});
+
+Route::prefix('producto-galeria')->group(function () {
+    Route::get('/', [ProductoGaleriaController::class, 'findAll']);
+    Route::post('/', [ProductoGaleriaController::class, 'store']);
+    Route::delete('/{id}', [ProductoGaleriaController::class, 'delete']);
 });
 
 Route::prefix('historial-compras')->group(function () {

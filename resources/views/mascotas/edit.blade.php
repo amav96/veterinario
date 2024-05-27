@@ -173,7 +173,6 @@
 @stop
 
 @push('css')
-{{-- mix('resources/css/app.css') --}}
     <link rel="stylesheet" href="{{ mix('resources/css/app.css') }}">
 @endpush
 
