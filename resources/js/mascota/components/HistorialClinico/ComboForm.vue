@@ -40,6 +40,8 @@
 <script setup>
 import { ref, toRefs, onMounted, watch } from 'vue';
 import Autocomplete from '@trevoreyre/autocomplete-vue'
+import Swal from 'sweetalert2'
+
 
 const props = defineProps({
   defaultValue: {
@@ -55,11 +57,16 @@ const props = defineProps({
     type: Array,
     required: false,
   },
+  confirmarAntesDeEliminar: {
+    type: Boolean,
+    default: false,
+    required: false,
+  }
 });
 
 const emit = defineEmits(['submit', 'remover'])
 
-const { defaultValue, options } = toRefs(props);
+const { defaultValue, options, confirmarAntesDeEliminar } = toRefs(props);
 
 onMounted(() => {
     if(defaultValue.value){
@@ -69,7 +76,6 @@ onMounted(() => {
 })
 
 watch(defaultValue, (value) => {
-    console.log("watch", value)
     if (value) {
         combos.value = [...value]
     }
@@ -97,9 +103,24 @@ const onSubmit = (value) => {
 const combos = ref([])
 
 const removerCombo = (index) => {
-    let combo = {...combos.value[index]}
-    combos.value.splice(index, 1)
-    emit('remover', combo)
+    if(confirmarAntesDeEliminar.value){
+        Swal.fire({
+            title: "Estas seguro",
+            showCancelButton: true,
+            confirmButtonText: "Si"
+        }).then( async (result) => {
+            if (result.isConfirmed) {
+                let combo = {...combos.value[index]}
+                combos.value.splice(index, 1)
+                emit('remover', combo)
+            }
+        })  
+    } else {
+        let combo = {...combos.value[index]}
+        combos.value.splice(index, 1)
+        emit('remover', combo)
+    }
+    
 }
 
 defineExpose({

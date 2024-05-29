@@ -30,21 +30,31 @@
             <div class="col-md-6">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Registro de Clientes</h3>
+                <h3 class="card-title">Registro de Clientes por mes</h3>
 
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                </div>
+               
               </div>
               <div class="card-body">
                 <div class="chart">
-                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                  <canvas id="barChartmes" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                 </div>
               </div>
               <!-- /.card-body -->
             </div>
+
+            <div class="card card-info">
+                <div class="card-header">
+                  <h3 class="card-title">Registro de Clientes por zona</h3>
+  
+                  
+                </div>
+                <div class="card-body">
+                  <div class="chart">
+                    <canvas id="barChartProvincia" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+              </div>
             </div>
             <div class="col-md-6">
             </div>
@@ -61,27 +71,59 @@
 <script>
     $(document).ready(function() {
 
-        var barChartCanvas = $('#barChart').get(0).getContext('2d');
-        var labels = {!! json_encode($result->pluck('Mes'))!!};
-        var barChartOptions = {
-            responsive              : true,
-            maintainAspectRatio     : false,
-            datasetFill             : false
-        }
+        function getGraficoPorMes(){
+            var barChartCanvas = $('#barChartmes').get(0).getContext('2d');
+            var labels = {!! json_encode($clientesPorMes->pluck('Mes'))!!};
+            var barChartOptions = {
+                responsive              : true,
+                maintainAspectRatio     : false,
+                datasetFill             : false,
+            }
 
-    var barChart = new Chart(barChartCanvas, {
-      type: 'bar', 
-      data: {
-            labels: labels,
-            datasets: [{
-                data: {!! json_encode($result->pluck('Total'))!!},
-                backgroundColor: [
-                    'rgba(0, 123, 255, 0.8)'
-                ],
-            }]
-        },
-      options: barChartOptions
-    })
+            var barChart = new Chart(barChartCanvas, {
+                
+            type: 'bar', 
+            data: {
+                    labels: labels,
+                    datasets: [{
+                        data: {!! json_encode($clientesPorMes->pluck('Total'))!!},
+                        backgroundColor: [
+                            'rgba(0, 123, 255, 0.8)'
+                        ],
+                        label: "Meses",
+                    }]
+                },
+            options: barChartOptions
+            })
+        }
+        getGraficoPorMes();
+
+        function getGraficoPorProvincia(){
+            var barChartCanvas = $('#barChartProvincia').get(0).getContext('2d');
+            var labels = {!! json_encode($clientesPorProvincia->pluck('provincia.Provincia'))!!};
+            var barChartOptions = {
+                responsive              : true,
+                maintainAspectRatio     : false,
+                datasetFill             : false,
+            }
+
+            var barChart = new Chart(barChartCanvas, {
+                
+            type: 'bar', 
+            data: {
+                    labels: labels,
+                    datasets: [{
+                        data: {!! json_encode($clientesPorProvincia->pluck('Total'))!!},
+                        backgroundColor: [
+                            'rgba(0, 123, 255, 0.8)'
+                        ],
+                        label: "Provincias",
+                    }]
+                },
+            options: barChartOptions
+            })
+        }
+        getGraficoPorProvincia()
 
     });
 </script>

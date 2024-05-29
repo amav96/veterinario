@@ -75,12 +75,12 @@ class EventoController extends Controller
         $evento->idUsuario = $request->input('idUsuario');
         $evento->idNotificacion = $request->input('idNotificacion');
         $evento->Evento = $request->input('Evento');
-        $evento->idTipoEvento = $request->input('TipoEvento');
-        $evento->idEstadoEvento = $request->input('EstadoEvento');
+        $evento->idTipoEvento = $request->input('idTipoEvento');
+        $evento->idEstadoEvento = $request->input('idEstadoEvento');
         $evento->FechaInicio = $request->input('FechaInicio');
         $evento->FechaFin = $request->input('FechaFin');
         $evento->Observacion = $request->input('Observacion');
-        $evento->idMascota = $request->input('Mascota');
+        $evento->idMascota = $request->input('idMascota');
         $evento->save();
 
         return response()->json($evento, 200);
@@ -118,12 +118,12 @@ class EventoController extends Controller
         $evento->idUsuario = $request->input('idUsuario') ?? $evento->idUsuario;
         $evento->idNotificacion = $request->input('idNotificacion') ?? $evento->idNotificacion;
         $evento->Evento = $request->input('Evento') ?? $evento->Evento;
-        $evento->idTipoEvento = $request->input('TipoEvento') ?? $evento->idTipoEvento;
-        $evento->idEstadoEvento = $request->input('EstadoEvento') ?? $evento->idEstadoEvento;
+        $evento->idTipoEvento = $request->input('idTipoEvento') ?? $evento->idTipoEvento;
+        $evento->idEstadoEvento = $request->input('idEstadoEvento') ?? $evento->idEstadoEvento;
         $evento->FechaInicio = $request->input('FechaInicio') ?? $evento->FechaInicio;
         $evento->FechaFin = $request->input('FechaFin') ??  $evento->FechaFin;
         $evento->Observacion = $request->input('Observacion') ?? $evento->Observacion;
-        $evento->idMascota = $request->input('Mascota') ?? $evento->idMascota;
+        $evento->idMascota = $request->input('idMascota') ?? $evento->idMascota;
         $evento->save();
        
 

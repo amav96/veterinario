@@ -187,12 +187,49 @@ class ClienteController extends Controller
     }
 
     public function  getGrafico(){
-        $result = Cliente::select('created_at', DB::raw('count(*) as Total'), DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as Mes"))
+        $clientesPorProvincia = 
+                    Cliente::select([
+                        'idProvincia', 
+                        DB::raw('count(*) as Total'),
+                    ])
+                        ->with([
+                            'provincia'
+                        ])
+                        ->groupby('idProvincia')
+                        ->get();
+                 
+        $clientesPorMes = 
+                    Cliente::select([
+                        'created_at', 
+                        DB::raw('count(*) as Total'),
+                        DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as Mes")
+                    ])
                         ->groupby('Mes')
                         ->get();
+        
+                        
+        return view('clientes.graphics',[
+            'clientesPorProvincia' => $clientesPorProvincia,
+            'clientesPorMes' => $clientesPorMes
+        ]);
 
-        return view('clientes.graphics',['result'=>$result]);
+    }
 
+    public function auditoria(Request $request, $modulo){
+        if(!$modulo){
+            return response()->json(["error" => "El modulo es requerido"]);
+        }
+
+        $movimientosService = new MovimientoService();
+
+        $parametros= $request->all();
+        $parametros["modulo"] = $modulo;
+        
+        $movimientos = $movimientosService->findAll($parametros);
+   
+        return view('clientes.auditoria', [
+            'movimientos' => $movimientos,
+        ]);
     }
 
 }

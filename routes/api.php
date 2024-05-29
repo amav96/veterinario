@@ -8,6 +8,7 @@ use App\Http\Controllers\HistoriaClinicaAdjuntoController;
 use App\Http\Controllers\HistorialComprasController;
 use App\Http\Controllers\MascotaGaleriaController;
 use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\ProductoGaleriaController;
 use App\Http\Controllers\TratamientoMascotaController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::prefix('historiaClinica')->group(function () {
 
 Route::prefix('tratamiento')->group(function () {
     Route::post('', [TratamientoMascotaController::class, 'save']);
+    Route::delete('{id}', [TratamientoMascotaController::class, 'delete']);
 });
 
 Route::prefix('mascota-galeria')->group(function () {
@@ -35,21 +37,25 @@ Route::prefix('mascota-galeria')->group(function () {
     Route::delete('/{id}', [MascotaGaleriaController::class, 'delete']);
 });
 
+Route::prefix('producto-galeria')->group(function () {
+    Route::get('/', [ProductoGaleriaController::class, 'findAll']);
+    Route::post('/', [ProductoGaleriaController::class, 'store']);
+    Route::delete('/{id}', [ProductoGaleriaController::class, 'delete']);
+});
+
 Route::prefix('historial-compras')->group(function () {
     Route::get('/', [HistorialComprasController::class, 'findAll']);
    
 });
 
 Route::prefix('diagnosticoMascota')->group(function () {
-    Route::post('/', [DiagnosticoMascotaController::class, 'store']);
-    Route::put('/{id}', [DiagnosticoMascotaController::class, 'update']);
-    Route::delete('/{id}', [DiagnosticoMascotaController::class, 'destroy']);
+    Route::post('/', [DiagnosticoMascotaController::class, 'save']);
+    Route::delete('/{id}', [DiagnosticoMascotaController::class, 'delete']);
 });
 
 Route::prefix('examenAuxiliarMascota')->group(function () {
-    Route::post('/', [ExamenAuxiliarMascotaController::class, 'store']);
-    Route::put('/{id}', [ExamenAuxiliarMascotaController::class, 'update']);
-    Route::delete('/{id}', [ExamenAuxiliarMascotaController::class, 'destroy']);
+    Route::post('/', [ExamenAuxiliarMascotaController::class, 'save']);
+    Route::delete('/{id}', [ExamenAuxiliarMascotaController::class, 'delete']);
 });
 
 Route::prefix('evento')->group(function () {

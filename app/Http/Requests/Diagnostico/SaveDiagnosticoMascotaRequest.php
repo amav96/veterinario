@@ -22,10 +22,12 @@ class SaveDiagnosticoMascotaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "diagnostico_id"        => "required|integer|exists:diagnosticos,id",
-            "mascota_id"            => "required|integer|exists:mascotas,id",
-            "historia_clinica_id"   => "required|integer|exists:historia_clinicas,id",
-            "estado"                => "nullable|string|in:presuntivo,confirmado"
+            "diagnostico_mascota"                           => "required|array",
+            "diagnostico_mascota.*.diagnostico_id"          => "required|integer|exists:diagnosticos,id",
+            "diagnostico_mascota.*.observacion"             => "nullable|string",
+            "historia_clinica_id"                           => "required|integer|exists:historias_clinicas,id"
         ];
+
+       
     }
 }

@@ -44,12 +44,21 @@ Route::middleware('auth')->group(function () {
 });
 //########################
 Route::resource('/proveedor', ProveedorController::class);
-Route::resource('/producto', ProductoController::class);
-Route::resource('/servicio', ServicioController::class);
-Route::resource('/cliente', ClienteController::class);
 
-Route::resource('/mascota', MascotaController::class);
-Route::get('/mascota/{id}/historial-clinico', [MascotaController::class, 'historialClinico'])->name('mascota.historial-clinico');
+Route::resource('/producto', ProductoController::class);
+Route::get('/producto/{id}/galeria', [ProductoController::class, 'galeria']);
+Route::get('/producto/{modulo}/auditoria', [ProductoController::class, 'auditoria']);
+
+Route::resource('/servicio', ServicioController::class);
+Route::get('/servicio/{modulo}/auditoria', [ServicioController::class, 'auditoria']);
+
+Route::resource('/cliente', ClienteController::class);
+Route::get('/cliente/{modulo}/auditoria', [ClienteController::class, 'auditoria']);
+
+Route::resource('/mascota', MascotaController::class)->middleware('auth');
+Route::get('/mascota/{id}/historial-clinico', [MascotaController::class, 'historialClinico']);
+Route::get('/mascota/{id}/galeria', [MascotaController::class, 'galeria']);
+Route::get('/mascota/{id}/historial-compra', [MascotaController::class, 'historialCompra']);
 
 
 //Route::resource('/evento', EventoController::class);

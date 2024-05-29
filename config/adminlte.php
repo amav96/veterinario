@@ -139,6 +139,7 @@ return [
     'usermenu_image' => false,
     'usermenu_desc' => false,
     'usermenu_profile_url' => false,
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -311,6 +312,23 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+        
+       
+        [
+            'type'         => 'navbar-notification',
+            'icon'         => 'fa fa-user-plus',
+            'topnav_right' => true,
+            'url'          => 'cliente/create',
+            'id'           => 'idCrearCliente', 
+        ],
+        [
+            'type'         => 'navbar-notification',
+            'icon'         => 'fa fa-paw',
+            'topnav_right' => true,
+            'url'          => 'mascota/create',
+            'id'           => 'idCrearMascota', 
+        ],
+     
 
         // Sidebar items:
         [
@@ -341,6 +359,11 @@ return [
                     'text' => 'Gestión',
                     'icon' => 'fas fa-fw fa-chart-pie',
                     'url'  => 'clienteGraf',
+                ],
+                [
+                    'text' => 'Auditoria',
+                    'icon' => 'fas fa-fw fa-chart-pie',
+                    'url'  => 'cliente/cliente/auditoria',
                 ],
             ]
         ],
@@ -411,6 +434,11 @@ return [
                     'icon' => 'fas fa-fw fa-clipboard-list',
                     'url'  => 'producto',
                 ],
+                [
+                    'text' => 'Auditoria',
+                    'icon' => 'fas fa-fw fa-receipt',
+                    'url'  => 'producto/producto/auditoria',
+                ],
                 // [
                 //     'text' => 'Descargar Stock',
                 //     'icon' => 'fas fa-fw fa-sign-out-alt',
@@ -445,9 +473,21 @@ return [
         ],
         [
             'text'        => 'Servicios',
-            'url'         => 'servicio',
             'icon'        => 'fas fa-fw fa-briefcase-medical',
             'label_color' => 'success',
+            'submenu' => [
+                [
+                    'text' => 'Listado',
+                    'icon' => 'fas fa-fw fa-clipboard-list',
+                    'url'  => 'servicio',
+                ],
+                [
+                    'text' => 'Auditoria',
+                    'icon' => 'fas fa-fw fa-receipt',
+                    'url'  => 'servicio/servicio/auditoria',
+                ],
+            ]
+            
         ],
         [
             'text'    => 'Proveedores',
@@ -562,6 +602,7 @@ return [
                 ],
             ]
         ],
+        
 
     ],
 

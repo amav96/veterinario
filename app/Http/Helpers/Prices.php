@@ -12,7 +12,7 @@ class Prices {
     // Símbolo de moneda                                //
     // ---------------------------------------------------
 
-    public static function symbol($symbol = 'S/') {
+    public static function symbol($symbol = 'S/.') {
         return $symbol;
     }
 
