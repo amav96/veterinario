@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Producto extends Model
 {
@@ -37,5 +38,10 @@ class Producto extends Model
     public function proveedor(): BelongsTo
     {
         return $this->belongsTo(Proveedor::class, 'idProveedor', 'id');
+    }
+
+    public function stocks(): HasMany
+    {
+        return $this->hasMany(ProductoStock::class, 'producto_id', 'id');
     }
 }

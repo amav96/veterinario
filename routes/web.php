@@ -26,6 +26,7 @@ use App\Http\Controllers\ComprobantesController;
 use App\Http\Controllers\DiagnosticoMascotaController;
 use App\Http\Controllers\HistoriaClinicaController;
 use App\Http\Controllers\AlmacenesController;
+use App\Http\Controllers\StocksController;
 use App\Models\ExamenAuxiliarMascota;
 
  Route::get('/', function () {
@@ -72,9 +73,10 @@ Route::resource('/ventas', VentasController::class);
 Route::resource('/cajas', CajasController::class);
 Route::resource('/comprobantes', ComprobantesController::class);
 Route::resource('/almacenes', AlmacenesController::class);
+Route::resource('/stocks', StocksController::class);
 
 Route::post('/comprobantes/agregar-pago', [ComprobantesController::class, 'ajax'])->name('comprobantes.ajax')->middleware('auth', 'verified');
-
+Route::post('/stocks/agregar-stock', [StocksController::class, 'ajax'])->name('stocks.ajax')->middleware('auth', 'verified');
 
 Route::get('/getProvincias/{Depto}',[ClienteController::class,'getProvincias'])->middleware(['auth', 'verified']);
 Route::get('/getDistritos/{Prov}',[ClienteController::class,'getDistritos'])->middleware(['auth', 'verified']);
