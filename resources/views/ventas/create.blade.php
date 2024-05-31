@@ -78,20 +78,52 @@ $config = [
 
             <div id="items" class="mt-4 d-none">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <div class="input-group">
-                            <select class="form-control form-control-sm" id="lista-items" name="item">
-                                <option value="" disabled selected>* Item...</option>
+                            <select class="form-control form-control-sm" id="lista-almacenes" name="almacen_id">
+                                <option value="" disabled selected>* Almacén...</option>
 
-                                @foreach ($items as $item)
-                                    <option value="{{ $item->id }}" data-precio-unitario="{{ $item->PrecioVenta ?? $item->PrecioServicio }}" data-tipo="{{ isset($item->Producto) ? 'producto' : 'servicio' }}">{{ $item->Producto ?? $item->Servicio }}</option>
+                                @foreach ($almacenes as $almacen)
+                                    <option value="{{ $almacen->id }}">{{ $almacen->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
                     <div class="col-md-6">
-                        <a href="" id="seleccionar-item" class="btn btn-info btn-sm">Seleccionar Item</a>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <select class="form-control form-control-sm" id="lista-items" name="item" disabled>
+                                        <option value="" disabled selected>* Item...</option>
+
+                                        @foreach ($items as $item)
+                                            @php
+
+                                            $stocks = '';
+
+                                            if ($item->stocks) {
+                                                $stocks = [];
+
+                                                foreach ($item->stocks as $stock) {
+                                                    $stocks[$stock->almacen_id] = $stock->cantidad;
+                                                }
+
+                                                $stocks = json_encode($stocks);
+                                            }
+
+                                            @endphp
+
+                                            <option value="{{ $item->id }}" data-precio-unitario="{{ $item->PrecioVenta ?? $item->PrecioServicio }}" data-tipo="{{ isset($item->Producto) ? 'producto' : 'servicio' }}" data-stocks="{{ $stocks }}" data-nombre_original="{{ $item->Producto ?? $item->Servicio }}">{{ $item->Producto ?? $item->Servicio }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <a href="" id="seleccionar-item" class="btn btn-info btn-sm">Seleccionar Item</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -118,7 +150,6 @@ $config = [
                 <div class="col-md-6">
                     <div class="d-grid gap-3 d-md-block">
                         <button type="submit" class="btn bg-gradient-primary btn-sm btn-accion" disabled><i class="fas fa-fw fa-save"></i> Crear Venta</button>
-                        {{-- <button type="reset" class="btn bg-gradient-warning btn-sm btn-accion"><i class="fas fa-fw fa-window-close"></i> Cancelar</button> --}}
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -150,9 +181,11 @@ $config = [
     $(document).ready(function() {
         // Lista de clientes (select2)
         // Lista de ítems (select2)
+        // Lista de almacenes (select2)
 
         $('#lista-clientes').select2();
         $('#lista-items').select2();
+        $('#lista-almacenes').select2();
 
         // Seleccionar / remover cliente
         // Seleccionar ítem
@@ -233,6 +266,8 @@ $config = [
                 let item_nombre = item_seleccionado.text();
                 let item_id = item_seleccionado.val();
                 let item_tipo = item_seleccionado.data('tipo');
+                let item_stock = item_seleccionado.data('stock');
+                let item_almacen = item_seleccionado.data('almacen');
                 let precio_unitario = parseFloat(item_seleccionado.data('precio-unitario'));
                 let precio_impuestos = parseFloat(21);
                 let precio_total = precio_unitario + precio_impuestos;
@@ -270,7 +305,7 @@ $config = [
                             fila += '{{ Prices::symbol() }} <span class="precio-item precio-unitario">'+ precio_unitario.toFixed(2).replace('.', ',') +'</span>';
                         fila += '</td>';
                         fila += '<td width="5%">';
-                            fila += '<input class="form-control form-control-sm unidades-item" type="number" min="0" value="1">';
+                            fila += '<input class="form-control form-control-sm unidades-item" type="number" min="0" value="1" max="'+ item_stock +'">';
                         fila += '</td>';
                         fila += '<td>';
                             fila += '{{ Prices::symbol() }} <span class="precio-item precio-subtotal">'+ precio_unitario.toFixed(2).replace('.', ',') +'</span>';
@@ -305,6 +340,7 @@ $config = [
                                 fila += '<input type="hidden" name="item['+ item_tipo +']['+ item_id +'][id]" value="'+ item_id +'">';
                                 fila += '<input type="hidden" name="item['+ item_tipo +']['+ item_id +'][tipo]" value="'+ item_tipo +'">';
                                 fila += '<input type="hidden" name="item['+ item_tipo +']['+ item_id +'][mascota_id]" value="'+ mascota_id +'">';
+                                fila += '<input type="hidden" name="item['+ item_tipo +']['+ item_id +'][almacen_id]" value="'+ item_almacen +'">';
                                 fila += '<input type="hidden" name="item['+ item_tipo +']['+ item_id +'][subtotal]" value="">';
                                 fila += '<input type="hidden" name="item['+ item_tipo +']['+ item_id +'][cantidad]" value="1">';
                                 fila += '<input type="hidden" name="item['+ item_tipo +']['+ item_id +'][impuestos]" value="">';
@@ -400,6 +436,36 @@ $config = [
             });
         })();
 
+        // Seleccionar un almacén
+
+        (function() {
+            let lista_almacenes = $('#lista-almacenes');
+            let lista_items = $('#lista-items');
+
+            lista_almacenes.on('change', function() {
+                let almacen_id = $(this).val();
+
+                lista_items.prop('disabled', false);
+                lista_items.find('option').each(function() {
+                    let item = $(this);
+                    let stocks = item.data('stocks');
+                    let tipo = item.data('tipo');
+
+                    if (stocks !== undefined && tipo == 'producto') {
+                        item.text(item.data('nombre_original') +' ('+ stocks[almacen_id] +' u.)');
+                        item.data('stock', stocks[almacen_id]);
+                        item.data('almacen', almacen_id);
+
+                        if (stocks[almacen_id] == 0) {
+                            item.prop('disabled', true);
+                        }
+                    }
+                });
+
+                $('#lista-items').select2();
+            });
+        })();
+
         // Calcular totales
 
         function calcularTotales() {
@@ -447,19 +513,19 @@ $config = [
                 inputs.each(function(index) {
                     let name = $(this).prop('name');
 
-                    if (index === 3) {
+                    if (index === 4) {
                         $(this).val(sum_fila_subtotales);
                     }
 
-                    if (index === 4) {
+                    if (index === 5) {
                         $(this).val(unidades);
                     }
 
-                    if (index === 5) {
+                    if (index === 6) {
                         $(this).val(sum_fila_impuestos);
                     }
 
-                    if (index === 6) {
+                    if (index === 7) {
                         $(this).val(sum_fila_totales);
                     }
                 });

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Services\MovimientoService;
 use App\Models\Venta;
 use App\Models\VentaItem;
+use App\Models\Almacen;
 use App\Models\Cliente;
 use App\Models\Mascota;
 use App\Models\Producto;
+use App\Models\ProductoStock;
 use App\Models\Servicio;
 use App\Models\Comprobante;
 use App\Models\EstadoVenta;
@@ -33,16 +35,19 @@ class VentasController extends Controller
      */
     public function create()
     {
+        $almacenes  = Almacen::all();
         $clientes   = Cliente::all();
         $mascotas   = Mascota::all();
-        $productos  = Producto::all();
         $servicios  = Servicio::all();
+        $productos  = Producto::with('stocks')->get();
 
         // Items (combinación de productos y servicios)
 
         $items      = $productos->concat($servicios);
 
-        return view('ventas.create', ['clientes' => $clientes, 'mascotas' => $mascotas, 'items' => $items]);
+        #dd($items);
+
+        return view('ventas.create', ['almacenes' => $almacenes, 'clientes' => $clientes, 'mascotas' => $mascotas, 'items' => $items]);
     }
 
     /**
@@ -52,10 +57,30 @@ class VentasController extends Controller
     {
         // Datos de la venta
         // Modelo de venta
+        // Modelo de stocks
 
         $datos = $request->all();
         $venta = new Venta();
         $venta_items = new VentaItem();
+        $stocks = new ProductoStock();
+
+        // Descontar stocks en productos_stocks
+
+        foreach ($datos['item'] as $tipo => $items) {
+            foreach ($items as $item) {
+                $item = (object) $item;
+
+                if ($tipo == 'producto') {
+                    $consulta_stock = $stocks->where('almacen_id', $item->almacen_id)->where('producto_id', $item->id);
+                    $stock_actual = $consulta_stock->pluck('cantidad')->first();
+                    $stock_nuevo = $stock_actual - $item->cantidad;
+
+                    $consulta_stock->update([
+                        'cantidad' => $stock_nuevo
+                    ]);
+                }
+            }
+        }
 
         // Guardar venta (devolver venta_id)
 
@@ -137,8 +162,6 @@ class VentasController extends Controller
         $comprobante->save();
 
         // Fin
-
-       
 
         return redirect()->route('ventas.index')->with('msg', 'Venta creada correctamente.');
     }
