@@ -451,6 +451,8 @@ $config = [
                     let stocks = item.data('stocks');
                     let tipo = item.data('tipo');
 
+                    item.prop('disabled', false);
+
                     if (stocks !== undefined && tipo == 'producto') {
                         item.text(item.data('nombre_original') +' ('+ stocks[almacen_id] +' u.)');
                         item.data('stock', stocks[almacen_id]);
