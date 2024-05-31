@@ -116,9 +116,38 @@ class StocksController extends Controller
                 $stock->fill($datos)->save();
 
                 $almacen = $stock->with('almacen')->where('id', $stock->id)->first()->almacen->nombre;
-                $cantidad = $cantidad .' '. ($cantidad > 1 ? 'unidades' : 'unidad');
+                $cantidad = '<div class="row">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-fw fa-hashtag"></i></span>
+                        </div>
+                        <input type="number" class="form-control form-control-sm" name="cantidad" value="'. $cantidad .'" placeholder="* Cantidad" min="0" step="1" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-success btn-sm modificar-stock w-100" data-stock_id="'. $stock->id .'">
+                        <span class="text">
+                            <i class="fas fa-fw fa-pen"></i> Modificar
+                        </span>
+
+                        <span class="spinner">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>';
                 $opciones = '<span class="eliminar-stock" data-stock_id="'. $stock->id .'" Title="Eliminar stock"><i class="fa fa-fw fa-trash"></i></span>';
             }
+        }
+
+        // Modificar stock
+
+        if ($accion == 'modificar') {
+            $stock      = new ProductoStock();
+            $stock->where('id', $stock_id)->update([
+                'cantidad' => $cantidad
+            ]);
         }
 
         // Eliminar stock

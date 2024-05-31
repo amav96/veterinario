@@ -70,7 +70,29 @@ $config = [
                                                 @foreach ($producto->stocks as $stock)
                                                     <tr>
                                                         <td>{{ $stock->almacen->nombre }}</td>
-                                                        <td>{{ $stock->cantidad }} {{ $stock->cantidad > 1 ? 'unidades' : 'unidad' }}</td>
+                                                        <td width="30%">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text"><i class="fas fa-fw fa-hashtag"></i></span>
+                                                                        </div>
+                                                                        <input type="number" class="form-control form-control-sm" name="cantidad" value="{{ $stock->cantidad }}" placeholder="* Cantidad" min="0" step="1" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <button class="btn btn-success btn-sm modificar-stock w-100" data-stock_id="{{ $stock->id }}">
+                                                                        <span class="text">
+                                                                            <i class="fas fa-fw fa-pen"></i> Modificar
+                                                                        </span>
+
+                                                                        <span class="spinner">
+                                                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                         <td><span class="eliminar-stock" data-stock_id="{{ $stock->id }}" title="Eliminar stock"><i class="fa fa-fw fa-trash"></i></span></td>
                                                     </tr>
                                                 @endforeach
@@ -128,6 +150,7 @@ $config = [
 <script>
     $(document).ready(function() {
         let agregar_stock   = $('.agregar-stock');
+        let modificar_stock = '.modificar-stock';
         let eliminar_stock  = '.eliminar-stock';
 
         // Edición rápida de ítems
@@ -247,6 +270,48 @@ $config = [
             });
         })();
 
+        // Modificar un stock
+
+        (function() {
+            $(document).on('click', modificar_stock, function() {
+                let btn_modificar = $(this);
+                let stock_id = $(this).data('stock_id');
+                let nuevo_stock = $(this).parent().prev().find('input').val();
+
+                let data = {
+                    stock_id: stock_id,
+                    cantidad: nuevo_stock,
+                    accion: 'modificar'
+                }
+
+                $.ajax({
+                    url: "{{ route('stocks.ajax') }}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: data,
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    beforeSend: function() {
+                        btn_modificar.prop('disabled', true);
+                        btn_modificar.find('.spinner').show();
+                        btn_modificar.find('.text').hide();
+                    }
+                })
+                .done(function(response) {
+
+                })
+                .fail(function(xhr, status, error) {
+
+                })
+                .always(function() {
+                    btn_modificar.prop('disabled', false);
+                    btn_modificar.find('.spinner').hide();
+                    btn_modificar.find('.text').show();
+                });
+            });
+        })();
+
         // Eliminar un stock
 
         (function() {
@@ -315,7 +380,8 @@ $config = [
             display: none;
         }
 
-    .agregar-stock .spinner {
+    .agregar-stock .spinner,
+    .modificar-stock .spinner {
         display: none;
     }
 
