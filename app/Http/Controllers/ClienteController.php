@@ -30,7 +30,7 @@ class ClienteController extends Controller
 
         
         $clientes = Cliente::with('getMascotas')->get();
-        return view('clientes.index',['clientes'=>$clientes]);
+        return view('clientes.index',['clientes'=> $clientes]);
     }
 
     /**
@@ -207,27 +207,28 @@ class ClienteController extends Controller
     }
 
     public function  getGrafico(){
+
+        DB::statement("SET lc_time_names = 'es_ES'");
+
         $clientesPorProvincia = 
                     Cliente::select([
                         'idProvincia', 
                         DB::raw('count(*) as Total'),
                     ])
-                        ->with([
-                            'provincia'
-                        ])
-                        ->groupby('idProvincia')
-                        ->get();
-                 
-        $clientesPorMes = 
-                    Cliente::select([
-                        'created_at', 
-                        DB::raw('count(*) as Total'),
-                        DB::raw("(DATE_FORMAT(created_at, '%m-%Y')) as Mes")
+                    ->with([
+                        'provincia'
                     ])
-                        ->groupby('Mes')
-                        ->get();
-        
-                        
+                    ->groupby('idProvincia')
+                    ->get();
+        $clientesPorMes = Cliente::select([
+            'created_at', 
+            DB::raw('count(*) as Total'),
+            DB::raw("CONCAT(MONTHNAME(created_at), '-', YEAR(created_at)) as Mes")
+        ])
+        ->groupBy('Mes')
+        ->get();
+           
+       
         return view('clientes.graphics',[
             'clientesPorProvincia' => $clientesPorProvincia,
             'clientesPorMes' => $clientesPorMes
