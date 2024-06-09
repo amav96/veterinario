@@ -3,51 +3,36 @@
         <form ref="refForm" class="mb-4">
             <div class="form-group">
                 <label for="exampleFormControlFile1">Galeria</label>
-                <input 
-                type="file" 
-                class="form-control-file" 
-                @input="getArchivo"
-                >
+                <input type="file" class="form-control-file" @input="getArchivo" />
             </div>
-            <div
-            v-if="archivosAgregados.length > 0"
-            >
-                <button 
-                type="button" 
-                class="btn btn-success btn-sm"
-                @click="guardarGaleria"
-                :disabled="guardandoGaleria"
-                >
-                    Guardar 
+            <div v-if="archivosAgregados.length > 0">
+                <button type="button" class="btn btn-success btn-sm" @click="guardarGaleria" :disabled="guardandoGaleria">
+                    Guardar
                 </button>
             </div>
         </form>
-        <div v-if="galeria.length > 0"  class="flex flex-row flex-wrap gap-2">
-            <div
-            v-for="(imagen, key) in galeria"
-            :key="key"
-            class="relative"
-            >
-                <div style="position: absolute;top: 0px;right: 0;" >
-                  
-                    <button 
-                    type="button" 
-                    class="btn btn-danger btn-sm"
-                    @click.stop="eliminarImagen(imagen)"
-                    :disabled="eliminandoImagen"
-                    >
+        <div v-if="galeria.length > 0" class="flex flex-row flex-wrap gap-2">
+            <div v-for="(imagen, key) in galeria" :key="key" class="relative">
+                <div style="position: absolute; top: 0px; right: 0;">
+                    <button type="button" class="btn btn-danger btn-sm" @click.stop="eliminarImagen(imagen)" :disabled="eliminandoImagen">
                         X
                     </button>
                 </div>
-                <img 
-                @click="abrirImagen(imagen)"
-                :src="baseUrl + '/storage/' + imagen.path"
-                style="max-width: 200px;height: 100%;"
-                class="rounded img-thumbnail" 
+                <img v-if="isImage(imagen.path)" @click="abrirImagen(imagen)" :src="baseUrl + '/storage/' + imagen.path" style="width: 200px; height: 200px; object-fit: cover;" class="rounded img-thumbnail" />
+                <div 
+                v-else 
+                @click="abrirImagen(imagen)" 
+                style="background: white;margin:auto; width: 200px; height: 200px; object-fit: cover;" 
+                class="rounded img-thumbnail flex justify-center items-center"
                 >
+                    <div>
+                        <i class="fas fa-file-pdf fa-5x"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 </template>
 
 <script setup>
@@ -150,6 +135,11 @@ const getGaleria = async () => {
 
 const abrirImagen = (imagen) => {
     window.open(baseUrl + '/storage/' + imagen.path, '_blank');
+}
+
+const isImage = (path) =>  {
+    const extension = path.split('.').pop().toLowerCase();
+    return ['jpg', 'jpeg', 'png', 'gif'].includes(extension);
 }
 
 

@@ -31,18 +31,20 @@
             :productos="productos"
             :tipoHistorialClinico="tipoHistorialClinico"
             :tiposHistoriasClinicas="tiposHistoriasClinicas"
-            :mascota-id="mascotaId"
+            :mascota-id="mascota.id"
             @actualizarHistorial="getHistorialClinico"
             @salir="tipoHistorialClinico = null"
             />
             
         </template>
 
-        <div v-else-if="historiasClinicas && historiasClinicas.length > 0 && !cargandoHistorial" class="flex flex-col">
+        <div 
+        v-else-if="historiasClinicas && historiasClinicas.length > 0 && !cargandoHistorial" 
+        class="flex flex-col">
             <div 
             v-for="(item, index) in historiasClinicas"
             :key="index"
-            class="bg-white border border-gray-200 p-4 my-2 "
+            class="bg-white border border-gray-200 p-4 mt-1 mb-3 "
             >
                 <card-historial-clinico
                 :historialClinico="item"
@@ -80,7 +82,7 @@
                 :productos="productos"
                 :tipoHistorialClinico="historialActual.tipo_historia_clinica.nombre"
                 :tiposHistoriasClinicas="tiposHistoriasClinicas"
-                :mascota-id="mascotaId"
+                :mascota-id="mascota.id"
                 :historia-clinica="historialActual"
                 @actualizarHistorial="getHistorialClinico"
                 />
@@ -109,10 +111,10 @@ const props =  defineProps({
   diagnosticos: Array,
   examenesAuxiliares: Array,
   productos: Array,
-  mascotaId: Number
+  mascota: Object
 })
 
-const { tiposHistoriasClinicas,  diagnosticos ,examenesAuxiliares, mascotaId  } = toRefs(props);
+const { tiposHistoriasClinicas,  diagnosticos ,examenesAuxiliares, mascota  } = toRefs(props);
 
 const historiasClinicas = ref([])
 
@@ -128,7 +130,7 @@ const cargandoHistorial = ref(false)
 const getHistorialClinico = async () => {
     tipoHistorialClinico.value = null
     cargandoHistorial.value = true
-    const response = await axios.get(`${baseUrl}/api/historiaClinica?mascota_id=${mascotaId.value}`)
+    const response = await axios.get(`${baseUrl}/api/historiaClinica?mascota_id=${mascota.value.id}`)
     historiasClinicas.value = response.data
     cargandoHistorial.value = false
 }

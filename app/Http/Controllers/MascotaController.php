@@ -129,13 +129,18 @@ class MascotaController extends Controller
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
         
-        $mascotas = Mascota::find($id);
+        $mascota = Mascota::with([
+            'especie',
+            'raza',
+            'cliente'
+        ])->where("id", $id)->first();
+      
         $especies = Especie::all();
         $razas = Raza::all(); 
         $clientes = Cliente::all(); 
         //dd($mascotas);
         return view('mascotas.edit',[ 
-                                        'mascota' =>$mascotas,
+                                        'mascota' => $mascota,
                                         'especies'=>$especies,
                                         'razas '=>$razas,
                                         'clientes'=>$clientes

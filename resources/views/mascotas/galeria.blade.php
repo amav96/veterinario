@@ -7,27 +7,48 @@
 @stop
 
 @section('content')
-<div class="card card-success">
-    <div class="card-header flex flex-row items-center gap-4">
-        <a href="{{url('mascota/'.$mascota->id.'/edit')}}"  class="bg-yellow-400 p-2 rounded">
-            Modificar mascota
-        </a>
-        <a  href="{{url('mascota/'.$mascota->id.'/historial-clinico')}}" class="bg-yellow-400 p-2 rounded">
-            Historial Clinico
-        </a>
-        <a  href="{{url('mascota/'.$mascota->id.'/galeria')}}" class="bg-yellow-600 p-2 rounded">
-            Galeria
-        </a>
-        <a  href="{{url('mascota/'.$mascota->id.'/historial-compra')}}" class="bg-yellow-400 p-2 rounded">
-            Historial de compra
-        </a>
+<div class="flex flex-row">
+    <div class="card">
+        <div class="card-header">
+            <img src="/vendor/adminlte/dist/img/mascota.png" alt="Dog Avatar" class="img-circle" style="width: 100px; height: 100px;">
+            <h2>{{ $mascota->NombreMascota }}</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>Propietario:</strong> {{ $mascota->cliente->Nombre }}</p>
+            <p><strong>Especie:</strong> {{ $mascota->especie->Especie }}</p>
+            <p><strong>Raza:</strong> {{ $mascota->raza->Raza }}</p>
+            <p><strong>Número de Historia:</strong> {{ $mascota->NumeroHistoria }}</p>
+            <p><strong>Fecha de Nacimiento:</strong> {{ $mascota->FechaNacimiento }}</p>
+            <p><strong>Sexo:</strong> {{ $mascota->Sexo == '1' ? 'M' : 'F'  }}</p>
+            <p><strong>Esterilizado:</strong> {{ $mascota->Esterilizado ? 'Si' : 'No' }}</p>
+            <p><strong>Asegurado:</strong> {{ $mascota->Asegurado ? 'Si' : 'No' }}</p>
+        </div>
     </div>
-</div>  
-<div id="app">
-    <galeria
-    :mascota='@json($mascota)'
-    />
+    <div class="flex flex-column">
+        <div class="card card-success">
+            <div class="card-header flex flex-row items-center gap-4">
+                <a href="{{url('mascota/'.$mascota->id.'/edit')}}"  class="bg-yellow-400 p-2 rounded">
+                    Modificar mascota
+                </a>
+                <a  href="{{url('mascota/'.$mascota->id.'/historial-clinico')}}" class="bg-yellow-400 p-2 rounded">
+                    Historial Clinico
+                </a>
+                <a  href="{{url('mascota/'.$mascota->id.'/galeria')}}" class="bg-yellow-600 p-2 rounded">
+                    Galeria
+                </a>
+                <a  href="{{url('mascota/'.$mascota->id.'/historial-compra')}}" class="bg-yellow-400 p-2 rounded">
+                    Historial de compra
+                </a>
+            </div>
+        </div>  
+        <div id="app" style="padding:5px;">
+            <galeria
+            :mascota='@json($mascota)'
+            />
+        </div>
+    </div>
 </div>
+
 
 @stop
 
