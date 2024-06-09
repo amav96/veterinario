@@ -52,7 +52,7 @@ $heads = [
                 <x-adminlte-datatable  id="DataProductos" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config" >
                     @foreach ($productos as $prod)
                     <tr>
-                        <td>{{\Carbon\Carbon::parse($prod->created_at)->format('Y-m-d')}}</td>
+                        <td>{{\Carbon\Carbon::parse($prod->created_at)->format('Y-m-d H:i:s')}}</td>
                         <td>{{$prod->Producto}}</td>
                         <td>{{$prod->Marca}}</td>
                         <td>{{$prod->CodigoDeBarra}}</td>

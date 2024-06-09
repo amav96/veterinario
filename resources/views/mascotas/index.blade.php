@@ -49,7 +49,7 @@ $config = [
             <x-adminlte-datatable  id="DataMascotas" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
                 @foreach ($mascotas as $mascota)
                 <tr>
-                    <td>{{\Carbon\Carbon::parse($mascota->created_at)->format('Y-m-d')}}</td>
+                    <td>{{\Carbon\Carbon::parse($mascota->created_at)->format('Y-m-d H:i:s')}}</td>
                     <td>{{$mascota->Cliente->Nombre.' '.$mascota->Cliente->Apellido }}</td>
                     <td>{{$mascota->Mascota}}</td>
                     <td>{{$mascota->especie->Especie}}</td>

@@ -27,7 +27,9 @@ class ComprobantesController extends Controller
             'cliente',
             'venta',
             'pagos'
-        ])->get();
+        ])
+        ->orderBy("comprobantes.created_at", "desc")
+        ->get();
 
         #dd($comprobantes);
 

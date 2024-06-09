@@ -4,7 +4,7 @@
 
 @php
 $heads = [
-        'Select',
+        'Fecha Registro' ,
         'Referencia',
         'Subtotal',
         'Impuestos',
@@ -18,6 +18,7 @@ $config = [
         'url' => '//cdn.datatables.net/plug-ins/2.0.1/i18n/es-ES.json',
     ],
 ];
+
 @endphp
 
 @section('content_header')
@@ -61,13 +62,11 @@ $config = [
                     @php
 
                     $venta_referencia = str_pad($venta->id, 8, '0', STR_PAD_LEFT);
-
+                    
                     @endphp
 
                     <tr>
-                        <td>
-                            <input type="checkbox" name="" id="">
-                        </td>
+                        <td>{{\Carbon\Carbon::parse($venta->created_at)->format('Y-m-d H:i:s') }}</td>
                         <td>
                             Venta #{{ $venta_referencia }}
                         </td>

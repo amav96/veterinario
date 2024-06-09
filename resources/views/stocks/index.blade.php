@@ -4,9 +4,10 @@
 
 @php
 $heads = [
-    'Select',
+    'Fecha de Registro' ,
     'ID de producto',
     'Nombre',
+    'Cantidad',
     'Opciones'
 ];
 $heads_stocks = [
@@ -48,14 +49,17 @@ $config = [
             <x-adminlte-datatable id="tabla-productos" class="tabla-productos" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify with-buttons :config="$config">
                 @foreach ($productos as $producto)
                     <tr class="position-relative">
-                        <td>
-                            <input type="checkbox" name="" id="">
-                        </td>
+                        <td>{{\Carbon\Carbon::parse($producto->created_at)->format('Y-m-d H:i:s')}}</td>
                         <td>
                             {{ $producto->id }}
                         </td>
                         <td>
                             {{ $producto->Producto }}
+                        </td>
+                        <td>
+                            @foreach($producto->stocks as $stock)
+                                <span class="badge badge-info">{{ $stock->almacen->nombre }}: {{ $stock->cantidad }}</span>
+                            @endforeach
                         </td>
                         <td>
                             <button type="submit" class="editar-item" title="Editar {{ $producto->Producto }}" data-id="{{ $producto->id }}">

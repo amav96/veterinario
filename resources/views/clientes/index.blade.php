@@ -57,7 +57,7 @@ $config = [
             <x-adminlte-datatable  id="example" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
                 @foreach ($clientes as $clie)
                 <tr>
-                    <td>{{\Carbon\Carbon::parse($clie->created_at)->format('Y-m-d') }}</td>
+                    <td>{{\Carbon\Carbon::parse($clie->created_at)->format('Y-m-d H:i:s') }}</td>
                     <td>{{$clie->Nombre.' '.$clie->Apellido }}</td>
                     <td>{{ $clie->Email}}</td>
                     <td>{{$clie->TelefonoFijo.' '.$clie->TelefonoMovil}}</td>

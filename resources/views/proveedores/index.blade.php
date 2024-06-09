@@ -4,6 +4,7 @@
 
 @php
 $heads = [
+        'Fecha de Registro' ,
         'Proveedor' ,
         'Numero Tributario',
         'Telefono Fijo',
@@ -55,6 +56,7 @@ $config = [
             <x-adminlte-datatable  id="DataProveedor" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
                 @foreach ($proveedores as $pro)
                 <tr>
+                    <td>{{\Carbon\Carbon::parse($pro->created_at)->format('Y-m-d H:i:s')}}</td>
                     <td>{{$pro->Proveedor}}</td>
                     <td>{{$pro->NumeroTributario}}</td>
                     <td>{{$pro->TelefonoFijo}}</td>

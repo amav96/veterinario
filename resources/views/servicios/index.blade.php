@@ -55,7 +55,7 @@ $config = [
             <x-adminlte-datatable  id="DataServicios" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
                 @foreach ($servicios as $serv)
                 <tr>
-                    <td>{{\Carbon\Carbon::parse($serv->created_at)->format('Y-m-d')}}</td>
+                    <td>{{\Carbon\Carbon::parse($serv->created_at)->format('Y-m-d H:i:s')}}</td>
                     <td>{{$serv->Servicio}}</td>
                     <td>{{$serv->lineas->Linea}}</td>
                     <td>{{$serv->categorias->Categoria}}</td>

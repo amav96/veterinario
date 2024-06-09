@@ -4,7 +4,7 @@
 
 @php
 $heads = [
-        'Select',
+        'Fecha' ,
         'Comprobante',
         'Tipo',
         'Venta',
@@ -51,7 +51,7 @@ $config = [
 
                     @foreach ($comprobantes as $comprobante)
                         <tr>
-                            <td><input type="checkbox" name="" id=""></td>
+                            <td>{{\Carbon\Carbon::parse($comprobante->created_at)->format('Y-m-d H:i:s') }}</td>
                             <td>
                                 {{ str_pad($comprobante->serie, 3, 0, STR_PAD_LEFT) }}-{{ str_pad($comprobante->comprobante, 8, 0, STR_PAD_LEFT) }}
                             </td>

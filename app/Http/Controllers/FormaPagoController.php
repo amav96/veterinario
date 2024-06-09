@@ -13,7 +13,7 @@ class FormaPagoController extends Controller
     public function index()
     {
         $formaPagos = FormaPago::all(); 
-        return view('configuracion.formapago',['formaPagos'=>$formaPagos]);
+        return view('configuracion.formaPago',['formaPagos'=>$formaPagos]);
     }
 
     /**

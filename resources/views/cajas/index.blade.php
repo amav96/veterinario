@@ -4,7 +4,7 @@
 
 @php
 $heads = [
-        'Select',
+        'Fecha',
         'ID de transacción',
         'Descripción',
         'Tipo',
@@ -61,9 +61,7 @@ $config = [
             <x-adminlte-datatable id="example" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
                 @foreach ($cajas as $caja)
                     <tr>
-                        <td>
-                            <input type="checkbox" name="" id="">
-                        </td>
+                        <td>{{\Carbon\Carbon::parse($caja->created_at)->format('Y-m-d H:i:s') }}</td>
                         <td>
                             {{ $caja->transaccion }}
                         </td>

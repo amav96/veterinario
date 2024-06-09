@@ -13,7 +13,7 @@ class EstadoEventoController extends Controller
     public function index()
     {
         $estadoEvento = EstadoEvento::all(); 
-        return view('configuracion.estadoevento',['estadoEvento'=>$estadoEvento]);
+        return view('configuracion.estadoEvento',['estadoEvento'=>$estadoEvento]);
     }
 
     /**

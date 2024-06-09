@@ -190,6 +190,11 @@ const getUsuarios = async () => {
 }
 
 const columns = [
+{
+        data: 'created_at',
+        title: 'Fecha registro',
+      
+    },
     {
         data: 'name',
         title: 'Nombre'
@@ -206,11 +211,7 @@ const columns = [
         data: 'sede.nombre',
         title: 'Sede'
     },
-    {
-        data: 'created_at',
-        title: 'Fecha',
-      
-    },
+    
     {
         data: null,
         render: '#action',
