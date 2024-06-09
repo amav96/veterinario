@@ -25,18 +25,46 @@
         </div>
     </div>
     <div class="card card-success">
-        <div class="card-header flex flex-row items-center gap-4">
-            <a href="{{url('mascota/'.$mascota->id.'/edit')}}"  class="bg-yellow-600 p-2 rounded">
-                Modificar mascota
+        <div class="card-header flex flex-row flex-wrap items-center gap-4">
+            <a 
+            href="{{url('mascota/'.$mascota->id.'/edit')}}"  
+            class="flex flex-row items-center gap-1 bg-yellow-600 p-2 rounded"
+            >
+                <i class="fas fa-edit"></i>
+                <div>
+                    Modificar mascota
+                </div>
             </a>
-            <a  href="{{url('mascota/'.$mascota->id.'/historial-clinico')}}" class="bg-yellow-400 p-2 rounded">
-                Historial Clinico
+        
+            <a  
+            href="{{url('mascota/'.$mascota->id.'/historial-clinico')}}" 
+            class="flex flex-row items-center gap-1  p-2 rounded bg-yellow-400"
+            >
+                <i class="fas fa-notes-medical"></i> 
+                <div>
+                    Historial Clinico
+                </div>
             </a>
-            <a  href="{{url('mascota/'.$mascota->id.'/galeria')}}" class="bg-yellow-400 p-2 rounded">
-                Galeria
+        
+        
+            <a  
+            href="{{url('mascota/'.$mascota->id.'/galeria')}}" 
+            class="flex flex-row items-center gap-1 bg-yellow-400 p-2 rounded"
+            >
+                <i class="fas fa-images"></i>
+                <div>
+                    Galeria
+                </div>
             </a>
-            <a  href="{{url('mascota/'.$mascota->id.'/historial-compra')}}" class="bg-yellow-400 p-2 rounded">
-                Historial de compra
+        
+        
+            <a  
+            href="{{url('mascota/'.$mascota->id.'/historial-compra')}}" 
+            class="flex flex-row items-center gap-1  bg-yellow-400 p-2 rounded">
+                <i class="fas fa-shopping-cart"></i>
+                <div>
+                    Historial de compra
+                </div>
             </a>
         </div>
         <form action="{{ url('mascota/'.$mascota->id) }}" method="post">

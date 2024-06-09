@@ -56,8 +56,11 @@ $config = [
                     <td>{{$mascota->raza->Raza}}</td>
                     <td>
                         <a href="{{url('mascota/'.$mascota->id.'/edit')}}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
+                           <i class="fa fa-lg fa-fw fa-eye"></i>
+                        </a>
+                        <a href="{{url('mascota/'.$mascota->id.'/edit')}}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
                             <i class="fa fa-lg fa-fw fa-pen"></i>
-                        </button>
+                        </a>
                     </td>
                     
                 </tr>

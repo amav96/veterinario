@@ -98,6 +98,10 @@ $config = [
                                 <span class="text-success" title="Aprobados">{{ $aprobados }}</span> / <span class="text-danger" title="Anulados">{{ $anulados }}</span>
                             </td>
                             <td>
+                                
+                                <a href="{{ route('comprobantes.edit', $comprobante->id) }}">
+                                    <i class="fa fa-lg fa-fw fa-eye"></i>
+                                </a>
                                 <a href="{{ route('comprobantes.edit', $comprobante->id) }}">
                                     <i class="fa fa-lg fa-fw fa-pen"></i>
                                 </a>

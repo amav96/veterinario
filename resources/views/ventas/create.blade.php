@@ -58,7 +58,7 @@ $config = [
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" >
                 <div class="col-md-6">
                     <div class="input-group">
                         <select class="form-control form-control-sm" id="lista-clientes" name="cliente">
@@ -77,8 +77,8 @@ $config = [
             </div>
 
             <div id="items" class="mt-4 d-none">
-                <div class="row">
-                    <div class="col-md-2">
+                <div class="row" >
+                    <div class="col-md-3">
                         <div class="input-group">
                             <select class="form-control form-control-sm" id="lista-almacenes" name="almacen_id">
                                 <option value="" disabled selected>* Almacén...</option>
@@ -90,7 +90,7 @@ $config = [
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6" >
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-group">

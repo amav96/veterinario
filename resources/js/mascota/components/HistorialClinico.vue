@@ -54,7 +54,7 @@
                
             </div>
         </div>
-        <div v-else-if="historiasClinicas.length === 0 && !cargandoHistorial">
+        <div style="height: 200px; padding: 5px;margin-top: 5px;" class="bg-white" v-else-if="historiasClinicas.length === 0 && !cargandoHistorial">
             No hay historial clinico
         </div>
 
