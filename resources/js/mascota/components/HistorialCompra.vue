@@ -2,7 +2,6 @@
     <div>
         <h3 class="text-lg font-semibold">Historial de compras</h3>
         <DataTable 
-        v-if="historialCompra && historialCompra.length > 0"
         :data="historialCompra"
         :columns="columns"
          class="table"
@@ -17,6 +16,7 @@ import { ref, toRefs, onMounted, defineProps } from 'vue'
 import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
 import DataTableBs5 from 'datatables.net-bs5';
+import { moneda } from '../../utils/moneda';
 
 DataTable.use(DataTableBs5);
 DataTable.use(DataTablesCore);
@@ -65,7 +65,10 @@ const columns = [
     },
     {
         data: 'total',
-        title: 'Total'
+        title: 'Total',
+        render: function(data, type, row) {
+            return moneda()+' '+ data; // Reemplaza '$' con el símbolo de tu moneda
+        }
     },
     {
         data: 'created_at_transformado',
@@ -73,6 +76,7 @@ const columns = [
       
     },
 ]
+
 
 
 </script>

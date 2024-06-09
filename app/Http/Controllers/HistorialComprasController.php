@@ -34,10 +34,11 @@ class HistorialComprasController extends Controller
 
 
         $compras = $compras->map(function($compra){
+           
             $compra->nombre = $compra->producto ? $compra->producto->Producto : $compra->servicio->Servicio;
             $compra->precio = $compra->producto ? $compra->producto->Precio : $compra->servicio->Precio;
-            $compra->cantidad = $compra->Cantidad;
-            $compra->total = $compra->Total;
+            $compra->cantidad = $compra->cantidad;
+            $compra->total = $compra->total;
 
             $compra->created_at_transformado =  Carbon::parse($compra->created_at)
             ->setTimezone(config('app.timezone'))
@@ -45,6 +46,8 @@ class HistorialComprasController extends Controller
            
             return $compra;
         });
+
+        
         return response()->json($compras);
         
     }
