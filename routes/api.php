@@ -8,8 +8,11 @@ use App\Http\Controllers\HistoriaClinicaAdjuntoController;
 use App\Http\Controllers\HistorialComprasController;
 use App\Http\Controllers\MascotaGaleriaController;
 use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\PermisoRolController;
 use App\Http\Controllers\ProductoGaleriaController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\TratamientoMascotaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -45,7 +48,6 @@ Route::prefix('producto-galeria')->group(function () {
 
 Route::prefix('historial-compras')->group(function () {
     Route::get('/', [HistorialComprasController::class, 'findAll']);
-   
 });
 
 Route::prefix('diagnosticoMascota')->group(function () {
@@ -65,7 +67,23 @@ Route::prefix('evento')->group(function () {
 
 Route::prefix('movimientos')->group(function () {
     Route::get('/{modulo}', [MovimientoController::class, 'findAll']);
+});
 
+Route::prefix('usuarios')->group(function () {
+    Route::get('', [UserController::class, 'findAll']);
+    Route::post('', [UserController::class, 'store']);
+    Route::patch('{id}', [UserController::class, 'update']);
+    Route::delete('{id}', [UserController::class, 'delete']);
+});
+
+Route::prefix('roles')->group(function () {
+    Route::get('', [RolController::class, 'findAll']);
+});
+
+Route::prefix('permisos-roles')->group(function () {
+    Route::get('', [PermisoRolController::class, 'findAll']);
+    Route::post('', [PermisoRolController::class, 'save']);
+    Route::delete('{id}', [PermisoRolController::class, 'delete']);
 });
 
 

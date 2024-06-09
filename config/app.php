@@ -128,4 +128,5 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         'Prices' => App\Http\Helpers\Prices::class,
     ])->toArray(),
+
 ];

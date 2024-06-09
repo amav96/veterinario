@@ -8,7 +8,6 @@
          class="table"
         />
           
-        
     </div>
 </template>
 
