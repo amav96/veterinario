@@ -1,5 +1,6 @@
 <?php
 
+use App\Config\PermisosValue;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProveedorController;
@@ -27,13 +28,20 @@ use App\Http\Controllers\AlmacenesController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\StocksController;
 use App\Http\Controllers\UserController;
+use App\Http\Services\PermisoService;
+use Illuminate\Support\Facades\Auth;
 
  Route::get('/', function () {
+    
      return view('dashboard');
  })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', [
+        "permisoService" => new PermisoService(),
+        "permisosValue" => new PermisosValue(),
+        "permisos" => PermisoService::permisosRol(Auth::user()->rol_id)
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
