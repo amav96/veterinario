@@ -145,11 +145,7 @@ class MascotaController extends Controller
     public function historialClinico($id)
     {
         $mascota = Mascota::find($id);
-        $historiasClinicas =  HistoriaClinica::where("idMascota", $id)
-                                ->with([
-                                    'tipoHistoriaClinica'
-                                ])
-                                ->get();
+       
         return view('mascotas.historialClinico', [
             'mascota'                   => $mascota,
             'tiposHistoriasClinicas'    => TipoHistoriaClinica::all(),
@@ -244,10 +240,11 @@ class MascotaController extends Controller
     }
 
     public function  getGrafico(){
-        $result = Mascota::select('especies.Especie As Mes', DB::raw('count(*) as Total'))
+        $result = Mascota::select('especies.Especie As Animal', DB::raw('count(*) as Total'))
         ->join('especies', 'especies.id', '=', 'mascotas.idEspecie')                
-        ->groupby('Mes')
-                        ->get();
+        ->groupby('Animal')
+        ->get();
+        
         return view('mascotas.graphics',['result'=>$result]);
 
     }

@@ -6,6 +6,19 @@
     <h1 class="m-0 text-dark"><i class="fas fa-users"></i> Mascotas</h1>
 @stop
 
+@php
+
+$heads = [
+    'Animal',
+    'Total',
+];
+$config = [
+    'language' => [
+        'url' => '//cdn.datatables.net/plug-ins/2.0.1/i18n/es-ES.json',
+    ],
+];
+@endphp
+
 @section('content')
 <div class="card card-success">
     <!-- <div class="card-header">
@@ -27,26 +40,41 @@
         @endif
         
         <div class="row">
-            <div class="col-md-6">
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Registro de Mascotas</h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+            <div class="col-md-12">
+                <div class="d-flex flex-row">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Registro de Mascotas</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2" style="height: 100%;width:50%;">
+                        <x-adminlte-datatable   
+                        :heads="$heads" 
+                        head-theme="light" 
+                        striped hoverable bordered compressed   
+                        :config="$config"
+                        id="mascotaTable"
+                        style="height: 100%;width: 100%;"
+                        >
+                            @foreach ($result as $mascota)
+                                <tr>
+                                    <td>{{$mascota->Animal}}</td>
+                                    <td>{{$mascota->Total}}</td>
+                                </tr>
+                            @endforeach
+                        </x-adminlte-datatable>  
+                    </div>
                 </div>
-              </div>
-              <div class="card-body">
-                <div class="chart">
-                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            </div>
-            <div class="col-md-6">
             </div>
         </div>
     </div>
@@ -64,7 +92,7 @@
         
 
         var barChartCanvas = $('#barChart').get(0).getContext('2d');
-        var labels = {!! json_encode($result->pluck('Mes'))!!};
+        var labels = {!! json_encode($result->pluck('Animal'))!!};
         var barChartOptions = {
             responsive              : true,
             maintainAspectRatio     : false,
