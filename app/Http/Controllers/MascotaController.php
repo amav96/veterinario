@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Config\PermisosValue;
 use App\Http\Services\MovimientoService;
+use App\Http\Services\PermisoService;
 use App\Models\Mascota;
 use App\Models\Especie;
 use App\Models\Raza;
@@ -15,6 +17,7 @@ use App\Models\TipoHistoriaClinica;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request; 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MascotaController extends Controller
@@ -24,6 +27,12 @@ class MascotaController extends Controller
      */
     public function index()
     {
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::MASCOTA_VER_MODULO, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $mascotas = Mascota::all();
         $clientes = Cliente::all(); 
         return view('mascotas.index',['mascotas'=>$mascotas,'clientes'=>$clientes]);
@@ -34,6 +43,12 @@ class MascotaController extends Controller
      */
     public function create()
     {
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::MASCOTA_CREAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $especies = Especie::all();
         $razas = Raza::all(); 
         $clientes = Cliente::all(); 
@@ -108,6 +123,12 @@ class MascotaController extends Controller
      */
     public function edit($id)
     {
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::MASCOTA_EDITAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+        
         $mascotas = Mascota::find($id);
         $especies = Especie::all();
         $razas = Raza::all(); 

@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Config\PermisosValue;
 use App\Models\ProductoStock;
 use App\Models\Producto;
 use App\Models\Almacen;
 use App\Models\Cliente;
-use App\Models\Mascota;
-use App\Models\Servicio;
 use App\Models\FormaPago;
 use App\Models\TipoMovimiento;
 
 use App\Http\Helpers\Token;
-
+use App\Http\Services\PermisoService;
+use App\Models\Caja;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class StocksController extends Controller
 {
@@ -24,6 +23,11 @@ class StocksController extends Controller
      */
     public function index()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::INVENTARIO_VER_MODULO, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $productos = Producto::with(['stocks'])->get();
         $almacenes = Almacen::all();
 
@@ -35,6 +39,12 @@ class StocksController extends Controller
      */
     public function create(Request $request)
     {
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::INVENTARIO_MODIFICAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $tipo = $request->tipo;
         $medios_pago = FormaPago::all();
 
@@ -99,6 +109,12 @@ class StocksController extends Controller
     // AJAX
 
     public function ajax(Request $request) {
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::INVENTARIO_MODIFICAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $stock_id       = $request->input('stock_id');
         $producto_id    = $request->input('producto_id');
         $almacen_id     = $request->input('almacen_id');

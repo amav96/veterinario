@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Config\PermisosValue;
 use App\Http\Services\MovimientoService;
+use App\Http\Services\PermisoService;
 use App\Models\Servicio;
 use App\Models\Linea;
 use App\Models\Categoria;
 use App\Models\SubCategoria;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ServicioController extends Controller
 {
@@ -17,6 +20,11 @@ class ServicioController extends Controller
      */
     public function index()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::SERVICIO_VER_MODULO, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $servicios = Servicio::all();
         return view('servicios.index',['servicios'=>$servicios]);
     }
@@ -26,6 +34,11 @@ class ServicioController extends Controller
      */
     public function create()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::SERVICIO_CREAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $lineas = Linea::all();
         $categorias = Categoria::all(); 
         $subCategoria = SubCategoria::all(); 
@@ -88,6 +101,12 @@ class ServicioController extends Controller
      */
     public function edit($id)
     {
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::SERVICIO_EDITAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $servicio = Servicio::find($id);
         $lineas = Linea::all();
         $categorias = Categoria::all(); 
@@ -165,6 +184,12 @@ class ServicioController extends Controller
     }
 
     public function auditoria(Request $request, $modulo){
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::SERVICIO_VER_AUDITORIA, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         if(!$modulo){
             return response()->json(["error" => "El modulo es requerido"]);
         }

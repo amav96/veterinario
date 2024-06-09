@@ -9,6 +9,7 @@ use App\Models\Rol;
 use App\Models\Sede;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -25,6 +26,11 @@ class UserController extends Controller
     }
 
     public function index(Request $request){
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::USUARIO_VER_MODULO, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
         
         $permisos = PermisoService::permisosRol($request->user()->rol_id);
         return view('usuarios.index', [

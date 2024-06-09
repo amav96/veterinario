@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Config\PermisosValue;
 use App\Http\Requests\Evento\SaveEventoRequest;
+use App\Http\Services\PermisoService;
 use App\Models\Evento;
 use App\Models\Cliente;
 use App\Models\Mascota;
@@ -11,6 +13,7 @@ use App\Models\EstadoEvento;
 use App\Models\Notificacion;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EventoController extends Controller
 {
@@ -19,6 +22,11 @@ class EventoController extends Controller
      */
     public function index(Request $request)
     {
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::EVENTO_VER_MODULO, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
         
         $cliente = Cliente::all();
         $tiposEvento = TipoEvento::all();
@@ -70,6 +78,11 @@ class EventoController extends Controller
     public function store(SaveEventoRequest $request)
     {
 
+        PermisoService::autorizadoOrFail(
+            PermisosValue::EVENTO_CREAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $evento = new Evento;
         $evento->idCliente = $request->input('idCliente');
         $evento->idUsuario = $request->input('idUsuario');
@@ -108,6 +121,11 @@ class EventoController extends Controller
      */
     public function update(SaveEventoRequest $request, int $id)
     {
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::EVENTO_EDITAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
        
         $evento = Evento::find($id);
         if(!$evento){

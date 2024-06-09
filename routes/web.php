@@ -24,6 +24,7 @@ use App\Http\Controllers\VentasController;
 use App\Http\Controllers\CajasController;
 use App\Http\Controllers\ComprobantesController;
 use App\Http\Controllers\AlmacenesController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\StocksController;
 use App\Http\Controllers\UserController;
 
@@ -87,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/stocks', StocksController::class);
 
     Route::get('/usuarios', [UserController::class, 'index']);
+    Route::get('/roles', [RolController::class, 'index']);
 
     Route::post('/comprobantes/agregar-pago', [ComprobantesController::class, 'ajax'])->name('comprobantes.ajax')->middleware('auth', 'verified');
     Route::post('/stocks/agregar-stock', [StocksController::class, 'ajax'])->name('stocks.ajax')->middleware('auth', 'verified');

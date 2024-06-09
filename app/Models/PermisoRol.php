@@ -13,6 +13,8 @@ class PermisoRol extends Model
 
     protected $guarded = [];
 
+    public $timestamps = false;
+
     public function permiso(){
         return $this->belongsTo(Permiso::class, "permiso_id");
     }

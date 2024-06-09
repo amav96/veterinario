@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Config\PermisosValue;
+use App\Http\Services\PermisoService;
 use App\Models\Proveedor;
 use App\Models\FormaPago;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProveedorController extends Controller
 {
@@ -13,6 +16,11 @@ class ProveedorController extends Controller
      */
     public function index()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::PROVEEDOR_VER_MODULO, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $proveedor = Proveedor::all();
         return view('proveedores.index',['proveedores'=>$proveedor]);
     }
@@ -22,6 +30,11 @@ class ProveedorController extends Controller
      */
     public function create()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::PROVEEDOR_CREAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $formaPagos = FormaPago::all(); 
         return view('proveedores.create',['formaPagos'=>$formaPagos]);
     }
@@ -67,6 +80,11 @@ class ProveedorController extends Controller
      */
     public function edit($id)
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::PROVEEDOR_EDITAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $proveedor = Proveedor::find($id);
         $formaPagos = FormaPago::all();
         return view('proveedores.edit',['proveedor'=>$proveedor,'formaPagos'=>$formaPagos ]);

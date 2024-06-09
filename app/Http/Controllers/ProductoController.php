@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Config\PermisosValue;
 use App\Http\Services\MovimientoService;
+use App\Http\Services\PermisoService;
 use App\Models\Producto;
 use App\Models\Linea;
 use App\Models\Categoria;
@@ -13,6 +15,7 @@ use App\Models\Presentacion;
 use App\Models\Proveedor;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductoController extends Controller
 {
@@ -21,6 +24,11 @@ class ProductoController extends Controller
      */
     public function index()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::PRODUCTO_VER_MODULO, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+        
         $productos = Producto::all();
         return view('productos.index',['productos'=>$productos]);
     }
@@ -30,6 +38,11 @@ class ProductoController extends Controller
      */
     public function create()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::PRODUCTO_CREAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $lineas = Linea::all();
         $categorias = Categoria::all(); 
         $subCategoria = SubCategoria::all(); 
@@ -110,6 +123,11 @@ class ProductoController extends Controller
      */
     public function edit($id)
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::PRODUCTO_EDITAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $producto = Producto::find($id);
         $lineas = Linea::all();
         $categorias = Categoria::all(); 
@@ -190,6 +208,12 @@ class ProductoController extends Controller
     }
 
     public function auditoria(Request $request, $modulo){
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::PRODUCTO_VER_AUDITORIA, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         if(!$modulo){
             return response()->json(["error" => "El modulo es requerido"]);
         }

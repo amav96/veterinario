@@ -13,33 +13,20 @@ class DynamicMenuMiddleware
 {
     public function handle($request, Closure $next)
     {
-        
         if (Auth::check()) {
             $user = Auth::user();
-           
-            // Aquí puedes construir tu menú en función de los permisos del usuario autenticado.
-            $menu = $this->buildMenuForUser($user);
 
-            // Actualiza la configuración de 'adminlte' con el nuevo menú.
+            $menu = $this->buildMenuForUser($user);
             Config::set('adminlte.menu', $menu);
         }
 
         return $next($request);
     }
 
-    /**
-     * Construye el menú para el usuario dado.
-     *
-     * @param  \App\Models\User  $user
-     * @return array
-     */
     protected function buildMenuForUser($user)
     {
 
         $permisosUsuario = PermisoService::permisosRol($user->rol_id);
-    
-        // Aquí puedes construir tu menú en función de los permisos del usuario.
-        // Este es solo un ejemplo, debes ajustarlo a tus necesidades.
         $menu =  [
             // Navbar items:
             [
@@ -342,6 +329,14 @@ class DynamicMenuMiddleware
                             'text' => 'Usuarios',
                             'icon' => 'fas fa-fw fa-users',
                             'url'  => 'usuarios',
+                        ] : []
+                    ),
+                    (
+                        in_array(PermisosValue::ROL_VER_MODULO, $permisosUsuario) ? 
+                        [
+                            'text' => 'Roles',
+                            'icon' => 'fas fa-fw fa-user-tag',
+                            'url'  => 'roles',
                         ] : []
                     ),
                 ]

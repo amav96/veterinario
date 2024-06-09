@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Config\PermisosValue;
 use App\Http\Services\MovimientoService;
+use App\Http\Services\PermisoService;
 use App\Models\Cliente;
 use App\Models\Departamento;
 use App\Models\Provincia;
@@ -10,6 +12,7 @@ use App\Models\Distrito;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
@@ -19,6 +22,13 @@ class ClienteController extends Controller
      */
     public function index()
     {
+        
+        PermisoService::autorizadoOrFail(
+            PermisosValue::CLIENTE_VER_MODULO, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
+        
         $clientes = Cliente::with('getMascotas')->get();
         return view('clientes.index',['clientes'=>$clientes]);
     }
@@ -28,6 +38,11 @@ class ClienteController extends Controller
      */
     public function create()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::CLIENTE_CREAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $departamentos = Departamento::all();
         $provincias = Provincia::all();
         $distritos = Distrito::all();
@@ -99,6 +114,11 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::CLIENTE_EDITAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $clientes = Cliente::find($id);
         $departamentos = Departamento::all();
         $provincias = Provincia::all();

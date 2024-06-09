@@ -305,34 +305,7 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
-        [
-            'type'         => 'navbar-search',
-            'text'         => 'Buscar',
-            'topnav_right' => true,
-        ],
-        [
-            'type'         => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-        
-       
-        [
-            'type'         => 'navbar-notification',
-            'icon'         => 'fa fa-user-plus',
-            'topnav_right' => true,
-            'url'          => 'cliente/create',
-            'id'           => 'idCrearCliente', 
-        ],
-        [
-            'type'         => 'navbar-notification',
-            'icon'         => 'fa fa-paw',
-            'topnav_right' => true,
-            'url'          => 'mascota/create',
-            'id'           => 'idCrearMascota', 
-        ],
-         
-
+       // DynamicMenuMiddleware
     ],
 
     /*

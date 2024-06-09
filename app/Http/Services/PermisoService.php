@@ -17,4 +17,13 @@ class PermisoService {
     static function autorizado(string $permiso, array $permisos){
         return in_array($permiso, $permisos);
     }
+
+    static function autorizadoOrFail(string $permiso, array $permisos, string $redirect = 'home'){
+        if(!in_array($permiso, $permisos)){
+            abort(403);
+        }
+    }
+    
+
+   
 }

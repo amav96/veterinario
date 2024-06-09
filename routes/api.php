@@ -8,6 +8,7 @@ use App\Http\Controllers\HistoriaClinicaAdjuntoController;
 use App\Http\Controllers\HistorialComprasController;
 use App\Http\Controllers\MascotaGaleriaController;
 use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\PermisoRolController;
 use App\Http\Controllers\ProductoGaleriaController;
 use App\Http\Controllers\RolController;
@@ -83,7 +84,11 @@ Route::prefix('roles')->group(function () {
 Route::prefix('permisos-roles')->group(function () {
     Route::get('', [PermisoRolController::class, 'findAll']);
     Route::post('', [PermisoRolController::class, 'save']);
-    Route::delete('{id}', [PermisoRolController::class, 'delete']);
+    Route::delete('{rolId}/{permisoId}', [PermisoRolController::class, 'delete']);
+});
+
+Route::prefix('permisos')->group(function () {
+    Route::get('', [PermisoController::class, 'findAll']);
 });
 
 

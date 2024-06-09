@@ -12,7 +12,6 @@ class PermisosValue {
 
     const VENTA_VER_MODULO = 'venta_ver_modulo';
     const VENTA_CREAR = 'venta_crear';
-    const VENTA_EDITAR = 'venta_editar';
     const VENTA_ELIMINAR = 'venta_eliminar';
 
     const MASCOTA_VER_MODULO = 'mascota_ver_modulo';
@@ -43,14 +42,15 @@ class PermisosValue {
     const PROVEEDOR_ELIMINAR = 'proveedor_eliminar';
 
     CONST INVENTARIO_VER_MODULO = 'inventario_ver_modulo';
-    CONST INVENTARIO_CREAR = 'inventario_crear';
-    CONST INVENTARIO_EDITAR = 'inventario_editar';
-    CONST INVENTARIO_ELIMINAR = 'inventario_eliminar';
+    CONST INVENTARIO_MODIFICAR = 'inventario_modificar';
 
     const USUARIO_VER_MODULO = 'usuario_ver_modulo';
     const USUARIO_CREAR = 'usuario_crear';
     const USUARIO_EDITAR = 'usuario_editar';
     const USUARIO_ELIMINAR = 'usuario_eliminar';
+
+    const ROL_VER_MODULO = 'rol_ver_modulo';
+    
 
     public static function rolesPermisos(){
         return [
@@ -92,12 +92,6 @@ class PermisosValue {
             ],
             [
                 'nombre' => self::VENTA_CREAR,
-                'administrador' => true,
-                'vendedor' => true,
-                'doctor' => false,
-            ],
-            [
-                'nombre' => self::VENTA_EDITAR,
                 'administrador' => true,
                 'vendedor' => true,
                 'doctor' => false,
@@ -241,23 +235,12 @@ class PermisosValue {
                 'doctor' => false,
             ],
             [
-                'nombre' => self::INVENTARIO_CREAR,
+                'nombre' => self::INVENTARIO_MODIFICAR,
                 'administrador' => true,
                 'vendedor' => true,
                 'doctor' => false,
             ],
-            [
-                'nombre' => self::INVENTARIO_EDITAR,
-                'administrador' => true,
-                'vendedor' => true,
-                'doctor' => false,
-            ],
-            [
-                'nombre' => self::INVENTARIO_ELIMINAR,
-                'administrador' => true,
-                'vendedor' => false,
-                'doctor' => false,
-            ],
+           
             [
                 'nombre' => self::USUARIO_VER_MODULO,
                 'administrador' => true,
@@ -282,6 +265,13 @@ class PermisosValue {
                 'vendedor' => false,
                 'doctor' => false,
             ],
+            [
+                'nombre' => self::ROL_VER_MODULO,
+                'administrador' => true,
+                'vendedor' => false,
+                'doctor' => false,
+            ],
+            
         ];
     }
 

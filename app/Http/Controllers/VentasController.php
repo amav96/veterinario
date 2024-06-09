@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Config\PermisosValue;
 use App\Http\Services\MovimientoService;
+use App\Http\Services\PermisoService;
 use App\Models\Venta;
 use App\Models\VentaItem;
 use App\Models\Almacen;
@@ -16,6 +18,7 @@ use App\Models\EstadoVenta;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class VentasController extends Controller
@@ -25,6 +28,11 @@ class VentasController extends Controller
      */
     public function index()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::VENTA_VER_MODULO, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $ventas = Venta::with(['cliente', 'cliente.getMascotas', 'items', 'comprobante', 'estado'])->get();
 
         return view('ventas.index', ['ventas' => $ventas]);
@@ -35,6 +43,11 @@ class VentasController extends Controller
      */
     public function create()
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::VENTA_CREAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $almacenes  = Almacen::all();
         $clientes   = Cliente::all();
         $mascotas   = Mascota::all();
@@ -195,6 +208,11 @@ class VentasController extends Controller
      */
     public function destroy(Venta $venta)
     {
+        PermisoService::autorizadoOrFail(
+            PermisosValue::VENTA_ELIMINAR, 
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
         $venta->delete();
 
         return redirect()->back()->with('msg', 'Venta eliminada correctamente.');
