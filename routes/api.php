@@ -61,6 +61,7 @@ Route::prefix('examenAuxiliarMascota')->group(function () {
     Route::delete('/{id}', [ExamenAuxiliarMascotaController::class, 'delete']);
 });
 
+
 Route::prefix('evento')->group(function () {
     Route::post('/', [EventoController::class, 'store']);
     Route::put('/{id}', [EventoController::class, 'update']);

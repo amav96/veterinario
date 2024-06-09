@@ -35,26 +35,31 @@ class EventoController extends Controller
         $usuarios = User::all();
         $eventos = Evento::all();   
         $allEventos = [];
-        $oneEventos = [];
         foreach($eventos  as $evento){
             $allEventos[] = [
                 'idDb' => $evento->id,
-                'idCliente' => $evento->getCliente->Nombre.' '.$evento->getCliente->Apellido,
-                'idMascota' => $evento->getMascota->Mascota,
+                'idCliente' => $evento->idCliente,
+                'idMascota' => $evento->idMascota,
                 'idTipoEvento' => $evento->idTipoEvento,
                 'idEstadoEvento' => $evento->idEstadoEvento,
                 'idUsuario' => $evento->idUsuario,
                 'idNotificacion' => $evento->idNotificacion,
                 'Observacion' => $evento->Observacion,
                 'title'=> $evento->Evento,
+                'FechaInicio'=> $evento->FechaInicio,
+                'FechaFin'=> $evento->FechaFin,
                 'start'=> $evento->FechaInicio,
                 'end'=> $evento->FechaFin,
             ];
         }
-
-  	    return view('eventos.index',['allEventos'=>$allEventos, 'clientes'=>$cliente,
-                                    'tiposEvento'=>$tiposEvento,'estadoEvento'=>$estadoEvento,
-                                    'notificacion'=>$notidicacionEvento, 'users'=>$usuarios]);      
+        
+  	    return view('eventos.index',[
+            'allEventos' =>$allEventos, 
+            'clientes' =>$cliente,
+            'tiposEvento' => $tiposEvento,
+            'estadoEvento' => $estadoEvento,
+            'notificacion' =>$notidicacionEvento, 
+            'users' =>$usuarios]);      
     }
 
     public function list()
@@ -77,10 +82,10 @@ class EventoController extends Controller
      */
     public function store(SaveEventoRequest $request)
     {
-
+        $usuario = User::find($request->usuarioAutenticadoId);
         PermisoService::autorizadoOrFail(
             PermisosValue::EVENTO_CREAR, 
-            PermisoService::permisosRol(Auth::user()->rol_id)
+            PermisoService::permisosRol($usuario->rol_id)
         );
 
         $evento = new Evento;
@@ -122,9 +127,10 @@ class EventoController extends Controller
     public function update(SaveEventoRequest $request, int $id)
     {
 
+        $usuario = User::find($request->usuarioAutenticadoId);
         PermisoService::autorizadoOrFail(
             PermisosValue::EVENTO_EDITAR, 
-            PermisoService::permisosRol(Auth::user()->rol_id)
+            PermisoService::permisosRol($usuario->rol_id)
         );
        
         $evento = Evento::find($id);
@@ -133,7 +139,7 @@ class EventoController extends Controller
         }
 
         $evento->idCliente = $request->input('idCliente') ?? $evento->idCliente;
-        $evento->idUsuario = $request->input('idUsuario') ?? $evento->idUsuario;
+        $evento->idUsuario = $usuario->id;
         $evento->idNotificacion = $request->input('idNotificacion') ?? $evento->idNotificacion;
         $evento->Evento = $request->input('Evento') ?? $evento->Evento;
         $evento->idTipoEvento = $request->input('idTipoEvento') ?? $evento->idTipoEvento;

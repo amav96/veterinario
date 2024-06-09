@@ -19,6 +19,8 @@ $config = [
 ];
 @endphp
 
+
+
 @section('content_header')
     <h1 class="m-0 text-dark"><i class="fas fa-calendar-day"></i>  Eventos</h1>
 @stop
@@ -51,100 +53,145 @@ $config = [
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ url('') }}" method="post">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <input type="hidden" id="Tipo" name="Tipo" value="">
-                            <input type="hidden" id="idDb" name="idDb" value="">
-                            <div class="col-md-6">
-                                <div class="form-group" id="PropietarioN">
-                                    <select class="form-control form-control-sm" id="Propietario" name="Propietario" required style="width: 100%;">
-                                        <option value="">* Propietario...</option>
-                                        @foreach ($clientes as $clie)
-                                        <option value="{{$clie->id}}">{{$clie->Nombre.' '.$clie->Apellido.' | '.$clie->DocumentoIdentidad}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group" id="PropietarioU">
-                                    <input type="text" class="form-control form-control-sm" id="PropietarioM" name="PropietarioM" value="" placeholder="" readonly>
-                                </div>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i>
+                    <form id="myForm" action="{{ url('') }}" method="post">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row">
+                                <input type="hidden" id="Tipo" name="Tipo" value="">
+                                <input type="hidden" id="idDb" name="idDb" value="">
+                                <div class="col-md-6">
+                                    {{-- propietario --}}
+                                    <div class="form-group" >
+                                        <label class="form-label"> Propietario </label>
+                                        <select class="form-control form-control-sm" id="Propietario" name="Propietario" required style="width: 100%;">
+                                            <option value="">* Propietario...</option>
+                                            @foreach ($clientes as $clie)
+                                            <option value="{{$clie->id}}">{{$clie->Nombre.' '.$clie->Apellido.' | '.$clie->DocumentoIdentidad}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <input type="datetime-local" class="form-control form-control-sm" id="FechaInicio" name="FechaInicio" value="" placeholder="Fecha de Inicio">
-                                </div>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-file-signature"></i>
+
+                                    {{-- mascota --}}
+                                    <div class="form-group" id="MascotaN">
+                                        <label class="form-label"> Mascota </label>
+                                        <select class="form-control form-control-sm" id="Mascota" name="Mascota" required>
+                                            <option value="">* Mascota ...</option>
+                                        </select>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm" id="Evento" name="Evento" value="" placeholder="Evento" >
-                                </div>
-                                <div class="form-group">
-                                    <select class="form-control form-control-sm" id="TipoEvento" name="TipoEvento" required>
-                                        <option value="">* Tipo Evento ...</option>
-                                        @foreach ($tiposEvento as $te)
-                                        <option value="{{$te->id}}">{{$te->TipoEvento}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <select class="form-control form-control-sm" id="Responsable" name="Responsable" required>
-                                        <option value="">* Responsabe ...</option>
-                                        @foreach ($users as $us)
-                                        <option value="{{$us->id}}">{{$us->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group" id="MascotaN">
-                                    <select class="form-control form-control-sm" id="Mascota" name="Mascota" required>
-                                        <option value="">* Mascota ...</option>
-                                    </select>
-                                </div>
-                                <div class="form-group" id="MascotaU">
-                                    <input type="text" class="form-control form-control-sm" id="MascotaM" name="MascotaM" value="" placeholder="" readonly>
-                                </div>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i>
+
+                                    {{-- <div class="form-group" id="PropietarioU">
+                                        <input type="text" class="form-control form-control-sm" id="PropietarioM" name="PropietarioM" value="" placeholder="" readonly>
+                                    </div> --}}
+                                    {{-- fecha inicio --}}
+                                    <div class="form-group" >
+                                        <label class="form-label"> Fecha inicio </label>
+                                        <div class="input-group mb-3">
+                                            
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i>
+                                            </div>
+                                            <input type="datetime-local" class="form-control form-control-sm" id="FechaInicio" name="FechaInicio" required value="" placeholder="Fecha de Inicio">
+                                        </div>
                                     </div>
-                                    <input type="datetime-local" class="form-control form-control-sm" id="FechaFin" name="FechaFin" value="" placeholder="Fecha Fin">
-                                </div>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-sticky-note"></i>
+
+                                    {{-- fecha fin --}}
+                                    <div class="form-group" >
+                                        <label class="form-label"> Fecha Fin </label>
+                                        <div class="input-group mb-3">
+                                            
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-calendar-alt"></i>
+                                            </div>
+                                            <input type="datetime-local" class="form-control form-control-sm" required id="FechaFin" name="FechaFin" value="" placeholder="Fecha Fin">
+                                        </div>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm" id="Observacion" name="Observacion" value="" placeholder="Observacion">
+
+                                    {{-- nombre evento --}}
+                                    <div class="form-group" >
+                                        <label class="form-label"> Nombre evento </label>
+                                        <div class="input-group mb-3">
+                                            
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-file-signature"></i>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm" required id="Evento" name="Evento" value="" placeholder="Nombre evento" >
+                                        </div>
+                                    </div>
+
+                                    {{-- tipo evento --}}
+                                    <div class="form-group">
+                                        <label class="form-label"> Tipo Evento </label>
+                                        <select class="form-control form-control-sm" id="TipoEvento" name="TipoEvento" required>
+                                            <option value="">* Tipo Evento ...</option>
+                                            @foreach ($tiposEvento as $te)
+                                            <option value="{{$te->id}}">{{$te->TipoEvento}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    {{-- responsable --}}
+                                    <div class="form-group">
+                                        <label class="form-label"> Usuario / Responsable </label>
+                                        <select class="form-control form-control-sm" id="Responsable" name="Responsable" required>
+                                            <option value="">* Responsabe ...</option>
+                                            @foreach ($users as $us)
+                                            <option value="{{$us->id}}">{{$us->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <select class="form-control form-control-sm" id="EstadoEvento" name="EstadoEvento" required>
-                                        <option value="">* Estado Evento ...</option>
-                                        @foreach ($estadoEvento as $ee)
-                                        <option value="{{$ee->id}}">{{$ee->EstadoEvento}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <select class="form-control form-control-sm" id="Notificacion" name="Notificacion" required>
-                                        <option value="">* Notificacion ...</option>
-                                        @foreach ($notificacion as $no)
-                                        <option value="{{$no->id}}">{{$no->notificacion}}</option>
-                                        @endforeach
-                                    </select>
+
+                            
+                                <div class="col-md-6">
+                                    
+                                    
+                                    {{-- <div class="form-group" id="MascotaU">
+                                        <input type="text" class="form-control form-control-sm" id="MascotaM" name="MascotaM" value="" placeholder="" readonly>
+                                    </div> --}}
+                                    
+                                    {{-- observacion --}}
+                                    <div class="form-group" >
+                                        <label class="form-label"> Observacion </label>
+                                        <div class="input-group mb-3">
+                                            
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-sticky-note"></i>
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm" id="Observacion" name="Observacion" value="" placeholder="Observacion">
+                                        </div>
+                                    </div>
+
+                                    {{-- estado evento --}}
+                                    <div class="form-group">
+                                        <label class="form-label"> Estado evento </label>
+                                        <select class="form-control form-control-sm" id="EstadoEvento" name="EstadoEvento" required>
+                                            <option value="">* Estado Evento ...</option>
+                                            @foreach ($estadoEvento as $ee)
+                                            <option value="{{$ee->id}}">{{$ee->EstadoEvento}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    {{-- notificacion --}}
+                                    <div class="form-group">
+                                        <label class="form-label"> Notificacion </label>
+                                        <select class="form-control form-control-sm" id="Notificacion" name="Notificacion" required>
+                                            <option value="">* Notificacion ...</option>
+                                            @foreach ($notificacion as $no)
+                                            <option value="{{$no->id}}">{{$no->notificacion}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <!-- <button type="submit" id="BtnSend" class="btn btn-primary">Guardar</button> -->
-                        <button type="button" id="BtnSend" class="btn btn-primary">Guardar</button>
-                        <button type="button" id="BtnSendM" class="btn btn-primary">Modificar</button>
-                        
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <!-- <button type="submit" id="BtnSend" class="btn btn-primary">Guardar</button> -->
+                            <button type="submit" id="BtnSend" class="btn btn-primary">Guardar</button>
+                            <button type="submit" id="BtnSendM" class="btn btn-primary">Modificar</button>
+                            
+                        </div>
                     </form>
                 </div>
             </div>
@@ -185,45 +232,33 @@ $config = [
                 },
             events: @json($allEventos),
             dateClick: function(info) {
-                $('#PropietarioN').show();
-                $('#PropietarioU').hide();
+                console.log(info)
                 cleanForm();
                 $('#BtnSend').show();
                 $('#BtnSendM').hide();
                 $('#Tipo').val('1');
-                // $('#BotonAgregar').show();
-                // $('#BotonModificar').hide();
-                // $('#BotonBorrar').hide();
-                // if (info.allDay) {
-                //     $('#FechaInicio').val(info.dateStr);
-                //     $('#FechaFin').val(info.dateStr);
-                // } else {
-                //     let fechaHora = info.dateStr.split("T");
-                //     $('#FechaInicio').val(fechaHora[0]);
-                //     $('#FechaFin').val(fechaHora[0]);
-                //     $('#HoraInicio').val(fechaHora[1].substring(0, 5));
-                // }
+
+
                 $("#ModalNew").modal();
             },    
-            eventClick: function(info) {
-                console.log(info);
-                $('#PropietarioN').hide();
-                $('#PropietarioU').show();
-                $('#PropietarioM').val(info.event.extendedProps.idCliente);
+            eventClick: async function(info) {
+                $('#Propietario').val(info.event.extendedProps.idCliente);
+                $("#Mascota").empty();
+                await buscarMascotas(info.event.extendedProps.idCliente)
+                setTimeout(() => {
+                    $('#Mascota').val(info.event.extendedProps.idMascota);
+                }, 1000);
 
-                $('#MascotaN').hide();
-                $('#MascotaU').show();
-                $('#MascotaM').val(info.event.extendedProps.idMascota);
-
-                //$('#Propietario').val(info.event.extendedProps.idCliente);
                 $('#Observacion').val(info.event.extendedProps.Observacion);
                 
-                $('#FechaInicio').val(info.event.start);
+                $('#FechaInicio').val(info.event.extendedProps.FechaInicio);
+                $('#FechaFin').val(info.event.extendedProps.FechaFin)
+                
                 $('#Evento').val(info.event.title);
                 $('#TipoEvento').val(info.event.extendedProps.idTipoEvento);
                 $('#Responsable').val(info.event.extendedProps.idUsuario);
-                $('#Mascota').val(info.event.extendedProps.idMascota);
-                $('#FechaFin').val(info.event.end)
+                
+                
                 $('#EstadoEvento').val(info.event.extendedProps.idEstadoEvento);
                 $('#Notificacion').val(info.event.extendedProps.idNotificacion);
                 $('#idDb').val(info.event.extendedProps.idDb);   
@@ -237,15 +272,19 @@ $config = [
         })
         calendar.render();
 
-        $('#Propietario').select2({
-            dropdownParent: $('#ModalNew')
-        });
+        // $('#Propietario').select2({
+        //     dropdownParent: $('#ModalNew')
+        // });
     
         $("#Propietario").change(function(){
             $("#Mascota").empty();
-            $.ajax({  
+            buscarMascotas($(this).val())     
+        });
+
+        async function buscarMascotas(value){
+            await $.ajax({  
                 type: "GET",  
-                url: "/getMascotas/"+$(this).val(),    
+                url: "/getMascotas/"+ value,    
                 dataType: "json", 
                 success: function (data) { 
                     var option = "<option value=''>* Mascota...</option>";
@@ -254,17 +293,23 @@ $config = [
                     });
                     $("#Mascota").append(option);
                 }, //End of AJAX Success function  
-                });        
-        });
+            });   
+        }
 
-        $('#BtnSend').click(function() {
+        $('#myForm').submit(function(e) {
+            e.preventDefault(); // Evita que el formulario se envíe de la manera predeterminada
+
             let registro = getForm();
-            addReg(registro);
-            $("#ModalNew").modal('hide');
-        });
-        $('#BtnSendM').click(function() {
-            let registro = getForm();
-            updReg(registro);
+
+            // Aquí puedes verificar si 'registro' tiene todos los campos requeridos
+            // Si no es así, puedes mostrar un mensaje de error y retornar para evitar que se ejecute el código restante
+
+            if ($('#BtnSend').is(':focus')) {
+                addReg(registro);
+            } else if ($('#BtnSendM').is(':focus')) {
+                updReg(registro);
+            }
+
             $("#ModalNew").modal('hide');
         });
 
@@ -284,27 +329,32 @@ $config = [
 
         function getForm() {
             let registro = {
-                Propietario: $('#Propietario').val(),
+                idCliente: $('#Propietario').val(),
                 FechaInicio: $('#FechaInicio').val(),
-                Evento: $('#Evento').val(),
-                TipoEvento: $('#TipoEvento').val(),
-                Mascota: $('#Mascota').val(),
                 FechaFin: $('#FechaFin').val(),
+                Evento: $('#Evento').val(),
+                idTipoEvento: $('#TipoEvento').val(),
+                idMascota: $('#Mascota').val(),
                 Observacion: $('#Observacion').val(),
-                EstadoEvento: $('#EstadoEvento').val(),
-                Notificacion: $('#Notificacion').val(),
-                Responsable: $('#Responsable').val(),
+                idEstadoEvento: $('#EstadoEvento').val(),
+                idNotificacion: $('#Notificacion').val(),
+                idUsuario: $('#Responsable').val(),
                 IdDb: $('#idDb').val(),
                 Tipo: $('#Tipo').val(), 
+                usuarioAutenticadoId: "{{ Auth::user()->id }}"
             };
             return registro;
         }
 
         function addReg(reg) {
+
             $.ajax({
                 type: 'POST',
                 url: '/api/evento',
                 data: reg,
+                headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
                 success: function(msg) {
                     window.location.replace('/evento');               
                 },
@@ -317,9 +367,12 @@ $config = [
         function updReg(registro) {
             console.log(registro);
         $.ajax({
-            type: 'POST',
-            url: '/api/evento',
+            type: 'PUT',
+            url: '/api/evento/' + registro.IdDb,
             data: registro,
+            headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
             success: function(msg) {
                 calendar.refetchEvents();
                 window.location.replace('/evento');  

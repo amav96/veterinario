@@ -26,12 +26,14 @@ class SaveEventoRequest extends FormRequest
             "idCliente"         => "required|exists:clientes,id",
             "idUsuario"         => "required|exists:users,id",
             "idNotificacion"    => "required",
-            "idEstadoEvento"    => "required|exists:estado_eventos,id",
+            "idEstadoEvento"    => "required|exists:estados_eventos,id",
             "Evento"            => "required|string",
             "FechaInicio"       => "required|date",
             "FechaFin"          => "required|date",
-            "Observacion"       => "required|string",
+            "Observacion"       => "nullable|string",
             "idMascota"         => "required|exists:mascotas,id",
+            "idTipoEvento"      => "required|exists:tipos_eventos,id",
+            "usuarioAutenticadoId" => "required|exists:users,id",
         ];
     }
 }
