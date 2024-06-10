@@ -228,6 +228,11 @@ $config = [
                             </div>
                         </div>
                     </div>
+
+                    <div id="avisos">
+                        <div class="mt-3 alert alert-success d-none" role="alert"></div>
+                        <div class="mt-3 alert alert-danger d-none" role="alert"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -257,6 +262,9 @@ $config = [
     $(document).ready(function() {
         let agregar_pago = $('#agregar-pago');
         let comprobante_id = $('#comprobante-id').val();
+        let avisos = $('#avisos');
+        let avisos_exito = avisos.find('.alert-success');
+        let avisos_error = avisos.find('.alert-danger');
 
         // Inputs de los pagos ingresados
 
@@ -305,6 +313,9 @@ $config = [
                 let texto_valor_saldo_pendiente = $('.valor-saldo-pendiente');
                 let texto_valor_vuelto = $('.valor-vuelto');
 
+                avisos_exito.addClass('d-none');
+                avisos_error.addClass('d-none');
+
                 data = {
                     comprobante_id: comprobante_id,
                     medio_pago_id: medio_pago_id,
@@ -334,9 +345,11 @@ $config = [
                     texto_valor_dinero_recibido.text(response.dinero_recibido);
                     texto_valor_saldo_pendiente.text(response.saldo_pendiente);
                     texto_valor_vuelto.text(response.vuelto);
+
+                    avisos_exito.html('El pago de '+ response.monto.replace(/<\/?[^>]+(>|$)/g, "") +' con motivo '+ response.motivo +' fue ingresado correctamente.').removeClass('d-none');
                 })
                 .fail(function(xhr, status, error) {
-
+                    avisos_error.html('No se pudo ingresar el pago debido a un error.').removeClass('d-none');
                 })
                 .always(function() {
                     agregar_pago.prop('disabled', false);
@@ -362,6 +375,9 @@ $config = [
                     let texto_valor_dinero_recibido = $('.valor-dinero-recibido');
                     let texto_valor_saldo_pendiente = $('.valor-saldo-pendiente');
                     let texto_valor_vuelto = $('.valor-vuelto');
+
+                    avisos_exito.addClass('d-none');
+                    avisos_error.addClass('d-none');
 
                     data = {
                         comprobante_id: comprobante_id,
@@ -390,12 +406,11 @@ $config = [
                         texto_valor_vuelto.text(response.vuelto);
 
                         btn.html('—');
+
+                        avisos_error.html('El pago de '+ response.monto.replace(/<\/?[^>]+(>|$)/g, "") +' fue anulado correctamente.').removeClass('d-none');
                     })
                     .fail(function(xhr, status, error) {
-
-                    })
-                    .always(function() {
-
+                        avisos_error.html('No se pudo ingresar el pago debido a un error.').removeClass('d-none');
                     });
                 }
 
