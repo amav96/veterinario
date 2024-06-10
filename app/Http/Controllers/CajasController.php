@@ -26,7 +26,6 @@ class CajasController extends Controller
     public function index()
     {
         $cajas = Caja::with(['tipo', 'medio_pago'])->get();
-        #dd($cajas);
 
         return view('cajas.index', ['cajas' => $cajas]);
     }
