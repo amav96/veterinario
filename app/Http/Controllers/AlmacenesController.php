@@ -11,7 +11,7 @@ use App\Models\Producto;
 use App\Models\Servicio;
 use App\Models\FormaPago;
 use App\Models\TipoMovimiento;
-use App\Models\TipoAlmacen;
+use App\Models\Sede;
 
 use App\Http\Helpers\Token;
 
@@ -36,7 +36,7 @@ class AlmacenesController extends Controller
      */
     public function create(Request $request)
     {
-        $tipos_almacenes = TipoAlmacen::all();
+        $tipos_almacenes = Sede::all();
 
         return view('almacenes.create', ['tipos_almacenes' => $tipos_almacenes]);
     }
@@ -74,7 +74,7 @@ class AlmacenesController extends Controller
     public function edit($id)
     {
         $almacen = Almacen::find($id);
-        $tipos_almacenes = TipoAlmacen::all();
+        $tipos_almacenes = Sede::all();
 
         if (!$almacen->exists()) {
             return redirect()->route('almacenes');
@@ -95,7 +95,7 @@ class AlmacenesController extends Controller
         $almacen= new Almacen();
 
         $almacen->where('id', $id)->update([
-            'almacen_tipo_id' => $datos['almacen_tipo_id'],
+            'sede_id' => $datos['sede_id'],
             'nombre' => $datos['nombre']
         ]);
 

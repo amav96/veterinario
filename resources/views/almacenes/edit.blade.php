@@ -41,11 +41,11 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-fw fa-warehouse"></i></span>
                         </div>
-                        <select class="form-control form-control-sm" name="almacen_tipo_id" required>
+                        <select class="form-control form-control-sm" name="sede_id" required>
                             <option value="" disabled selected>Seleccionar tipo...</option>
 
                             @foreach ($tipos_almacenes as $tipo_almacen)
-                                <option value="{{ $tipo_almacen->id }}" {{ $tipo_almacen->id == $almacen->almacen_tipo_id ? 'selected' : '' }}>{{ $tipo_almacen->TipoAlmacen }}</option>
+                                <option value="{{ $tipo_almacen->id }}" {{ $tipo_almacen->id == $almacen->sede_id ? 'selected' : '' }}>{{ $tipo_almacen->nombre }}</option>
                             @endforeach
                         </select>
                     </div>

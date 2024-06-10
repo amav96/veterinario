@@ -31,10 +31,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Services\PermisoService;
 use Illuminate\Support\Facades\Auth;
 
- Route::get('/', function () {
-    
-     return view('dashboard');
- })->middleware(['auth', 'verified'])->name('dashboard');
+ Route::redirect('/', '/dashboard', 301);
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
@@ -53,7 +50,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth'])->group(function () {
-   
+
     Route::resource('/proveedor', ProveedorController::class);
 
     Route::resource('/producto', ProductoController::class);

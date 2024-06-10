@@ -4,9 +4,9 @@
 
 @php
 $heads = [
-    'Fecha de Registro' ,
+    'Fecha de Registro',
     'Nombre',
-    'Tipo',
+    'Sede',
     'Estado',
     'Opciones'
 ];
@@ -55,7 +55,7 @@ $config = [
                             {{ $almacen->nombre }}
                         </td>
                         <td>
-                            {{ $almacen->tipo->TipoAlmacen }}
+                            {{ $almacen->tipo->nombre }}
                         </td>
                         <td>
                             {!! $almacen->estado == 1 ? '<span class="text-success">Activo</span>' : '<span class="text-danger">Inactivo</span>' !!}

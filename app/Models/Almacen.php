@@ -14,6 +14,6 @@ class Almacen extends Model
 
     public function tipo()
     {
-        return $this->hasOne(TipoAlmacen::class, 'id', 'almacen_tipo_id');
+        return $this->hasOne(Sede::class, 'id', 'sede_id');
     }
 }
