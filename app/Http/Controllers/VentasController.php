@@ -29,14 +29,14 @@ class VentasController extends Controller
     public function index()
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::VENTA_VER_MODULO, 
+            PermisosValue::VENTA_VER_MODULO,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
         $ventas = Venta::with(['cliente', 'cliente.getMascotas', 'items', 'comprobante', 'estado'])
-            ->orderBy('ventas.created_at', 'desc')    
+            ->orderBy('ventas.created_at', 'desc')
             ->get();
-        
+
         return view('ventas.index', ['ventas' => $ventas]);
     }
 
@@ -46,7 +46,7 @@ class VentasController extends Controller
     public function create()
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::VENTA_CREAR, 
+            PermisosValue::VENTA_CREAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
@@ -59,8 +59,6 @@ class VentasController extends Controller
         // Items (combinación de productos y servicios)
 
         $items      = $productos->concat($servicios);
-
-        #dd($items);
 
         return view('ventas.create', ['almacenes' => $almacenes, 'clientes' => $clientes, 'mascotas' => $mascotas, 'items' => $items]);
     }
@@ -178,7 +176,8 @@ class VentasController extends Controller
 
         // Fin
 
-        return redirect()->route('ventas.index')->with('msg', 'Venta creada correctamente.');
+        #return redirect()->route('ventas.index')->with('msg', 'Venta creada correctamente.');
+        return redirect()->route('comprobantes.edit', $comprobante->id);
     }
 
     /**
@@ -211,7 +210,7 @@ class VentasController extends Controller
     public function destroy(Venta $venta)
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::VENTA_ELIMINAR, 
+            PermisosValue::VENTA_ELIMINAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
