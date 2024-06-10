@@ -145,7 +145,7 @@ class ComprobantesController extends Controller
             // En el caso de $vuelto, tiene que empezar a sumar si el dinero recibido supera al total de la venta
             // Devolver tipo de movimiento
 
-            $dinero_recibido = (float) ComprobantePago::selectRaw('SUM(importe) as total')->where('anulado', 0)->first()->total;
+            $dinero_recibido = (float) ComprobantePago::selectRaw('SUM(importe) as total')->where('anulado', 0)->where('comprobante_id', $comprobante_id)->first()->total;
             $saldo_pendiente = $dinero_recibido < $venta->total ? $venta->total - $dinero_recibido : 0;
             $vuelto = $dinero_recibido < $venta->total ? 0 : abs($dinero_recibido - $venta->total);
             $tipo_movimiento = TipoMovimiento::where('id', TipoMovimiento::VENTA)->pluck('nombre')->first();
