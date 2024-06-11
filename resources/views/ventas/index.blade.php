@@ -4,15 +4,15 @@
 
 @php
 $heads = [
-        'Fecha Registro' ,
-        'Referencia',
-        'Subtotal',
-        'Impuestos',
-        'Total',
-        'Mascota(s)',
-        'Estado',
-        'Opciones'
-    ];
+    'Fecha Registro',
+    'Referencia',
+    'Subtotal',
+    'Impuestos',
+    'Total',
+    'Mascota(s)',
+    'Estado',
+    'Opciones',
+];
 $config = [
     'language' => [
         'url' => '//cdn.datatables.net/plug-ins/2.0.1/i18n/es-ES.json',
@@ -56,13 +56,13 @@ $config = [
         <hr>
 
         <div class="row">
-            <x-adminlte-datatable id="example" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
+            <x-adminlte-datatable id="example" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify with-buttons :config="$config">
                 @foreach ($ventas as $venta)
 
                     @php
 
                     $venta_referencia = str_pad($venta->id, 8, '0', STR_PAD_LEFT);
-                    
+
                     @endphp
 
                     <tr>
