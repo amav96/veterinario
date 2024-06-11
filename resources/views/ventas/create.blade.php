@@ -269,7 +269,7 @@ $config = [
                 let item_stock = item_seleccionado.data('stock');
                 let item_almacen = item_seleccionado.data('almacen');
                 let precio_unitario = parseFloat(item_seleccionado.data('precio-unitario'));
-                let precio_impuestos = parseFloat(21);
+                let precio_impuestos = parseFloat(calcularPorcentaje(precio_unitario, 18));
                 let precio_total = precio_unitario + precio_impuestos;
 
                 let fila, mascota_id;
@@ -383,9 +383,11 @@ $config = [
                 let val_precio_total = parseFloat(precio_total.text().replace(',', '.'));
 
                 let sum_subtotal = val_precio_unitario * val_unidades;
+                let sum_impuestos = calcularPorcentaje(sum_subtotal, 18);
                 let sum_total = sum_subtotal + val_precio_impuestos;
 
                 precio_subtotal.text(sum_subtotal.toFixed(2).replace('.', ','));
+                precio_impuestos.text(sum_impuestos.toFixed(2).replace('.', ','));
                 precio_total.text(sum_total.toFixed(2).replace('.', ','));
 
                 calcularTotales();
@@ -541,6 +543,12 @@ $config = [
             valor_venta_con_descuentos.text(sum_subtotales);
             valor_impuestos.text(sum_impuestos);
             valor_total.text(sum_totales);
+        }
+
+        // Calcular porcentaje
+
+        function calcularPorcentaje(numero, porciento) {
+            return (numero * porciento) / 100;
         }
     });
 </script>
