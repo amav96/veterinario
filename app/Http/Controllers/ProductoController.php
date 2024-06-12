@@ -25,10 +25,10 @@ class ProductoController extends Controller
     public function index()
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::PRODUCTO_VER_MODULO, 
+            PermisosValue::PRODUCTO_VER_MODULO,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
-        
+
         $productos = Producto::all();
         return view('productos.index',['productos'=>$productos]);
     }
@@ -39,16 +39,16 @@ class ProductoController extends Controller
     public function create()
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::PRODUCTO_CREAR, 
+            PermisosValue::PRODUCTO_CREAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
         $lineas = Linea::all();
-        $categorias = Categoria::all(); 
-        $subCategoria = SubCategoria::all(); 
-        $unidadMedidas = UnidadMedida::all(); 
-        $presentaciones = Presentacion::all();  
-        $proveedores = Proveedor::all(); 
+        $categorias = Categoria::all();
+        $subCategoria = SubCategoria::all();
+        $unidadMedidas = UnidadMedida::all();
+        $presentaciones = Presentacion::all();
+        $proveedores = Proveedor::all();
         return view('productos.create',[  'lineas'=>$lineas,
                                             'categorias'=>$categorias,
                                             'subCategoria'=>$subCategoria,
@@ -84,7 +84,7 @@ class ProductoController extends Controller
         $producto->idLinea = $request->input('Linea');
         $producto->idCategoria = $request->input('Categoria');
         $producto->idSubCategoria = $request->input('SubCategoria');
-        $producto->Producto = $request->input('NombreProducto'); 
+        $producto->Producto = $request->input('NombreProducto');
         $producto->Marca = $request->input('Marca');
         $producto->Contenido = $request->input('Contenido');
         $producto->CodigoDeBarra =  $request->input('CodigoBarra');
@@ -124,18 +124,18 @@ class ProductoController extends Controller
     public function edit($id)
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::PRODUCTO_EDITAR, 
+            PermisosValue::PRODUCTO_EDITAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
         $producto = Producto::find($id);
         $lineas = Linea::all();
-        $categorias = Categoria::all(); 
-        $subCategoria = SubCategoria::all(); 
-        $unidadMedidas = UnidadMedida::all(); 
-        $presentaciones = Presentacion::all();  
-        $proveedores = Proveedor::all();  
-        return view('productos.edit',[  'producto' => $producto, 
+        $categorias = Categoria::all();
+        $subCategoria = SubCategoria::all();
+        $unidadMedidas = UnidadMedida::all();
+        $presentaciones = Presentacion::all();
+        $proveedores = Proveedor::all();
+        return view('productos.edit',[  'producto' => $producto,
                                         'lineas'=>$lineas,
                                         'categorias'=>$categorias,
                                         'subCategoria'=>$subCategoria,
@@ -155,7 +155,7 @@ class ProductoController extends Controller
             if($request->input('ExoneradoCompra')== "on"){
                 $ExoneradoCompra = true;
             }
-        } 
+        }
 
         $ExoneradoVenta = false;
         if(null !== $request->input('ExoneradoVenta')){
@@ -173,7 +173,7 @@ class ProductoController extends Controller
         $producto->idLinea = $request->input('Linea');
         $producto->idCategoria = $request->input('Categoria');
         $producto->idSubCategoria = $request->input('SubCategoria');
-        $producto->Producto = $request->input('NombreProducto'); 
+        $producto->Producto = $request->input('NombreProducto');
         $producto->Marca = $request->input('Marca');
         $producto->Contenido = $request->input('Contenido');
         $producto->CodigoDeBarra =  $request->input('CodigoBarra');
@@ -195,22 +195,24 @@ class ProductoController extends Controller
             'usuario_id' => $request->user()->id
         ]);
 
-        
+
         return redirect()->route('producto.index')->with('msg','Producto Modificado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Producto $producto)
+    public function destroy($id)
     {
-        //
+        Producto::where('id', $id)->delete();
+
+        return redirect()->back()->with('msg', 'Producto eliminado correctamente.');
     }
 
     public function auditoria(Request $request, $modulo){
 
         PermisoService::autorizadoOrFail(
-            PermisosValue::PRODUCTO_VER_AUDITORIA, 
+            PermisosValue::PRODUCTO_VER_AUDITORIA,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
@@ -222,9 +224,9 @@ class ProductoController extends Controller
 
         $parametros= $request->all();
         $parametros["modulo"] = $modulo;
-        
+
         $movimientos = $movimientosService->findAll($parametros);
-   
+
         return view('productos.auditoria', [
             'movimientos' => $movimientos,
             'modulo' => $modulo

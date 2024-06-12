@@ -174,7 +174,7 @@ $config = [
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-fw fa-sticky-note"></i></span>
                                 </div>
-                                <input type="text" class="form-control form-control-sm" name="motivo" value="{{old('motivo')}}" placeholder="* Motivo" required>
+                                <input type="text" class="form-control form-control-sm" name="motivo" value="{{old('motivo')}}" placeholder="Motivo (opcional)">
                             </div>
                         </div>
                         <div class="col-md-auto">
@@ -278,8 +278,11 @@ $config = [
 
                 inputs_pagos.each(function() {
                     let input = $(this).val();
+                    let required = $(this).prop('required');
 
-                    valores.push(input);
+                    if (required) {
+                        valores.push(input);
+                    }
                 });
 
                 pendientes = valores.some(element => element === undefined || element === null || element === '');
@@ -315,6 +318,10 @@ $config = [
 
                 avisos_exito.addClass('d-none');
                 avisos_error.addClass('d-none');
+
+                if (motivo == '') {
+                    motivo = '—';
+                }
 
                 data = {
                     comprobante_id: comprobante_id,

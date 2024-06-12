@@ -15,7 +15,7 @@ use App\Models\HistoriaClinica;
 use App\Models\Producto;
 use App\Models\TipoHistoriaClinica;
 use App\Models\TipoMovimiento;
-use Illuminate\Http\Request; 
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -29,12 +29,12 @@ class MascotaController extends Controller
     {
 
         PermisoService::autorizadoOrFail(
-            PermisosValue::MASCOTA_VER_MODULO, 
+            PermisosValue::MASCOTA_VER_MODULO,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
         $mascotas = Mascota::all();
-        $clientes = Cliente::all(); 
+        $clientes = Cliente::all();
         return view('mascotas.index',['mascotas'=>$mascotas,'clientes'=>$clientes]);
     }
 
@@ -45,15 +45,15 @@ class MascotaController extends Controller
     {
 
         PermisoService::autorizadoOrFail(
-            PermisosValue::MASCOTA_CREAR, 
+            PermisosValue::MASCOTA_CREAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
         $especies = Especie::all();
-        $razas = Raza::all(); 
-        $clientes = Cliente::all(); 
+        $razas = Raza::all();
+        $clientes = Cliente::all();
 
-        return view('mascotas.create',[  
+        return view('mascotas.create',[
                                         'especies'=>$especies,
                                         'razas '=>$razas,
                                         'clientes'=>$clientes
@@ -78,7 +78,7 @@ class MascotaController extends Controller
         //     if($request->input('Asegurado')== "on"){
         //         $asegurado = true;
         //     }
-        // } 
+        // }
 
         $mascota = new Mascota();
         $mascota->idCliente = $request->input('Propietario') ;
@@ -95,7 +95,7 @@ class MascotaController extends Controller
         $mascota->Asegurado = $request->input('Asegurado');
         $mascota->Notas = $request->input('Notas');
         $mascota->Grooming = $request->input('Grooming');
-        
+
         $mascota->save();
 
         $movimiento = new MovimientoService();
@@ -125,21 +125,21 @@ class MascotaController extends Controller
     {
 
         PermisoService::autorizadoOrFail(
-            PermisosValue::MASCOTA_EDITAR, 
+            PermisosValue::MASCOTA_EDITAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
-        
+
         $mascota = Mascota::with([
             'especie',
             'raza',
             'cliente'
         ])->where("id", $id)->first();
-      
+
         $especies = Especie::all();
-        $razas = Raza::all(); 
-        $clientes = Cliente::all(); 
+        $razas = Raza::all();
+        $clientes = Cliente::all();
         //dd($mascotas);
-        return view('mascotas.edit',[ 
+        return view('mascotas.edit',[
                                         'mascota' => $mascota,
                                         'especies'=>$especies,
                                         'razas '=>$razas,
@@ -150,7 +150,7 @@ class MascotaController extends Controller
     public function historialClinico($id)
     {
         $mascota = Mascota::find($id);
-       
+
         return view('mascotas.historialClinico', [
             'mascota'                   => $mascota,
             'tiposHistoriasClinicas'    => TipoHistoriaClinica::all(),
@@ -165,7 +165,7 @@ class MascotaController extends Controller
         $mascota = Mascota::find($id);
         return view('mascotas.galeria', [
             'mascota'                   => $mascota,
-            
+
         ]);
     }
 
@@ -213,7 +213,7 @@ class MascotaController extends Controller
         $mascota->Asegurado = $request->input('Asegurado');
         $mascota->Notas = $request->input('Notas');
         $mascota->Grooming = $request->input('Grooming');
-        
+
         $mascota->save();
 
         $movimiento = new MovimientoService();
@@ -233,23 +233,25 @@ class MascotaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mascota $mascota)
+    public function destroy($id)
     {
-        //
+        Mascota::where('id', $id)->delete();
+
+        return redirect()->back()->with('msg', 'Mascota eliminada correctamente.');
     }
 
     public function getRazas($id)
     {
         $Especie = Especie::find($id);
-        return  response()->json($Especie->getRazas);
+        return response()->json($Especie->getRazas);
     }
 
     public function  getGrafico(){
         $result = Mascota::select('especies.Especie As Animal', DB::raw('count(*) as Total'))
-        ->join('especies', 'especies.id', '=', 'mascotas.idEspecie')                
+        ->join('especies', 'especies.id', '=', 'mascotas.idEspecie')
         ->groupby('Animal')
         ->get();
-        
+
         return view('mascotas.graphics',['result'=>$result]);
 
     }

@@ -35,20 +35,20 @@ $config = [
             <div class="col-md-4">
                 <x-adminlte-alert theme="success" id='success-alert' title="" dismissable>
                 {{session('msg')}}
-                </x-adminlte-alert> 
+                </x-adminlte-alert>
             </div>
         </div>
-        @endif 
-       
+        @endif
+
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
             <div class="btn-group mr-2" role="group" aria-label="Third group">
                 <a href="{{url('servicio/create')}}" class="btn btn-info btn-sm" ">Crear nuevo servicio</a>
             </div>
-            
+
             {{-- <div class="btn-group mr-2" role="group" aria-label="Third group">
                 <button type="button" class="btn btn-danger btn-sm">Auditoria</button>
             </div> --}}
-           
+
         </div>
         <hr>
         <div class="row">
@@ -65,11 +65,19 @@ $config = [
                     <td>
                         <a href="{{url('servicio/'.$serv->id.'/edit')}}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
                             <i class="fa fa-lg fa-fw fa-pen"></i>
-                        </button>
+                        </a>
+                        <a href="" class="delete btn btn-xs btn-default text-danger mx-1 shadow" title="Eliminar">
+                            <i class="fa fa-lg fa-fw fa-trash"></i>
+
+                            <form action="{{ route('servicio.destroy', $serv->id) }}" method="POST" style="display: none;">
+                                @method('DELETE')
+                                @csrf
+                            </form>
+                        </a>
                     </td>
                 </tr>
                 @endforeach
-            </x-adminlte-datatable>  
+            </x-adminlte-datatable>
         </div>
     </div>
 </div>
@@ -81,7 +89,14 @@ $config = [
         $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
             $("#success-alert").slideUp(500);
         });
-        
+
+        $('.delete').on('click', function() {
+            if (confirm('Se va a eliminar el elemento seleccionado. ¿Continuar?')) {
+                $(this).find('form').submit();
+            }
+
+            return false;
+        });
     });
 </script>
 @endpush

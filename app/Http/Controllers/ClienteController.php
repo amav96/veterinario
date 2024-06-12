@@ -22,13 +22,13 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        
+
         PermisoService::autorizadoOrFail(
-            PermisosValue::CLIENTE_VER_MODULO, 
+            PermisosValue::CLIENTE_VER_MODULO,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
-        
+
         $clientes = Cliente::with('getMascotas')->get();
         return view('clientes.index',['clientes'=> $clientes]);
     }
@@ -39,7 +39,7 @@ class ClienteController extends Controller
     public function create()
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::CLIENTE_CREAR, 
+            PermisosValue::CLIENTE_CREAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
@@ -115,7 +115,7 @@ class ClienteController extends Controller
     public function edit($id)
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::CLIENTE_EDITAR, 
+            PermisosValue::CLIENTE_EDITAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
@@ -188,9 +188,11 @@ class ClienteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Cliente $cliente)
+    public function destroy($id)
     {
-        //
+        Cliente::where('id', $id)->delete();
+
+        return redirect()->back()->with('msg', 'Cliente eliminado correctamente.');
     }
 
 
@@ -210,9 +212,9 @@ class ClienteController extends Controller
 
         DB::statement("SET lc_time_names = 'es_ES'");
 
-        $clientesPorProvincia = 
+        $clientesPorProvincia =
                     Cliente::select([
-                        'idProvincia', 
+                        'idProvincia',
                         DB::raw('count(*) as Total'),
                     ])
                     ->with([
@@ -221,14 +223,14 @@ class ClienteController extends Controller
                     ->groupby('idProvincia')
                     ->get();
         $clientesPorMes = Cliente::select([
-            'created_at', 
+            'created_at',
             DB::raw('count(*) as Total'),
             DB::raw("CONCAT(MONTHNAME(created_at), '-', YEAR(created_at)) as Mes")
         ])
         ->groupBy('Mes')
         ->get();
-           
-       
+
+
         return view('clientes.graphics',[
             'clientesPorProvincia' => $clientesPorProvincia,
             'clientesPorMes' => $clientesPorMes
@@ -245,9 +247,9 @@ class ClienteController extends Controller
 
         $parametros= $request->all();
         $parametros["modulo"] = $modulo;
-        
+
         $movimientos = $movimientosService->findAll($parametros);
-   
+
         return view('clientes.auditoria', [
             'movimientos' => $movimientos,
         ]);

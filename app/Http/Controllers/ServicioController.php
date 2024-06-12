@@ -21,7 +21,7 @@ class ServicioController extends Controller
     public function index()
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::SERVICIO_VER_MODULO, 
+            PermisosValue::SERVICIO_VER_MODULO,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
@@ -35,17 +35,17 @@ class ServicioController extends Controller
     public function create()
     {
         PermisoService::autorizadoOrFail(
-            PermisosValue::SERVICIO_CREAR, 
+            PermisosValue::SERVICIO_CREAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
         $lineas = Linea::all();
-        $categorias = Categoria::all(); 
-        $subCategoria = SubCategoria::all(); 
-        
+        $categorias = Categoria::all();
+        $subCategoria = SubCategoria::all();
+
         return view('servicios.create',[  'lineas'=>$lineas,
                                             'categorias'=>$categorias,
-                                            'subCategorias'=>$subCategoria                                   
+                                            'subCategorias'=>$subCategoria
                                         ]);
     }
 
@@ -103,20 +103,20 @@ class ServicioController extends Controller
     {
 
         PermisoService::autorizadoOrFail(
-            PermisosValue::SERVICIO_EDITAR, 
+            PermisosValue::SERVICIO_EDITAR,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
         $servicio = Servicio::find($id);
         $lineas = Linea::all();
-        $categorias = Categoria::all(); 
-        $subCategoria = SubCategoria::all(); 
- 
-        return view('servicios.edit',[  
+        $categorias = Categoria::all();
+        $subCategoria = SubCategoria::all();
+
+        return view('servicios.edit',[
                                             'servicio'=>$servicio,
                                             'lineas'=>$lineas,
                                             'categorias'=>$categorias,
-                                            'subCategorias'=>$subCategoria                                   
+                                            'subCategorias'=>$subCategoria
                                         ]);
     }
 
@@ -130,7 +130,7 @@ class ServicioController extends Controller
         //     'email'=>'nullable|email'
         // ]);
 
-        $ExoneradoImpuestos = false; 
+        $ExoneradoImpuestos = false;
         if(null !== $request->input('ExoneradoImpuestos')){
             if($request->input('ExoneradoImpuestos')== "on"){
                 $ExoneradoImpuestos = true;
@@ -138,8 +138,7 @@ class ServicioController extends Controller
         }
         $servicio = Servicio::find($id);
         $valorAnterior = json_encode($servicio);
-       
-     
+
         $servicio->idLinea = $request->input('Linea');
         $servicio->idCategoria = $request->input('Categoria');
         $servicio->idSubCategoria = $request->input('SubCategoria');
@@ -166,9 +165,11 @@ class ServicioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Servicio $servicio)
+    public function destroy($id)
     {
-        //
+        Servicio::where('id', $id)->delete();
+
+        return redirect()->back()->with('msg', 'Servicio eliminado correctamente.');
     }
 
     public function getCategorias($id)
@@ -186,7 +187,7 @@ class ServicioController extends Controller
     public function auditoria(Request $request, $modulo){
 
         PermisoService::autorizadoOrFail(
-            PermisosValue::SERVICIO_VER_AUDITORIA, 
+            PermisosValue::SERVICIO_VER_AUDITORIA,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
@@ -198,9 +199,9 @@ class ServicioController extends Controller
 
         $parametros= $request->all();
         $parametros["modulo"] = $modulo;
-        
+
         $movimientos = $movimientosService->findAll($parametros);
-   
+
         return view('servicios.auditoria', [
             'movimientos' => $movimientos,
         ]);

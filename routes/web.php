@@ -72,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
     //Route::resource('/evento', EventoController::class);
     Route::get('/evento', [EventoController::class, 'index'])->middleware(['auth', 'verified']);
     Route::get('/evento/list', [EventoController::class, 'list'])->middleware(['auth', 'verified']);
-
+    Route::get('/evento/destroy/{id}', [EventoController::class, 'destroy'])->name('evento.destroy')->middleware(['auth', 'verified']);
 
     Route::resource('/formaPago', FormaPagoController::class);
     Route::resource('/linea', LineaController::class);

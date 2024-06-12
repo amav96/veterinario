@@ -36,10 +36,10 @@ $config = [
             <div class="col-md-4">
                 <x-adminlte-alert theme="success" id='success-alert' title="" dismissable>
                 {{session('msg')}}
-                </x-adminlte-alert> 
+                </x-adminlte-alert>
             </div>
         </div>
-        @endif 
+        @endif
         <div class="row">
             <x-adminlte-datatable  id="DataEventos" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify  with-buttons :config="$config">
                 @foreach ($eventos as $eve)
@@ -54,12 +54,14 @@ $config = [
                     <td>
                         <a href="{{url('evento')}}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
                             <i class="fa fa-lg fa-fw fa-pen"></i>
-                        </button>
+                        </a>
+                        <a href="{{ route('evento.destroy', $eve->id) }}" class="delete btn btn-xs btn-default text-danger mx-1 shadow" title="Eliminar">
+                            <i class="fa fa-lg fa-fw fa-trash"></i>
+                        </a>
                     </td>
-                    
                 </tr>
                 @endforeach
-            </x-adminlte-datatable>  
+            </x-adminlte-datatable>
         </div>
     </div>
 </div>
@@ -71,7 +73,14 @@ $config = [
         $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
             $("#success-alert").slideUp(500);
         });
-        
+
+        $('.delete').on('click', function() {
+            if (confirm('Se va a eliminar el elemento seleccionado. ¿Continuar?')) {
+                return true;
+            }
+
+            return false;
+        });
     });
 </script>
 @endpush

@@ -91,7 +91,15 @@ $config = [
                     <td>
                         <a href="{{url('cliente/'.$clie->id.'/edit')}}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
                             <i class="fa fa-lg fa-fw fa-pen"></i>
-                        </button>
+                        </a>
+                        <a href="" class="delete btn btn-xs btn-default text-danger mx-1 shadow" title="Eliminar">
+                            <i class="fa fa-lg fa-fw fa-trash"></i>
+
+                            <form action="{{ route('cliente.destroy', $clie->id) }}" method="POST" style="display: none;">
+                                @method('DELETE')
+                                @csrf
+                            </form>
+                        </a>
                     </td>
 
                 </tr>
@@ -109,6 +117,13 @@ $config = [
             $("#success-alert").slideUp(500);
         });
 
+        $('.delete').on('click', function() {
+            if (confirm('Se va a eliminar el elemento seleccionado. ¿Continuar?')) {
+                $(this).find('form').submit();
+            }
+
+            return false;
+        });
     });
 </script>
 

@@ -24,16 +24,16 @@ class EventoController extends Controller
     {
 
         PermisoService::autorizadoOrFail(
-            PermisosValue::EVENTO_VER_MODULO, 
+            PermisosValue::EVENTO_VER_MODULO,
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
-        
+
         $cliente = Cliente::all();
         $tiposEvento = TipoEvento::all();
         $estadoEvento = EstadoEvento::all();
         $notidicacionEvento = Notificacion::all();
         $usuarios = User::all();
-        $eventos = Evento::all();   
+        $eventos = Evento::all(); // withTrashed();
         $allEventos = [];
         foreach($eventos  as $evento){
             $allEventos[] = [
@@ -52,21 +52,21 @@ class EventoController extends Controller
                 'end'=> $evento->FechaFin,
             ];
         }
-        
+
   	    return view('eventos.index',[
-            'allEventos' =>$allEventos, 
+            'allEventos' =>$allEventos,
             'clientes' =>$cliente,
             'tiposEvento' => $tiposEvento,
             'estadoEvento' => $estadoEvento,
-            'notificacion' =>$notidicacionEvento, 
-            'users' =>$usuarios]);      
+            'notificacion' =>$notidicacionEvento,
+            'users' =>$usuarios]);
     }
 
     public function list()
     {
         $eventos = Evento::all();
         return view('eventos.list',['eventos'=>$eventos]);
-      
+
     }
 
     /**
@@ -74,7 +74,7 @@ class EventoController extends Controller
      */
     public function create(Request $request)
     {
-       
+
     }
 
     /**
@@ -84,7 +84,7 @@ class EventoController extends Controller
     {
         $usuario = User::find($request->usuarioAutenticadoId);
         PermisoService::autorizadoOrFail(
-            PermisosValue::EVENTO_CREAR, 
+            PermisosValue::EVENTO_CREAR,
             PermisoService::permisosRol($usuario->rol_id)
         );
 
@@ -102,7 +102,7 @@ class EventoController extends Controller
         $evento->save();
 
         return response()->json($evento, 200);
-       
+
     }
 
     /**
@@ -129,10 +129,10 @@ class EventoController extends Controller
 
         $usuario = User::find($request->usuarioAutenticadoId);
         PermisoService::autorizadoOrFail(
-            PermisosValue::EVENTO_EDITAR, 
+            PermisosValue::EVENTO_EDITAR,
             PermisoService::permisosRol($usuario->rol_id)
         );
-       
+
         $evento = Evento::find($id);
         if(!$evento){
             return response()->json(['message' => 'Evento no encontrado'], 404);
@@ -149,7 +149,7 @@ class EventoController extends Controller
         $evento->Observacion = $request->input('Observacion') ?? $evento->Observacion;
         $evento->idMascota = $request->input('idMascota') ?? $evento->idMascota;
         $evento->save();
-       
+
 
         return response()->json($evento, 200);
     }
@@ -157,10 +157,10 @@ class EventoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Evento $evento)
+    public function destroy(Evento $evento, $id)
     {
-        //
+        $evento->where('id', $id)->delete();
+
+        return redirect()->back()->with('msg', 'Evento eliminado correctamente.');
     }
-  
-    
 }
