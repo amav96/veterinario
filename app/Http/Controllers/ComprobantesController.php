@@ -16,6 +16,9 @@ use Illuminate\Http\Request;
 use App\Http\Helpers\Prices;
 use App\Http\Helpers\Token;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
 class ComprobantesController extends Controller
 {
     /**
@@ -105,6 +108,39 @@ class ComprobantesController extends Controller
         $caja->delete();
 
         return redirect()->back()->with('msg', 'Movimiento de caja eliminado correctamente.');
+    }
+
+    // Generar PDF del comprobante
+
+    public function pdf($comprobante_id) {
+        $comprobante = Comprobante::with([
+            'cliente',
+            'cliente.departamento',
+            'cliente.provincia',
+            'cliente.distrito',
+            'venta',
+            'venta.items',
+            'venta.items.producto',
+            'venta.items.servicio',
+            'venta.items.mascota',
+            'pagos',
+            'pagos.medio_pago',
+            'pagos.tipo_movimiento'
+        ])->find($comprobante_id);
+
+        $vista = view('comprobantes.pdf', ['comprobante' => $comprobante])->render();
+
+        #echo ($vista); exit;
+
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($vista);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->stream('comprobante.pdf');
     }
 
     // AJAX

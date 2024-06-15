@@ -95,6 +95,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/usuarios', [UserController::class, 'index']);
     Route::get('/roles', [RolController::class, 'index']);
 
+    Route::get('/comprobantes/generar-pdf/{comprobante_id}', [ComprobantesController::class, 'pdf'])->name('comprobantes.pdf')->middleware('auth', 'verified');
     Route::post('/comprobantes/agregar-pago', [ComprobantesController::class, 'ajax'])->name('comprobantes.ajax')->middleware('auth', 'verified');
     Route::post('/stocks/agregar-stock', [StocksController::class, 'ajax'])->name('stocks.ajax')->middleware('auth', 'verified');
 

@@ -53,6 +53,15 @@ $config = [
             @endif
 
             <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <div class=" d-md-flex justify-content-md-end">
+                        <a href="{{ route('comprobantes.pdf', $comprobante->id) }}" id="generar-pdf" class="btn btn-primary btn-sm" ><i class="fas fa-fw fa-file-pdf"></i> Generar PDF</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-md-12">
                     <h5 class="d-block">Cliente</h5>
                 </div>
@@ -422,6 +431,21 @@ $config = [
                 }
 
                 return false;
+            });
+        })();
+
+        // Generar PDF
+
+        (function() {
+            let generar_pdf = $('#generar-pdf');
+
+            generar_pdf.on('click', function() {
+                let $this = $(this);
+
+                setTimeout(function() {
+                    $this.addClass('disabled');
+                    $this.removeAttr('href');
+                }, 50);
             });
         })();
 
