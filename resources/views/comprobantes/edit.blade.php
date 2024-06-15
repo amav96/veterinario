@@ -118,14 +118,14 @@ $config = [
                     <x-adminlte-datatable id="tabla-items" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify :config="$config">
                         @foreach ($comprobante->venta->items as $item)
                             <tr>
-                                <td>{{ !is_null($item->servicio_id) ? $item->servicio->Servicio : $item->producto->Producto }}</td>
+                                <td>{!! !is_null($item->servicio_id) ? ($item->servicio->Servicio ?? '<span class="text-danger">Servicio no encontrado</span>') : ($item->producto->Producto ?? '<span class="text-danger">Producto no encontrado</span>') !!}</td>
                                 <td>{{ !is_null($item->servicio_id) ? 'Servicio' : 'Producto' }}</td>
                                 <td>{{ Prices::symbol() }} <span class="precio-item precio-unitario">{{ number_format(($item->subtotal / $item->cantidad), 2, ',', '') }}</span></td>
                                 <td>x <span class="unidades-item">{{ intval($item->cantidad) }}</span> u.</td>
                                 <td>{{ Prices::symbol() }} <span class="precio-item precio-subtotal">{{ number_format($item->subtotal, 2, ',', '') }}</span></td>
                                 <td>{{ Prices::symbol() }} <span class="precio-item precio-impuestos">{{ number_format($item->impuestos, 2, ',', '') }}</span></td>
                                 <td>{{ Prices::symbol() }} <span class="precio-item precio-total">{{ number_format($item->total, 2, ',', '') }}</span></td>
-                                <td>{{ $item->mascota->Mascota }}</td>
+                                <td>{!! $item->mascota->Mascota ?? '<span class="text-danger">Mascota no encontrada</span>' !!}</td>
                             </tr>
                         @endforeach
                     </x-adminlte-datatable>
