@@ -128,7 +128,24 @@ class ComprobantesController extends Controller
             'pagos.tipo_movimiento'
         ])->find($comprobante_id);
 
-        $vista = view('comprobantes.pdf', ['comprobante' => $comprobante])->render();
+        $valores_venta = (object) [
+            'valor_bruto' => 0.0,
+            'valor_sin_descuentos' => 0.0,
+            'valor_descuentos' => 0.0,
+            'valor_con_descuentos' => 0.0,
+            'valor_impuestos' => 0.0,
+            'valor_total' => 0.0
+        ];
+
+        foreach ($comprobante->venta->items as $item) {
+            $valores_venta->valor_bruto += $item->subtotal;
+            $valores_venta->valor_sin_descuentos += $item->subtotal;
+            $valores_venta->valor_con_descuentos += $item->subtotal;
+            $valores_venta->valor_impuestos += $item->impuestos;
+            $valores_venta->valor_total += ($item->subtotal + $item->impuestos);
+        }
+
+        $vista = view('comprobantes.pdf', ['comprobante' => $comprobante, 'valores_venta' => $valores_venta])->render();
         // return  $vista;
         #echo ($vista); exit;
 
@@ -142,7 +159,7 @@ class ComprobantesController extends Controller
 
         return $dompdf->stream('comprobante.pdf');
     }
-    
+
 
     // AJAX
 

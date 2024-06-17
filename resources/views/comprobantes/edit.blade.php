@@ -447,6 +447,10 @@ $config = [
                     $this.removeAttr('href');
                 }, 50);
             });
+
+            $(window).on('beforeunload', function() {
+                generar_pdf.html('<i class="fas fa-fw fa-file-pdf"></i> Generando...');
+            });
         })();
 
         // Calcular totales
