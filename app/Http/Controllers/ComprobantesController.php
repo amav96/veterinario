@@ -129,7 +129,7 @@ class ComprobantesController extends Controller
         ])->find($comprobante_id);
 
         $vista = view('comprobantes.pdf', ['comprobante' => $comprobante])->render();
-
+        // return  $vista;
         #echo ($vista); exit;
 
         $options = new Options();
@@ -142,6 +142,7 @@ class ComprobantesController extends Controller
 
         return $dompdf->stream('comprobante.pdf');
     }
+    
 
     // AJAX
 
