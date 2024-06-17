@@ -29,7 +29,7 @@ class ClienteController extends Controller
         );
 
 
-        $clientes = Cliente::with('getMascotas')->get();
+        $clientes = Cliente::with('getMascotas')->orderBy('created_at', 'desc')->get();
         return view('clientes.index',['clientes'=> $clientes]);
     }
 

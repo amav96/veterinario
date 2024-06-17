@@ -33,7 +33,7 @@ class VentasController extends Controller
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
-        $ventas = Venta::with(['cliente', 'cliente.getMascotas', 'items', 'comprobante', 'estado'])->get();
+        $ventas = Venta::with(['cliente', 'cliente.getMascotas', 'items', 'comprobante', 'estado'])->orderBy('created_at', 'desc')->get();
 
         return view('ventas.index', ['ventas' => $ventas]);
     }

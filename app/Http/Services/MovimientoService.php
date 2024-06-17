@@ -65,7 +65,9 @@ class MovimientoService {
         $diferencias = [];
         $valorAnterior = json_decode($valorAnterior, true);
         $valorNuevo = json_decode($valorNuevo, true);
-       
+        if(!$valorAnterior){
+            return null;
+        }
         foreach($valorAnterior as $key => $value){
             if($valorAnterior[$key] != $valorNuevo[$key] && $key !== "updated_at"){
                 $diferencias[$key] = $valorAnterior[$key];
@@ -78,10 +80,19 @@ class MovimientoService {
         $diferencias = [];
         $valorAnterior = json_decode($valorAnterior, true);
         $valorNuevo = json_decode($valorNuevo, true);
-        foreach($valorNuevo as $key => $value){
-            
-            if($valorAnterior[$key] != $valorNuevo[$key] && $key !== "updated_at"){
-                $diferencias[$key] = $valorNuevo[$key];
+
+        if(!$valorAnterior){
+            foreach($valorNuevo as $key => $value){
+                if($valorNuevo[$key] && $key !== "updated_at" && $key !== "created_at"){
+                    $diferencias[$key] = $valorNuevo[$key];
+                }
+            }
+        } else {
+
+            foreach($valorNuevo as $key => $value){
+                if($valorAnterior && $valorAnterior[$key] != $valorNuevo[$key] && $key !== "updated_at"){
+                    $diferencias[$key] = $valorNuevo[$key];
+                }
             }
         }
         return json_encode($diferencias);
