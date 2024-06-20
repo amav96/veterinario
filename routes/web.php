@@ -28,6 +28,7 @@ use App\Http\Controllers\AlmacenesController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\StocksController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CuadrarCajaController;
 use App\Http\Services\PermisoService;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,7 +51,6 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth'])->group(function () {
-
     Route::resource('/proveedor', ProveedorController::class);
 
     Route::resource('/producto', ProductoController::class);
@@ -88,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/tipoAlmacen', TipoAlmacenController::class);
     Route::resource('/ventas', VentasController::class);
     Route::resource('/cajas', CajasController::class);
+    Route::resource('/cuadrar-caja', CuadrarCajaController::class);
     Route::resource('/comprobantes', ComprobantesController::class);
     Route::resource('/almacenes', AlmacenesController::class);
     Route::resource('/stocks', StocksController::class);

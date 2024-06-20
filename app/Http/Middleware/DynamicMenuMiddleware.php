@@ -38,24 +38,24 @@ class DynamicMenuMiddleware
                 'type'         => 'fullscreen-widget',
                 'topnav_right' => true,
             ],
-            
-           
+
+
             [
                 'type'         => 'navbar-notification',
                 'icon'         => 'fa fa-user-plus',
                 'topnav_right' => true,
                 'url'          => 'cliente/create',
-                'id'           => 'idCrearCliente', 
+                'id'           => 'idCrearCliente',
             ],
             [
                 'type'         => 'navbar-notification',
                 'icon'         => 'fa fa-paw',
                 'topnav_right' => true,
                 'url'          => 'mascota/create',
-                'id'           => 'idCrearMascota', 
+                'id'           => 'idCrearMascota',
             ],
-         
-    
+
+
             // Sidebar items:
             [
                 'type' => 'sidebar-menu-search',
@@ -73,7 +73,7 @@ class DynamicMenuMiddleware
                 'label_color' => 'success',
             ],
             (
-                in_array(PermisosValue::CLIENTE_VER_MODULO, $permisosUsuario) ? 
+                in_array(PermisosValue::CLIENTE_VER_MODULO, $permisosUsuario) ?
                 [
                     'text'    => 'Clientes',
                     'icon'    => 'fas fa-fw fa-users',
@@ -89,7 +89,7 @@ class DynamicMenuMiddleware
                             'url'  => 'clienteGraf',
                         ],
                         (
-                            in_array(PermisosValue::CLIENTE_VER_AUDITORIA, $permisosUsuario) ? 
+                            in_array(PermisosValue::CLIENTE_VER_AUDITORIA, $permisosUsuario) ?
                             [
                                 'text' => 'Auditoria',
                                 'icon' => 'fas fa-fw fa-chart-pie',
@@ -97,12 +97,12 @@ class DynamicMenuMiddleware
                             ] : []
                         )
                     ]
-                ] 
+                ]
                 : []
             ),
             // venta
             (
-                in_array(PermisosValue::VENTA_VER_MODULO, $permisosUsuario) ? 
+                in_array(PermisosValue::VENTA_VER_MODULO, $permisosUsuario) ?
                 [
                     'text'    => 'Ventas',
                     'icon'    => 'fas fa-fw fa-dolly-flatbed',
@@ -113,7 +113,7 @@ class DynamicMenuMiddleware
                             'url'  => 'ventas',
                         ],
                         (
-                            in_array(PermisosValue::VENTA_CREAR, $permisosUsuario) ? 
+                            in_array(PermisosValue::VENTA_CREAR, $permisosUsuario) ?
                             [
                                 'text' => 'Crear Venta',
                                 'icon' => 'fas fa-fw fa-plus',
@@ -130,13 +130,18 @@ class DynamicMenuMiddleware
                             'icon' => 'fas fa-fw fa-cash-register',
                             'url'  => 'cajas',
                         ],
+                        [
+                            'text' => 'Cuadrar Caja',
+                            'icon' => 'fas fa-fw fa-dollar-sign',
+                            'url'  => 'cuadrar-caja',
+                        ],
                     ]
-                ] 
+                ]
                 : []
             ),
             // mascota
             (
-                in_array(PermisosValue::MASCOTA_VER_MODULO, $permisosUsuario) ? 
+                in_array(PermisosValue::MASCOTA_VER_MODULO, $permisosUsuario) ?
                 [
                     'text'    => 'Mascotas',
                     'icon'    => 'fas fa-fw fa-dog',
@@ -152,12 +157,12 @@ class DynamicMenuMiddleware
                             'url'  => 'mascotaGraf',
                         ],
                     ]
-                ] 
+                ]
                 : []
             ),
             // evento
             (
-                in_array(PermisosValue::EVENTO_VER_MODULO, $permisosUsuario) ? 
+                in_array(PermisosValue::EVENTO_VER_MODULO, $permisosUsuario) ?
                 [
                     'text'    => 'Eventos',
                     'icon'    => 'fas fa-fw fa-calendar',
@@ -173,12 +178,12 @@ class DynamicMenuMiddleware
                             'url'  => 'evento/list',
                         ],
                     ]
-                ] 
+                ]
                 : []
             ),
             // productos
             (
-                in_array(PermisosValue::PRODUCTO_VER_MODULO, $permisosUsuario) ? 
+                in_array(PermisosValue::PRODUCTO_VER_MODULO, $permisosUsuario) ?
                 [
                     'text'    => 'Productos',
                     'icon'    => 'fas fa-fw fa-box-open',
@@ -189,7 +194,7 @@ class DynamicMenuMiddleware
                             'url'  => 'producto',
                         ],
                         (
-                            in_array(PermisosValue::PRODUCTO_VER_AUDITORIA, $permisosUsuario) ? 
+                            in_array(PermisosValue::PRODUCTO_VER_AUDITORIA, $permisosUsuario) ?
                             [
                                 'text' => 'Auditoria',
                                 'icon' => 'fas fa-fw fa-receipt',
@@ -201,7 +206,7 @@ class DynamicMenuMiddleware
             ),
             // servicios
             (
-                in_array(PermisosValue::SERVICIO_VER_MODULO, $permisosUsuario) ? 
+                in_array(PermisosValue::SERVICIO_VER_MODULO, $permisosUsuario) ?
                 [
                     'text'        => 'Servicios',
                     'icon'        => 'fas fa-fw fa-briefcase-medical',
@@ -213,7 +218,7 @@ class DynamicMenuMiddleware
                             'url'  => 'servicio',
                         ],
                         (
-                            in_array(PermisosValue::SERVICIO_VER_AUDITORIA, $permisosUsuario) ? 
+                            in_array(PermisosValue::SERVICIO_VER_AUDITORIA, $permisosUsuario) ?
                             [
                                 'text' => 'Auditoria',
                                 'icon' => 'fas fa-fw fa-receipt',
@@ -221,12 +226,12 @@ class DynamicMenuMiddleware
                             ] : []
                         ),
                     ]
-                    
+
                 ] : []
             ),
             // proveedores
             (
-                in_array(PermisosValue::PROVEEDOR_VER_MODULO, $permisosUsuario) ? 
+                in_array(PermisosValue::PROVEEDOR_VER_MODULO, $permisosUsuario) ?
                 [
                     'text'    => 'Proveedores',
                     'icon'    => 'fas fa-fw fa-shopping-cart',
@@ -241,7 +246,7 @@ class DynamicMenuMiddleware
             ),
             // inventario
             (
-                in_array(PermisosValue::INVENTARIO_VER_MODULO, $permisosUsuario) ? 
+                in_array(PermisosValue::INVENTARIO_VER_MODULO, $permisosUsuario) ?
                 [
                     'text'    => 'Inventario',
                     'icon'    => 'fas fa-fw fa-boxes',
@@ -324,7 +329,7 @@ class DynamicMenuMiddleware
                         'url'  => 'tipoAlmacen',
                     ],
                     (
-                        in_array(PermisosValue::USUARIO_VER_MODULO, $permisosUsuario) ? 
+                        in_array(PermisosValue::USUARIO_VER_MODULO, $permisosUsuario) ?
                         [
                             'text' => 'Usuarios',
                             'icon' => 'fas fa-fw fa-users',
@@ -332,7 +337,7 @@ class DynamicMenuMiddleware
                         ] : []
                     ),
                     (
-                        in_array(PermisosValue::ROL_VER_MODULO, $permisosUsuario) ? 
+                        in_array(PermisosValue::ROL_VER_MODULO, $permisosUsuario) ?
                         [
                             'text' => 'Roles',
                             'icon' => 'fas fa-fw fa-user-tag',
@@ -341,10 +346,10 @@ class DynamicMenuMiddleware
                     ),
                 ]
             ],
-        
+
         ];
 
-        
+
 
         return $menu;
     }
