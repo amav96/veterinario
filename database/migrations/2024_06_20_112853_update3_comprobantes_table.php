@@ -16,7 +16,7 @@ return new class extends Migration
 
             DB::table('comprobantes')->whereNotIn('tipo_id', function ($query) {
                 $query->select('id')->from('tipos_comprobantes');
-            })->update(['tipo_id' => 1]);
+            })->update(['tipo_id' => null]);
 
             Schema::table('comprobantes', function (Blueprint $table) {
                 $table->foreign('tipo_id')->references('id')->on('tipos_comprobantes')->onDelete('set null');
