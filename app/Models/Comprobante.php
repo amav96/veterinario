@@ -9,6 +9,10 @@ class Comprobante extends Model
 {
     use HasFactory;
 
+    public const BOLETA = 1;
+    public const FACTURA = 2;
+    public const NOTA_VENTA = 3;
+
     public function cliente()
     {
         return $this->belongsTo(Cliente::class, 'cliente_id', 'id');

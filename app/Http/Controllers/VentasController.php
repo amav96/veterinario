@@ -161,7 +161,7 @@ class VentasController extends Controller
 
         $comprobante->serie = 1;
         $comprobante->comprobante = Comprobante::max('id') + 1;
-        $comprobante->tipo = 'boleta';
+        $comprobante->tipo_id = Comprobante::BOLETA;
         $comprobante->venta_id = $venta_id;
         $comprobante->cliente_id = $datos['cliente_id'];
         $comprobante->amortizacion = 0;
