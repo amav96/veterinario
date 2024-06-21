@@ -134,7 +134,7 @@ $config = [
                                 <td>{{ Prices::symbol() }} <span class="precio-item precio-subtotal">{{ number_format($item->subtotal, 2, ',', '') }}</span></td>
                                 <td>{{ Prices::symbol() }} <span class="precio-item precio-impuestos">{{ number_format($item->impuestos, 2, ',', '') }}</span></td>
                                 <td>{{ Prices::symbol() }} <span class="precio-item precio-total">{{ number_format($item->total, 2, ',', '') }}</span></td>
-                                <td>{!! $item->mascota->Mascota ?? '<span class="text-danger">Mascota no encontrada</span>' !!}</td>
+                                <td>{!! $item->mascota->Mascota ?? '<span class="text-danger">Sin mascota</span>' !!}</td>
                             </tr>
                         @endforeach
                     </x-adminlte-datatable>

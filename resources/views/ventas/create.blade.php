@@ -318,6 +318,7 @@ $config = [
                         fila += '</td>';
                         fila += '<td>';
                             fila += '<select class="form-control form-control-sm mascota-item">';
+                                fila += '<option value="">Ninguna</option>';
 
                                 mascotas.find('option').each(function(index) {
                                     if ($(this).data('cliente_id') == cliente_id) {
