@@ -135,6 +135,11 @@ class DynamicMenuMiddleware
                             'icon' => 'fas fa-fw fa-dollar-sign',
                             'url'  => 'cuadrar-caja',
                         ],
+                        [
+                            'text' => 'Gestión',
+                            'icon' => 'fas fa-fw fa-chart-pie',
+                            'url'  => 'graficos-ventas',
+                        ],
                     ]
                 ]
                 : []

@@ -216,4 +216,68 @@ class VentasController extends Controller
 
         return redirect()->back()->with('msg', 'Venta eliminada correctamente.');
     }
+
+    // Gráficos de ventas
+
+    public function graficos(Request $request) {
+        // Ventas totales
+
+        $ventas_totales = Venta::select([
+            'created_at',
+            DB::raw('count(*) as total'),
+            DB::raw("CONCAT(MONTHNAME(created_at), '-', YEAR(created_at)) as periodo")
+        ])
+        ->groupBy('periodo')
+        ->get();
+
+        // Ingresos por servicio
+
+        $ventas_ingresos_servicio = VentaItem::select(
+            'servicios.Servicio as servicio',
+            DB::raw('SUM(ventas_items.total) as total')
+        )
+        ->join('servicios', 'ventas_items.servicio_id', '=', 'servicios.id')
+        ->whereNotNull('ventas_items.servicio_id')
+        ->groupBy('ventas_items.servicio_id', 'servicios.Servicio')
+        ->get();
+
+        // Ingresos por producto
+
+        $ventas_ingresos_producto = VentaItem::select(
+            'productos.Producto as producto',
+            DB::raw('SUM(ventas_items.total) as total')
+        )
+        ->join('productos', 'ventas_items.producto_id', '=', 'productos.id')
+        ->whereNotNull('ventas_items.producto_id')
+        ->groupBy('ventas_items.producto_id', 'productos.Producto')
+        ->get();
+
+        // Ranking de mascotas
+
+        $ventas_ranking_mascotas = DB::table('ventas_items')
+            ->join('mascotas', 'ventas_items.mascota_id', '=', 'mascotas.id')
+            ->select('mascotas.Mascota as mascota', DB::raw('SUM(ventas_items.total) as total'))
+            ->groupBy('ventas_items.mascota_id', 'mascotas.Mascota')
+            ->orderByDesc('total')
+            ->get();
+
+        // Ranking de clientes
+
+        $ventas_ranking_clientes = DB::table('ventas')
+            ->join('clientes', 'ventas.cliente_id', '=', 'clientes.id')
+            ->select(DB::raw('CONCAT(clientes.Nombre, " ", clientes.Apellido) as nombre_completo'), DB::raw('SUM(ventas.total) as total'))
+            ->groupBy('ventas.cliente_id', 'clientes.Nombre', 'clientes.Apellido')
+            ->orderByDesc('total')
+            ->get();
+
+        // Vista
+
+        return view('ventas.graficos', [
+            'ventas_totales' => $ventas_totales,
+            'ventas_ingresos_servicio' => $ventas_ingresos_servicio,
+            'ventas_ingresos_producto' => $ventas_ingresos_producto,
+            'ventas_ranking_mascotas' => $ventas_ranking_mascotas,
+            'ventas_ranking_clientes' => $ventas_ranking_clientes,
+        ]);
+    }
 }
