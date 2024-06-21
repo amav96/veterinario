@@ -65,7 +65,7 @@ $config = [
                         </select>
                     </div>
                 </div>
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-fw fa-warehouse"></i></span>
@@ -78,7 +78,7 @@ $config = [
                             @endforeach
                         </select>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <div class="row mt-3 text-right">
