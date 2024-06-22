@@ -11,7 +11,7 @@ $heads = [
         'Cliente',
         'Total de venta',
         'Dinero recibido',
-        'Saldo pendinete',
+        'Saldo pendiente',
         'Cambio / Vuelto',
         'Pagos',
         'Opciones'
