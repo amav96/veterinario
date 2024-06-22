@@ -33,7 +33,7 @@ class MascotaController extends Controller
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
-        $mascotas = Mascota::all();
+        $mascotas = Mascota::orderBy('created_at',  'desc')->get();
         $clientes = Cliente::all();
         return view('mascotas.index',['mascotas'=>$mascotas,'clientes'=>$clientes]);
     }
