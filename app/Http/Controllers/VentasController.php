@@ -145,8 +145,8 @@ class VentasController extends Controller
                     if ($tipo == 'servicio') {
                         $datos_item['servicio_id'] = $item->id;
                     }
-
-                    $datos_item['mascota_id'] = $item->mascota_id;
+                    
+                    $datos_item['mascota_id'] = $item->mascota_id && $item->mascota_id !== 'undefined' ? $item->mascota_id : null;
                     $datos_item['subtotal'] = $item->subtotal;
                     $datos_item['impuestos'] = $item->impuestos;
                     $datos_item['cantidad'] = $item->cantidad;
