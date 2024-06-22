@@ -235,6 +235,21 @@ class ComprobantesController extends Controller
                 'fecha' => $fecha_hora
             ]);
 
+            // Generar un movimiento de caja de salida (vuelto, por ejemplo)
+
+            if ($vuelto > 0) {
+                Caja::insert([
+                    'transaccion' => Token::create(8, true),
+                    'descripcion' => 'Movimiento de caja de salida para la venta #'. str_pad($venta->id, 8, 0, STR_PAD_LEFT),
+                    'movimiento' => 'salida',
+                    'comprobante_id' => $comprobante_id,
+                    'tipo_movimiento_id' => TipoMovimiento::VENTA,
+                    'medio_pago_id' => $medio_pago_id,
+                    'importe_salida' => $vuelto,
+                    'fecha' => $fecha_hora
+                ]);
+            }
+
             // Opciones (botón eliminar pago)
 
             $opciones = '<a href="" class="eliminar-item" data-pago_id="'. $pago_id .'" title="Anular este pago"><i class="fas fa-fw fa-trash"></i></a>';
