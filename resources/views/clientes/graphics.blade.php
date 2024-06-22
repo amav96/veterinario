@@ -30,91 +30,98 @@ $config = [
     </div> -->
     <form action="{{ url('cliente') }}" method="post">
         @csrf 
-    <div class="card-body">
-        @if ($errors->any())
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{$error}}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                </button>
-            </div>
-        @endif
-        
-        <div class="row">
-            <div class="col-md-12">
-                <div class="d-flex flex-row">
-                    <div class="card card-info">
+        <div class="card-body">
+            @if ($errors->any())
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{$error}}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    </button>
+                </div>
+            @endif
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-info" style="width: 100%">
                         <div class="card-header">
-                        <h3 class="card-title">Registro de Clientes por mes</h3>
-        
-                        
+                            <h3 class="card-title">Registro de Clientes por mes</h3>
                         </div>
                         <div class="card-body">
-                        <div class="chart">
-                            <canvas id="barChartmes" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                        </div>
-                        </div>
+                            <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="chart">
+                                            <canvas id="barChartmes" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                        </div>
+                                    </div>
                         
+                                    <div class="col-md-6">
+                                        <div class="ml-2">
+                                            <x-adminlte-datatable   
+                                            :heads="$clientesPorMesHeads" 
+                                            head-theme="light" 
+                                            striped hoverable bordered compressed   
+                                            :config="$config"
+                                            id="clientesPorMesTable"
+                                            style="height: 100%;width: 100%;"
+                                            >
+                                                @foreach ($clientesPorMes as $cliente)
+                                                    <tr>
+                                                        
+                                                        <td>{{$cliente->Mes}}</td>
+                                                        <td>{{$cliente->Total}}</td>
+                                                    
+                                                    </tr>
+                                                @endforeach
+                                            </x-adminlte-datatable>  
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
-                
-                    <div class="ml-2" style="height: 100%;width:50%;">
-                        <x-adminlte-datatable   
-                        :heads="$clientesPorMesHeads" 
-                        head-theme="light" 
-                        striped hoverable bordered compressed   
-                        :config="$config"
-                        id="clientesPorMesTable"
-                        style="height: 100%;width: 100%;"
-                        >
-                            @foreach ($clientesPorMes as $cliente)
-                                <tr>
-                                    
-                                    <td>{{$cliente->Mes}}</td>
-                                    <td>{{$cliente->Total}}</td>
-                                
-                                </tr>
-                            @endforeach
-                        </x-adminlte-datatable>  
-                    </div>
-                
-                </div>
-                <div class="d-flex flex-row">
-                    <div class="card card-info">
+                    
+                    <div class="card card-info" style="width: 100%">
                         <div class="card-header">
                             <h3 class="card-title">Registro de Clientes por zona</h3>
                         </div>
                         <div class="card-body">
-                            <div class="chart">
-                                <canvas id="barChartProvincia" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="chart">
+                                        <canvas id="barChartProvincia" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="ml-2">
+                                        <x-adminlte-datatable   
+                                        :heads="$clientesPorProvinciaHeads" 
+                                        head-theme="light" 
+                                        striped hoverable bordered compressed   
+                                        :config="$config"
+                                        id="clientesPorProvinciaTable"
+                                        style="height: 100%;width: 100%;"
+                                        >
+                                            @foreach ($clientesPorProvincia as $cliente)
+                                                <tr>
+                                                    
+                                                    <td>{{$cliente->provincia->Provincia}}</td>
+                                                    <td>{{$cliente->Total}}</td>
+                                                
+                                                </tr>
+                                            @endforeach
+                                        </x-adminlte-datatable>  
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="ml-2" style="height: 100%;width:50%;">
-                        <x-adminlte-datatable   
-                        :heads="$clientesPorProvinciaHeads" 
-                        head-theme="light" 
-                        striped hoverable bordered compressed   
-                        :config="$config"
-                        id="clientesPorProvinciaTable"
-                        style="height: 100%;width: 100%;"
-                        >
-                            @foreach ($clientesPorProvincia as $cliente)
-                                <tr>
-                                    
-                                    <td>{{$cliente->provincia->Provincia}}</td>
-                                    <td>{{$cliente->Total}}</td>
-                                
-                                </tr>
-                            @endforeach
-                        </x-adminlte-datatable>  
+                        
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
-    </div>
     </form>
 </div>  
 
