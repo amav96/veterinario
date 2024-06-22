@@ -65,6 +65,19 @@
         </div>
     @endif
 
+    
+        <div class="col-sm-2">
+            <a href="/graficos-ventas">
+                <div class="info-box" style="background-color: #007bff; color:white">   
+                    <div class="info-box-content align-items-center">
+                        <span class="info-box-icon"><i class="fas fa-receipt"></i></span>
+                        <span class="info-box-text">Gestion / Graficos</span>
+                    </div>
+                </div>
+            </a>    
+        </div>
+    
+
     @if ( $permisoService->autorizado($permisosValue::SERVICIO_VER_MODULO, $permisos))
         <div class="col-sm-2">
             <a href="/servicio">
@@ -188,18 +201,5 @@
 
     
 
-
-
 </div>
-@stop
-@section('footer')
-    <div class="float-right">
-        Version: {{ config('app.version', '4.0.0') }}
-    </div>
-
-    <strong>
-        <a href="{{ config('app.company_url', '#') }}">
-            {{ config('app.company_name', 'DennisSoft 2024') }}
-        </a>
-    </strong>
 @stop
