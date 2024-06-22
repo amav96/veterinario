@@ -29,7 +29,7 @@ class ProductoController extends Controller
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
-        $productos = Producto::all();
+        $productos = Producto::orderBy('created_at', 'desc')->get();
         return view('productos.index',['productos'=>$productos]);
     }
 
@@ -202,10 +202,20 @@ class ProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        Producto::where('id', $id)->delete();
+        $producto = Producto::find($id);
+        $producto = json_encode($producto);
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::PRODUCTO_ELIMINACION,
+            'valor_anterior' => $producto,
+            'valor_nuevo' => $producto,
+            'modulo' => TipoMovimiento::PRODUCTO,
+            'usuario_id' => $request->user()->id
+        ], esEliminacion : true);
 
+        Producto::where('id', $id)->delete();
         return redirect()->back()->with('msg', 'Producto eliminado correctamente.');
     }
 

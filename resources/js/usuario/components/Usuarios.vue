@@ -1,7 +1,7 @@
 
 <template>
     <div>
-        <h3 class="text-lg font-semibold">Historial de compras</h3>
+        <h3 class="text-lg font-semibold">Listado de usuarios</h3>
         <div
          v-if="puedeCrear"
         >

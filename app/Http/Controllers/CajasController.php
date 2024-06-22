@@ -3,20 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caja;
-use App\Models\Venta;
-use App\Models\VentaItem;
 use App\Models\Cliente;
-use App\Models\Mascota;
-use App\Models\Producto;
-use App\Models\Servicio;
 use App\Models\FormaPago;
 use App\Models\TipoMovimiento;
 
 use App\Http\Helpers\Token;
 
 use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class CajasController extends Controller
 {
@@ -25,7 +18,7 @@ class CajasController extends Controller
      */
     public function index()
     {
-        $cajas = Caja::with(['tipo', 'medio_pago'])->get();
+        $cajas = Caja::with(['tipo', 'medio_pago'])->orderBy('created_at','desc')->get();
 
         return view('cajas.index', ['cajas' => $cajas]);
     }

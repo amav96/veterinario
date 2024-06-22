@@ -161,6 +161,14 @@ class DynamicMenuMiddleware
                             'icon' => 'fas fa-fw fa-chart-pie',
                             'url'  => 'mascotaGraf',
                         ],
+                        (
+                            in_array(PermisosValue::MASCOTA_VER_AUDITORIA, $permisosUsuario) ?
+                            [
+                                'text' => 'Auditoria',
+                                'icon' => 'fas fa-fw fa-receipt',
+                                'url'  => 'mascota/mascota/auditoria',
+                            ] : []
+                        ),
                     ]
                 ]
                 : []

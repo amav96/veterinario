@@ -51,7 +51,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
                     </div>
-                    <input type="text" class="form-control form-control-sm" id="FechaNacimiento" name="FechaNacimiento" data-inputmask="'alias': 'date'" value="{{\Carbon\Carbon::parse($cliente->FechaNacimiento)->format('d/m/Y') }}" placeholder="Fecha de nacimiento" required>
+                    <input type="text" class="form-control form-control-sm" id="FechaNacimiento" name="FechaNacimiento" data-inputmask="'alias': 'date'" value="{{ $cliente->FechaNacimiento ?  \Carbon\Carbon::parse($cliente->FechaNacimiento)->format('d/m/Y') : null }}" placeholder="Fecha de nacimiento" >
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">

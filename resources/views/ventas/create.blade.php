@@ -126,7 +126,18 @@ $config = [
                         </div>
                     </div>
                 </div>
-
+                <div class="mt-3 row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <select class="form-control form-control-sm" name="tipo_comprobante_id">
+                                <option value="" disabled>* Tipo de Comprobante...</option>
+                                @foreach ($tiposComprobantes as $tipo)
+                                    <option value="{{ $tipo->id }}" {{ $tipo->id == 1 ? 'selected' : '' }}>{{ $tipo->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="mt-3 row">
                     <div class="col-md-12">
                         <x-adminlte-datatable id="tabla-items" :heads="$heads" head-theme="light" striped hoverable bordered compressed beautify :config="$config">

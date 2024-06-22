@@ -16,6 +16,9 @@ $config = [
     'language' => [
         'url' => '//cdn.datatables.net/plug-ins/2.0.1/i18n/es-ES.json',
     ],
+    'searching' => false, // Deshabilita la búsqueda
+    'paging' => false, // Deshabilita la paginación
+    'info' => false,
 ];
 @endphp
 

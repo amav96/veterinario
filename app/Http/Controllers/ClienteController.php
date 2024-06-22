@@ -70,7 +70,9 @@ class ClienteController extends Controller
         $cliente->Nombre = $request->input('Nombre');
         $cliente->Apellido = $request->input('Apellido');
         $cliente->DocumentoIdentidad = $request->input('DocumentoIdentidad');
-        $cliente->FechaNacimiento = Carbon::createFromFormat('d/m/Y', $request->input('FechaNacimiento'));
+        if($request->input('FechaNacimiento') != null){
+            $cliente->FechaNacimiento = Carbon::createFromFormat('d/m/Y', $request->input('FechaNacimiento'));
+        }
         $cliente->Email = $request->input('Email');
         $cliente->TelefonoFijo = $request->input('TelefonoFijo');
         $cliente->TelefonoMovil = $request->input('TelefonoMovil');
@@ -155,7 +157,9 @@ class ClienteController extends Controller
         $cliente->Nombre = $request->input('Nombre');
         $cliente->Apellido = $request->input('Apellido');
         $cliente->DocumentoIdentidad = $request->input('DocumentoIdentidad');
-        $cliente->FechaNacimiento = Carbon::createFromFormat('d/m/Y', $request->input('FechaNacimiento'));
+        if($request->input('FechaNacimiento') != null){
+            $cliente->FechaNacimiento = Carbon::createFromFormat('d/m/Y', $request->input('FechaNacimiento'));
+        }
         $cliente->Email = $request->input('Email');
         $cliente->TelefonoFijo = $request->input('TelefonoFijo');
         $cliente->TelefonoMovil = $request->input('TelefonoMovil');
@@ -188,8 +192,18 @@ class ClienteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request ,$id)
     {
+        $cliente = json_encode(Cliente::find($id));
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::CLIENTE_ELIMINACION,
+            'valor_anterior' => $cliente,
+            'valor_nuevo' => $cliente,
+            'modulo' => TipoMovimiento::CLIENTE,
+            'usuario_id' => $request->user()->id
+        ], esEliminacion : true);
+
         Cliente::where('id', $id)->delete();
 
         return redirect()->back()->with('msg', 'Cliente eliminado correctamente.');

@@ -14,13 +14,13 @@ $heads = [
     $config = [
     'language' => [
         'url' => '//cdn.datatables.net/plug-ins/2.0.1/i18n/es-ES.json',
-    ],
+        ],
     'order' => [],
     ];    
 @endphp
 
 @section('content_header')
-    <h1 class="m-0 text-dark"><i class="fas fa-box-open"></i>  Auditoria servicios</h1>
+    <h1 class="m-0 text-dark"><i class="fas fa-box-open"></i>  Auditoria mascotas</h1>
 @stop
 @section('content')
 

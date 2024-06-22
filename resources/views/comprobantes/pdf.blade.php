@@ -85,12 +85,14 @@ $config = [
                 border-top: 1px solid #dee2e6;
                 background-color: #e9ecef;
                 color: #495057;
+                font-size: 0.8em;
             }
 
             table td {
                 padding: .75rem;
                 vertical-align: top;
                 border-top: 1px solid #dee2e6;
+                font-size: 0.8em;
             }
 
             ul {
@@ -152,6 +154,7 @@ $config = [
                 display: inline-block;
                 float: right;
                 vertical-align: top; /* Aligns the content to the top */
+                font-size: 0.8em;
             }
         </style>
 

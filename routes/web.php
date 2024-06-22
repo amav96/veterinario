@@ -64,6 +64,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cliente/{modulo}/auditoria', [ClienteController::class, 'auditoria']);
 
     Route::resource('/mascota', MascotaController::class)->middleware('auth');
+    Route::get('/mascota/{modulo}/auditoria', [MascotaController::class, 'auditoria']);
+
     Route::get('/mascota/{id}/historial-clinico', [MascotaController::class, 'historialClinico']);
     Route::get('/mascota/{id}/galeria', [MascotaController::class, 'galeria']);
     Route::get('/mascota/{id}/historial-compra', [MascotaController::class, 'historialCompra']);

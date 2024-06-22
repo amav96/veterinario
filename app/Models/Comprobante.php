@@ -13,6 +13,11 @@ class Comprobante extends Model
     public const FACTURA = 2;
     public const NOTA_VENTA = 3;
 
+    public function tipoComprobante()
+    {
+        return $this->belongsTo(TipoComprobante::class, 'tipo_id', 'id');
+    }
+
     public function cliente()
     {
         return $this->belongsTo(Cliente::class, 'cliente_id', 'id');

@@ -233,8 +233,20 @@ class MascotaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+
+        $mascota = Mascota::find($id);
+        $mascota = json_encode($mascota);
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::MASCOTA_ELIMINACION,
+            'valor_anterior' => $mascota,
+            'valor_nuevo' => $mascota,
+            'modulo' => TipoMovimiento::MASCOTA,
+            'usuario_id' => $request->user()->id
+        ], esEliminacion : true);
+
         Mascota::where('id', $id)->delete();
 
         return redirect()->back()->with('msg', 'Mascota eliminada correctamente.');
@@ -254,6 +266,29 @@ class MascotaController extends Controller
 
         return view('mascotas.graphics',['result'=>$result]);
 
+    }
+
+    public function auditoria(Request $request, $modulo){
+
+        PermisoService::autorizadoOrFail(
+            PermisosValue::MASCOTA_VER_AUDITORIA,
+            PermisoService::permisosRol(Auth::user()->rol_id)
+        );
+
+        if(!$modulo){
+            return response()->json(["error" => "El modulo es requerido"]);
+        }
+
+        $movimientosService = new MovimientoService();
+
+        $parametros= $request->all();
+        $parametros["modulo"] = $modulo;
+
+        $movimientos = $movimientosService->findAll($parametros);
+
+        return view('mascotas.auditoria', [
+            'movimientos' => $movimientos,
+        ]);
     }
 
     public function getMascotas($id)

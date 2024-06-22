@@ -18,6 +18,7 @@ class PermisosValue {
     const MASCOTA_CREAR = 'mascota_crear';
     const MASCOTA_EDITAR = 'mascota_editar';
     const MASCOTA_ELIMINAR = 'mascota_eliminar';
+    const MASCOTA_VER_AUDITORIA = 'mascota_ver_auditoria';
 
     const PRODUCTO_VER_MODULO = 'producto_ver_modulo';
     const PRODUCTO_CREAR = 'producto_crear';
@@ -271,6 +272,18 @@ class PermisosValue {
                 'vendedor' => false,
                 'doctor' => false,
             ],
+            [
+                'nombre' => self::SERVICIO_VER_AUDITORIA,
+                'administrador' => true,
+                'vendedor' => false,
+                'doctor' => false,
+            ],
+            [
+                'nombre' => self::MASCOTA_VER_AUDITORIA,
+                'administrador' => true,
+                'vendedor' => false,
+                'doctor' => false,
+            ]
             
         ];
     }

@@ -14,7 +14,11 @@ use App\Models\Almacen;
 
 use App\Http\Helpers\Prices;
 use App\Http\Helpers\Token;
-
+use App\Models\Caja;
+use App\Models\EstadoVenta;
+use App\Models\FormaPago;
+use App\Models\TipoMovimiento;
+use App\Models\User;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -24,10 +28,10 @@ class CuadrarCajaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        // Clientes
+        // usuarios
         // Almacenes
 
-        $clientes = Cliente::all();
+        $usuarios = User::all();
         $almacenes = Almacen::all();
 
         // Filtros
@@ -37,13 +41,13 @@ class CuadrarCajaController extends Controller
         $filtro_fecha_desde = null;
         $filtro_fecha_hasta = null;
         $filtro_almacen = null;
-        $filtro_cliente = null;
+        $filtro_usuario = null;
 
         if (!is_null($filtros)) {
             $filtro_fecha_desde = $request->input('fecha_desde');
             $filtro_fecha_hasta = $request->input('fecha_hasta');
             $filtro_almacen = $request->input('almacen');
-            $filtro_cliente = $request->input('cliente');
+            $filtro_usuario = $request->input('usuario');
         }
 
         // Queries para agrupar y sumar ingresos por tipo
@@ -54,7 +58,7 @@ class CuadrarCajaController extends Controller
             DB::raw('SUM(ventas_items.total) as monto')
         )
         ->join('ventas', 'ventas.id', '=', 'ventas_items.venta_id')
-        ->join('clientes', 'clientes.id', '=', 'ventas.cliente_id');
+        ->join('users', 'users.id', '=', 'ventas.usuario_id');
 
         // Queries para agrupar y sumar por medios de pago
 
@@ -82,8 +86,8 @@ class CuadrarCajaController extends Controller
                 });
             }
 
-            if (!is_null($filtro_cliente)) {
-                $query_ingresos_tipos->where('clientes.id', $filtro_cliente);
+            if (!is_null($filtro_usuario)) {
+                $query_ingresos_tipos->where('users.id', $filtro_usuario);
             }
         }
 
@@ -120,12 +124,12 @@ class CuadrarCajaController extends Controller
             'totales_ingresos_tipo' => $totales_ingresos_tipo,
             'resumen_medios_pago' => $resumen_medios_pago,
             'almacenes' => $almacenes,
-            'clientes' => $clientes,
+            'usuarios' => $usuarios,
             'filtros' => [
                 'fecha_desde' => $filtro_fecha_desde,
                 'fecha_hasta' => $filtro_fecha_hasta,
                 'almacen' => $filtro_almacen,
-                'cliente' => $filtro_cliente
+                'usuario' => $filtro_usuario
             ]
         ]);
     }

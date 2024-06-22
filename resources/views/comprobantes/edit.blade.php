@@ -35,7 +35,7 @@ $config = [
 @section('content')
 <div class="card card-success">
     <div class="card-header">
-        <h3 class="card-title">Editar comprobante N° {{ str_pad($comprobante->serie, 3, '0', STR_PAD_LEFT) }}-{{ str_pad($comprobante->comprobante, 8, '0', STR_PAD_LEFT) }}</h3>
+        <h3 class="card-title">Editar comprobante N° {{ str_pad($comprobante->serie, 3, '0', STR_PAD_LEFT) }}-{{ str_pad($comprobante->comprobante, 8, '0', STR_PAD_LEFT) }} - {{ $comprobante->tipoComprobante->nombre }}</h3>
     </div>
     <form action="{{ url('cajas') }}" method="post">
         @csrf

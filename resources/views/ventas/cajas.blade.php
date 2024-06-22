@@ -65,20 +65,20 @@ $config = [
                         </select>
                     </div>
                 </div>
-                {{-- <div class="col-md-4">
+                <div class="col-md-4">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-fw fa-warehouse"></i></span>
                         </div>
-                        <select class="form-control form-control-sm" name="cliente">
-                            <option value="" disabled selected>Clientes</option>
+                        <select class="form-control form-control-sm" name="usuario">
+                            <option value="" disabled selected>Usuarios</option>
 
-                            @foreach ($clientes as $cliente)
-                                <option value="{{ $cliente->id }}" {{ $filtros['cliente'] == $cliente->id ? 'selected' : '' }}>{{ $cliente->Nombre }}</option>
+                            @foreach ($usuarios as $usuario)
+                                <option value="{{ $usuario->id }}" {{ $filtros['usuario'] == $usuario->id ? 'selected' : '' }}>{{ $usuario->name }}</option>
                             @endforeach
                         </select>
                     </div>
-                </div> --}}
+                </div>
             </div>
 
             <div class="row mt-3 text-right">

@@ -25,41 +25,47 @@ class MovimientoService {
                         ->when(isset($request["usuario_id"]), function($query) use ($request){
                             $query->where("usuario_id", $request["usuario_id"]);
                         })
+                        ->orderBy("created_at", "desc")
                         ->get();
 
         return $movimientos;
     }
 
-    public function create(array $data){
-        $this->validarCamposYDevolverError($data);
+    public function create(array $data, $esEliminacion = false){
+        $this->validarCamposYDevolverError($data, $esEliminacion);
         $movimiento = new Movimiento();
         $movimiento->tipo_movimiento_id = $data['tipo_movimiento_id'];
         $movimiento->modulo = $data['modulo'];
-        $movimiento->valor_nuevo = $this->obtenerDiferenciaValorNuevo($data['valor_anterior'], $data['valor_nuevo']);
-        $movimiento->valor_anterior = $this->obtenerDiferenciaValorAnterior($data['valor_anterior'], $data['valor_nuevo']);
+        if ($esEliminacion) {
+            // Para eliminaciones, solo se guarda el valor anterior y se especifica el tipo de movimiento adecuado
+            $movimiento->valor_anterior = $data['valor_anterior'];
+            $movimiento->valor_nuevo = null; // No hay valor nuevo en una eliminación
+        } else {
+            $movimiento->valor_nuevo = $this->obtenerDiferenciaValorNuevo($data['valor_anterior'], $data['valor_nuevo']);
+            $movimiento->valor_anterior = $this->obtenerDiferenciaValorAnterior($data['valor_anterior'], $data['valor_nuevo']);
+        }
         $movimiento->usuario_id = $data['usuario_id'];
        
         $movimiento->save();
-
+    
         return $movimiento;
     }
 
-    private function validarCamposYDevolverError(array $data){
-        $errores = [];
+    private function validarCamposYDevolverError(array $data, $esEliminacion = false){
         if(!isset($data['modulo'])){
             throw new \Exception('El campo modulo es requerido');
-         }
-        if(!isset($data['tipo_movimiento_id'])){
-           throw new \Exception('El campo tipo_movimiento_id es requerido');
         }
-        if(!isset($data['valor_nuevo'])){
+        if(!isset($data['tipo_movimiento_id'])){
+        throw new \Exception('El campo tipo_movimiento_id es requerido');
+        }
+        if(!$esEliminacion && !isset($data['valor_nuevo'])){
             throw new \Exception('El campo valor_nuevo es requerido');
         }
         if(!isset($data['usuario_id'])){
             throw new \Exception('El campo usuario_id es requerido');
         }
-        return $errores;
     }
+
 
     private function obtenerDiferenciaValorAnterior($valorAnterior, $valorNuevo){
         $diferencias = [];

@@ -50,7 +50,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-fw fa-birthday-cake"></i></span>
                     </div>
-                    <input type="text" class="form-control form-control-sm" id="FechaNacimiento" name="FechaNacimiento" data-inputmask="'alias': 'date'" value="{{old('FechaNacimiento')}}" placeholder="* Fecha de nacimiento" required>
+                    <input type="text" class="form-control form-control-sm" id="FechaNacimiento" name="FechaNacimiento" data-inputmask="'alias': 'date'" value="{{old('FechaNacimiento')}}" placeholder="* Fecha de nacimiento" >
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">

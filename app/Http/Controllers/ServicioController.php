@@ -25,7 +25,7 @@ class ServicioController extends Controller
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
-        $servicios = Servicio::all();
+        $servicios = Servicio::orderBy('created_at', 'desc')->get();
         return view('servicios.index',['servicios'=>$servicios]);
     }
 
@@ -165,8 +165,19 @@ class ServicioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        $servicio = Servicio::find($id);
+        $servicio = json_encode($servicio);
+        $movimiento = new MovimientoService();
+        $movimiento->create([
+            'tipo_movimiento_id' => TipoMovimiento::SERVICIO_ELIMINACION,
+            'valor_anterior' => $servicio,
+            'valor_nuevo' => $servicio,
+            'modulo' => TipoMovimiento::SERVICIO,
+            'usuario_id' => $request->user()->id
+        ], esEliminacion : true);
+
         Servicio::where('id', $id)->delete();
 
         return redirect()->back()->with('msg', 'Servicio eliminado correctamente.');

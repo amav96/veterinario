@@ -15,9 +15,11 @@ use App\Models\ProductoStock;
 use App\Models\Servicio;
 use App\Models\Comprobante;
 use App\Models\EstadoVenta;
+use App\Models\TipoComprobante;
 use App\Models\TipoMovimiento;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Database\Seeders\TiposComprobantes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -53,12 +55,19 @@ class VentasController extends Controller
         $mascotas   = Mascota::all();
         $servicios  = Servicio::all();
         $productos  = Producto::with('stocks')->get();
+        $tiposComprobantes = TipoComprobante::all();
 
         // Items (combinación de productos y servicios)
 
         $items      = $productos->concat($servicios);
 
-        return view('ventas.create', ['almacenes' => $almacenes, 'clientes' => $clientes, 'mascotas' => $mascotas, 'items' => $items]);
+        return view('ventas.create', [
+            'almacenes' => $almacenes, 
+            'clientes' => $clientes, 
+            'mascotas' => $mascotas, 
+            'items' => $items,
+            'tiposComprobantes' => $tiposComprobantes
+        ]);
     }
 
     /**
@@ -66,114 +75,124 @@ class VentasController extends Controller
      */
     public function store(Request $request)
     {
-        // Datos de la venta
-        // Modelo de venta
-        // Modelo de stocks
+      
+        DB::beginTransaction();
+        try {
+            //code...
+            // Datos de la venta
+            // Modelo de venta
+            // Modelo de stocks
+            $usuarioAuth = Auth::user();
+            $datos = $request->all();
+            $venta = new Venta();
+            $venta_items = new VentaItem();
+            $stocks = new ProductoStock();
 
-        $datos = $request->all();
-        $venta = new Venta();
-        $venta_items = new VentaItem();
-        $stocks = new ProductoStock();
+            // Descontar stocks en productos_stocks
 
-        // Descontar stocks en productos_stocks
+            foreach ($datos['item'] as $tipo => $items) {
+                foreach ($items as $item) {
+                    $item = (object) $item;
 
-        foreach ($datos['item'] as $tipo => $items) {
-            foreach ($items as $item) {
-                $item = (object) $item;
+                    if ($tipo == 'producto') {
+                        $consulta_stock = $stocks->where('almacen_id', $item->almacen_id)->where('producto_id', $item->id);
+                        $stock_actual = $consulta_stock->pluck('cantidad')->first();
+                        $stock_nuevo = $stock_actual - $item->cantidad;
 
-                if ($tipo == 'producto') {
-                    $consulta_stock = $stocks->where('almacen_id', $item->almacen_id)->where('producto_id', $item->id);
-                    $stock_actual = $consulta_stock->pluck('cantidad')->first();
-                    $stock_nuevo = $stock_actual - $item->cantidad;
-
-                    $consulta_stock->update([
-                        'cantidad' => $stock_nuevo
-                    ]);
+                        $consulta_stock->update([
+                            'cantidad' => $stock_nuevo
+                        ]);
+                    }
                 }
             }
-        }
 
-        // Guardar venta (devolver venta_id)
+            // Guardar venta (devolver venta_id)
 
-        $venta->cliente_id      = $datos['cliente_id'];
-        $venta->subtotal        = 0;
-        $venta->impuestos       = 0;
-        $venta->total           = 0;
-        $venta->estado_id       = EstadoVenta::PENDIENTE;
-        $venta->medio_pago_id   = null;
-        $venta->facturada       = null;
-        $venta->notificada      = null;
+            $venta->cliente_id      = $datos['cliente_id'];
+            $venta->subtotal        = 0;
+            $venta->impuestos       = 0;
+            $venta->total           = 0;
+            $venta->estado_id       = EstadoVenta::PENDIENTE;
+            $venta->medio_pago_id   = null;
+            $venta->facturada       = null;
+            $venta->notificada      = null;
+            $venta->usuario_id      = $usuarioAuth->id;
 
-        $venta->save();
+            $venta->save();
 
-        $venta_id               = $venta->id;
+            $venta_id               = $venta->id;
 
-        // Subtotales, impuestos y totales
+            // Subtotales, impuestos y totales
 
-        $subtotal               = 0.0;
-        $impuestos              = 0.0;
-        $total                  = 0.0;
+            $subtotal               = 0.0;
+            $impuestos              = 0.0;
+            $total                  = 0.0;
 
-        // Calcular subtotales, impuestos y totales
+            // Calcular subtotales, impuestos y totales
 
-        foreach ($datos['item'] as $tipo => $items) {
-            $datos_item = [];
+            foreach ($datos['item'] as $tipo => $items) {
+                $datos_item = [];
 
-            foreach ($items as $item) {
-                $item = (object) $item;
+                foreach ($items as $item) {
+                    $item = (object) $item;
 
-                $datos_item['venta_id'] = $venta_id;
+                    $datos_item['venta_id'] = $venta_id;
 
-                if ($tipo == 'producto') {
-                    $datos_item['producto_id'] = $item->id;
+                    if ($tipo == 'producto') {
+                        $datos_item['producto_id'] = $item->id;
+                    }
+
+                    if ($tipo == 'servicio') {
+                        $datos_item['servicio_id'] = $item->id;
+                    }
+
+                    $datos_item['mascota_id'] = $item->mascota_id;
+                    $datos_item['subtotal'] = $item->subtotal;
+                    $datos_item['impuestos'] = $item->impuestos;
+                    $datos_item['cantidad'] = $item->cantidad;
+                    $datos_item['total'] = $item->total;
+                    $datos_item['created_at'] = now();
+
+                    $subtotal += $datos_item['subtotal'];
+                    $impuestos += $datos_item['impuestos'];
+                    $total += $datos_item['total'];
+
+                    $venta_items->insert($datos_item);
                 }
-
-                if ($tipo == 'servicio') {
-                    $datos_item['servicio_id'] = $item->id;
-                }
-
-                $datos_item['mascota_id'] = $item->mascota_id;
-                $datos_item['subtotal'] = $item->subtotal;
-                $datos_item['impuestos'] = $item->impuestos;
-                $datos_item['cantidad'] = $item->cantidad;
-                $datos_item['total'] = $item->total;
-                $datos_item['created_at'] = now();
-
-                $subtotal += $datos_item['subtotal'];
-                $impuestos += $datos_item['impuestos'];
-                $total += $datos_item['total'];
-
-                $venta_items->insert($datos_item);
             }
+
+            // Actualizar subtotal, impuestos y total de la venta
+
+            $venta->subtotal = $subtotal;
+            $venta->impuestos = $impuestos;
+            $venta->total = $total;
+
+            $venta->save();
+
+            // Crear comprobante de la venta
+
+            $comprobante = new Comprobante();
+
+            $comprobante->serie = 1;
+            $comprobante->comprobante = Comprobante::max('id') + 1;
+            $comprobante->tipo_id = $request->tipo_comprobante_id;
+            $comprobante->venta_id = $venta_id;
+            $comprobante->cliente_id = $datos['cliente_id'];
+            $comprobante->amortizacion = 0;
+            $comprobante->dinero_recibido = 0;
+            $comprobante->saldo_pendiente = $total;
+            $comprobante->vuelto = 0;
+            $comprobante->anulado = 0;
+
+            $comprobante->save();
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
-
-        // Actualizar subtotal, impuestos y total de la venta
-
-        $venta->subtotal = $subtotal;
-        $venta->impuestos = $impuestos;
-        $venta->total = $total;
-
-        $venta->save();
-
-        // Crear comprobante de la venta
-
-        $comprobante = new Comprobante();
-
-        $comprobante->serie = 1;
-        $comprobante->comprobante = Comprobante::max('id') + 1;
-        $comprobante->tipo_id = Comprobante::BOLETA;
-        $comprobante->venta_id = $venta_id;
-        $comprobante->cliente_id = $datos['cliente_id'];
-        $comprobante->amortizacion = 0;
-        $comprobante->dinero_recibido = 0;
-        $comprobante->saldo_pendiente = $total;
-        $comprobante->vuelto = 0;
-        $comprobante->anulado = 0;
-
-        $comprobante->save();
 
         // Fin
-
+        DB::commit();
         #return redirect()->route('ventas.index')->with('msg', 'Venta creada correctamente.');
         return redirect()->route('comprobantes.edit', $comprobante->id);
     }

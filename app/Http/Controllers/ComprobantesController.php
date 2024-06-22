@@ -69,6 +69,7 @@ class ComprobantesController extends Controller
     public function edit($id)
     {
         $comprobante = Comprobante::with([
+            'tipoComprobante',
             'cliente',
             'cliente.departamento',
             'cliente.provincia',

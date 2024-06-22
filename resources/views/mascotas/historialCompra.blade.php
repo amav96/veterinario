@@ -15,7 +15,8 @@
             <h2>{{ $mascota->NombreMascota }}</h2>
         </div>
         <div class="card-body">
-            <p><strong>Propietario:</strong> {{ $mascota->cliente->Nombre }}</p>
+            <p><strong>Nombre:</strong> {{ $mascota->Mascota }}</p>
+            <p><strong>Identificador:</strong> 00- {{ $mascota->id }}</p>
             <p><strong>Especie:</strong> {{ $mascota->especie->Especie }}</p>
             <p><strong>Raza:</strong> {{ $mascota->raza->Raza }}</p>
             <p><strong>Número de Historia:</strong> {{ $mascota->NumeroHistoria }}</p>
