@@ -18,7 +18,7 @@ class CajasController extends Controller
      */
     public function index()
     {
-        $cajas = Caja::with(['tipo', 'medio_pago'])->orderBy('created_at','desc')->get();
+        $cajas = Caja::with(['tipo', 'medio_pago'])->orderBy('fecha','desc')->get();
 
         return view('cajas.index', ['cajas' => $cajas]);
     }
