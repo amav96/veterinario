@@ -17,6 +17,12 @@ $config = [
     'language' => [
         'url' => '//cdn.datatables.net/plug-ins/2.0.1/i18n/es-ES.json',
     ],
+    'searching' => false, // Deshabilita la búsqueda
+    'paging' => false, // Deshabilita la paginación
+    'info' => false,
+    'dom' => 'Bfrtip', // Define los elementos presentes en la tabla. Ajusta según necesidad.
+    'buttons' => [], // Vacía o quita esta línea para deshabilitar los botones
+    'lengthChange' => false, 
     'order' => [],
 ];
 
@@ -92,6 +98,11 @@ $config = [
             <input type="hidden" name="filtros" value="1">
         </form>
     </div>
+</div>
+
+{{-- descargar pdf --}}
+<div class="mb-2">
+    <a href="{{ route('cuadrarCajaPdf.pdf', ['accion' => 'filtrar','filtros' => 1, 'fecha_desde' => $filtros['fecha_desde'], 'fecha_hasta' => $filtros['fecha_hasta'], 'almacen' => $filtros['almacen'], 'usuario' => $filtros['usuario']]) }}" class="btn btn-primary" target="_blank">Descargar PDF</a>
 </div>
 
 <div class="card card-primary">

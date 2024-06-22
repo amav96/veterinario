@@ -135,11 +135,6 @@ class DynamicMenuMiddleware
                             'icon' => 'fas fa-fw fa-dollar-sign',
                             'url'  => 'cuadrar-caja',
                         ],
-                        [
-                            'text' => 'Gestión',
-                            'icon' => 'fas fa-fw fa-chart-pie',
-                            'url'  => 'graficos-ventas',
-                        ],
                     ]
                 ]
                 : []
@@ -173,6 +168,14 @@ class DynamicMenuMiddleware
                 ]
                 : []
             ),
+            
+            // gestion
+            [
+                'text' => 'Gestión',
+                'icon' => 'fas fa-fw fa-chart-pie',
+                'url'  => 'graficos-ventas',
+            ],
+                
             // evento
             (
                 in_array(PermisosValue::EVENTO_VER_MODULO, $permisosUsuario) ?

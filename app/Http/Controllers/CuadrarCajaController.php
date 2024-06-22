@@ -28,16 +28,29 @@ class CuadrarCajaController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request) {
-        // usuarios
+         // usuarios
         // Almacenes
 
         $usuarios = User::all();
         $almacenes = Almacen::all();
 
+        $datos = $this->procesarDatos($request);
+
+        $datos['usuarios'] = $usuarios;
+        $datos['almacenes'] = $almacenes;
+        // Construir respuesta específica para index
+        return view('ventas.cajas', $datos);
+
+    }
+
+    private function procesarDatos(Request $request) {
+        
+
         // Filtros
 
         $filtros = $request->input('filtros');
         $accion = $request->input('accion');
+       
         $filtro_fecha_desde = null;
         $filtro_fecha_hasta = null;
         $filtro_almacen = null;
@@ -113,25 +126,17 @@ class CuadrarCajaController extends Controller
 
         $totales_ingresos_tipo = collect($totales_ingresos_tipo);
 
-        // Retornar vista
-
-        if ($accion == 'borrar') {
-            return redirect(route('cuadrar-caja.index'));
-        }
-
-        return view('ventas.cajas', [
+        return [
             'resumen_ingresos_tipo' => $resumen_ingresos_tipo,
             'totales_ingresos_tipo' => $totales_ingresos_tipo,
             'resumen_medios_pago' => $resumen_medios_pago,
-            'almacenes' => $almacenes,
-            'usuarios' => $usuarios,
             'filtros' => [
                 'fecha_desde' => $filtro_fecha_desde,
                 'fecha_hasta' => $filtro_fecha_hasta,
                 'almacen' => $filtro_almacen,
                 'usuario' => $filtro_usuario
             ]
-        ]);
+        ];
     }
 
     /**
@@ -255,6 +260,25 @@ class CuadrarCajaController extends Controller
         return $dompdf->stream('comprobante.pdf');
     }
 
+    public function pdfCaja(Request $request){
+    
+        $datos = $this->procesarDatos($request);
+
+        $vista = view('ventas.cuadrarCajaPdf', $datos)->render();
+        // return  $vista;
+        #echo ($vista); exit;
+
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($vista);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->stream('cuadrarCajaPdf.pdf');
+
+    }
 
     // AJAX
 

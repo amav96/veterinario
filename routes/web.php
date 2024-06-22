@@ -90,7 +90,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/tipoAlmacen', TipoAlmacenController::class);
     Route::resource('/ventas', VentasController::class);
     Route::resource('/cajas', CajasController::class);
+    Route::get('/cuadrar-caja/pdf', [CuadrarCajaController::class, 'pdfCaja'])->name('cuadrarCajaPdf.pdf');
     Route::resource('/cuadrar-caja', CuadrarCajaController::class);
+    
     Route::resource('/comprobantes', ComprobantesController::class);
     Route::resource('/almacenes', AlmacenesController::class);
     Route::resource('/stocks', StocksController::class);

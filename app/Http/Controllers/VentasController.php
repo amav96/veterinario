@@ -240,6 +240,7 @@ class VentasController extends Controller
 
     public function graficos(Request $request) {
         // Ventas totales
+        DB::statement("SET lc_time_names = 'es_ES'");
 
         $ventas_totales = Venta::select([
             'created_at',
