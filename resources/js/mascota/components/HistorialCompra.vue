@@ -81,9 +81,12 @@ const columns = [
 
 </script>
 
-<style>
-@import 'bootstrap';
+<style >
+
 @import 'datatables.net-bs5';
 
+.table {
+    background: white;
+}
 
 </style>
