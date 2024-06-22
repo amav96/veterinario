@@ -27,7 +27,6 @@ class TipoMovimiento extends Model
     public const SERVICIO_ELIMINACION =  14;
     public const PRODUCTO_ELIMINACION =  15;
     public const MASCOTA_ELIMINACION =  16;
-    
 
     const VENTAS = "ventas";
     const CLIENTE = "cliente";

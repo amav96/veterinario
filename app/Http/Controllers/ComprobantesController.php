@@ -223,32 +223,21 @@ class ComprobantesController extends Controller
             $comprobante = $comprobante->refresh();
 
             // Generar un movimiento de caja de entrada
+            // Generar un movimiento de caja de salida (si hay vuelto, por ejemplo)
+
+            $descripcion_movimiento = 'Movimiento de caja de entrada '. ($vuelto > 0 ? 'y salida' : '') .' para la venta #'. str_pad($venta->id, 8, 0, STR_PAD_LEFT);
 
             Caja::insert([
                 'transaccion' => Token::create(8, true),
-                'descripcion' => 'Movimiento de caja de entrada para la venta #'. str_pad($venta->id, 8, 0, STR_PAD_LEFT),
+                'descripcion' => $descripcion_movimiento,
                 'movimiento' => 'entrada',
                 'comprobante_id' => $comprobante_id,
                 'tipo_movimiento_id' => TipoMovimiento::VENTA,
                 'medio_pago_id' => $medio_pago_id,
                 'importe_entrada' => $monto,
+                'importe_salida' => ($vuelto > 0 ? $vuelto : null),
                 'fecha' => $fecha_hora
             ]);
-
-            // Generar un movimiento de caja de salida (vuelto, por ejemplo)
-
-            if ($vuelto > 0) {
-                Caja::insert([
-                    'transaccion' => Token::create(8, true),
-                    'descripcion' => 'Movimiento de caja de salida para la venta #'. str_pad($venta->id, 8, 0, STR_PAD_LEFT),
-                    'movimiento' => 'salida',
-                    'comprobante_id' => $comprobante_id,
-                    'tipo_movimiento_id' => TipoMovimiento::VENTA,
-                    'medio_pago_id' => $medio_pago_id,
-                    'importe_salida' => $vuelto,
-                    'fecha' => $fecha_hora
-                ]);
-            }
 
             // Opciones (botón eliminar pago)
 
@@ -312,7 +301,7 @@ class ComprobantesController extends Controller
                     'descripcion' => 'Movimiento de caja de salida para la venta #'. str_pad($venta->id, 8, 0, STR_PAD_LEFT),
                     'movimiento' => 'salida',
                     'comprobante_id' => $comprobante_id,
-                    'tipo_movimiento_id' => TipoMovimiento::VENTA,
+                    'tipo_movimiento_id' => TipoMovimiento::ANULACION,
                     'medio_pago_id' => $medio_pago_id,
                     'importe_salida' => $monto,
                     'fecha' => $fecha_hora
