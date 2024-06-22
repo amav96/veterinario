@@ -109,7 +109,9 @@ $config = [
             datasets: [{
                 data: {!! json_encode($result->pluck('Total'))!!},
                 backgroundColor: [
-                    'rgba(0, 123, 255, 0.8)'
+                    'rgba(255, 99, 132, 0.8)', // Rojo para el perro
+                    'rgba(54, 162, 235, 0.8)', // Azul para el gato
+                    'rgba(255, 206, 86, 0.8)'  // Amarillo para las aves
                 ],
             }]
         },
