@@ -26,8 +26,8 @@
             <p><strong>Asegurado:</strong> {{ $mascota->Asegurado ? 'Si' : 'No' }}</p>
         </div>
     </div>
-    <div class="flex flex-column">
-        <div class="card card-success">
+    <div class="flex flex-column" style="width: 100%;">
+        <div class="card card-success" >
             <div class="card-header flex flex-row flex-wrap items-center gap-4">
                 <a 
                 href="{{url('mascota/'.$mascota->id.'/edit')}}" 
