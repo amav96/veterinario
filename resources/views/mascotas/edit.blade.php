@@ -8,8 +8,8 @@
 
 @section('content')
 <div class="flex flex-row">
-    <div class="card">
-        <div class="card-header">
+    <div class="card" style="min-width: 270px;">
+        <div class="card-header"
             <img src="/vendor/adminlte/dist/img/mascota.png" alt="Dog Avatar" class="img-circle" style="width: 100px; height: 100px;">
             <h2>{{ $mascota->NombreMascota }}</h2>
         </div>

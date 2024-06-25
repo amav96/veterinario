@@ -21,7 +21,7 @@ class ProveedorController extends Controller
             PermisoService::permisosRol(Auth::user()->rol_id)
         );
 
-        $proveedor = Proveedor::all();
+        $proveedor = Proveedor::orderBy("created_at", "desc")->get();
         return view('proveedores.index',['proveedores'=>$proveedor]);
     }
 

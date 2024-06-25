@@ -9,7 +9,7 @@
 @section('content')
 
 <div class="flex flex-row">
-    <div class="card">
+    <div class="card" style="min-width: 270px;">
         <div class="card-header">
             <img src="/vendor/adminlte/dist/img/mascota.png" alt="Dog Avatar" class="img-circle" style="width: 100px; height: 100px;">
             <h2>{{ $mascota->NombreMascota }}</h2>
@@ -26,8 +26,8 @@
             <p><strong>Asegurado:</strong> {{ $mascota->Asegurado ? 'Si' : 'No' }}</p>
         </div>
     </div>
-    <div class="flex flex-column">
-        <div class="card card-success">
+    <div class="flex flex-column" style="width: 100%;">
+        <div class="card card-success" >
             <div class="card-header flex flex-row flex-wrap items-center gap-4">
                 <a 
                 href="{{url('mascota/'.$mascota->id.'/edit')}}" 
