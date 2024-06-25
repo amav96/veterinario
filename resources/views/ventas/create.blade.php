@@ -396,7 +396,7 @@ $config = [
 
                 let sum_subtotal = val_precio_unitario * val_unidades;
                 let sum_impuestos = calcularPorcentaje(sum_subtotal, 18);
-                let sum_total = sum_subtotal + val_precio_impuestos;
+                let sum_total = sum_subtotal + sum_impuestos;
 
                 precio_subtotal.text(sum_subtotal.toFixed(2).replace('.', ','));
                 precio_impuestos.text(sum_impuestos.toFixed(2).replace('.', ','));

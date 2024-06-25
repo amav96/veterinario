@@ -143,7 +143,7 @@ class ComprobantesController extends Controller
             $valores_venta->valor_sin_descuentos += $item->subtotal;
             $valores_venta->valor_con_descuentos += $item->subtotal;
             $valores_venta->valor_impuestos += $item->impuestos;
-            $valores_venta->valor_total += ($item->subtotal + $item->impuestos);
+            $valores_venta->valor_total += $item->subtotal + $item->impuestos;
         }
 
         $vista = view('comprobantes.pdf', ['comprobante' => $comprobante, 'valores_venta' => $valores_venta])->render();
